@@ -30,7 +30,7 @@
     "email": "nikola@nikolahristov.tech",
     "url": "https://nikolahristov.tech"
   },
-  "publisher": "ms-vsts",
+  "publisher": "playform",
   "type": "module",
   "main": "./out/src/extension",
   "scripts": {
