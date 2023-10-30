@@ -1,11 +1,15 @@
 /*---------------------------------------------------------------------------------------------
-*  Copyright (c) Microsoft Corporation. All rights reserved.
-*  Licensed under the MIT License. See License.txt in the project root for license information.
-*--------------------------------------------------------------------------------------------*/
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 "use strict";
 
-import { TeamServerContext} from "../../contexts/servercontext";
-import { IArgumentProvider, IExecutionResult, ITfvcCommand } from "../interfaces";
+import { TeamServerContext } from "../../contexts/servercontext";
+import {
+	IArgumentProvider,
+	IExecutionResult,
+	ITfvcCommand,
+} from "../interfaces";
 import { ArgumentBuilder } from "./argumentbuilder";
 import { CommandHelper } from "./commandhelper";
 
@@ -16,25 +20,26 @@ import { CommandHelper } from "./commandhelper";
  * delete [/lock:none|checkin|checkout] [/recursive] <itemSpec>...
  */
 export class Delete implements ITfvcCommand<string[]> {
-    private _serverContext: TeamServerContext;
-    private _itemPaths: string[];
+	private _serverContext: TeamServerContext;
+	private _itemPaths: string[];
 
-    public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
-        CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
-        this._serverContext = serverContext;
-        this._itemPaths = itemPaths;
-    }
+	public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
+		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+		this._serverContext = serverContext;
+		this._itemPaths = itemPaths;
+	}
 
-    public GetArguments(): IArgumentProvider {
-        return new ArgumentBuilder("delete", this._serverContext)
-            .AddAll(this._itemPaths);
-    }
+	public GetArguments(): IArgumentProvider {
+		return new ArgumentBuilder("delete", this._serverContext).AddAll(
+			this._itemPaths
+		);
+	}
 
-    public GetOptions(): any {
-        return {};
-    }
+	public GetOptions(): any {
+		return {};
+	}
 
-    /* Delete returns either 0 (success) or 100 (failure).  IF we fail, simply throw.
+	/* Delete returns either 0 (success) or 100 (failure).  IF we fail, simply throw.
 
         Sample output:
         //Single file
@@ -60,40 +65,51 @@ export class Delete implements ITfvcCommand<string[]> {
         No arguments matched any files to delete.
     */
 
-    public async ParseOutput(executionResult: IExecutionResult): Promise<string[]> {
-        CommandHelper.ProcessErrors(executionResult);
+	public async ParseOutput(
+		executionResult: IExecutionResult
+	): Promise<string[]> {
+		CommandHelper.ProcessErrors(executionResult);
 
-        const lines: string[] = CommandHelper.SplitIntoLines(executionResult.stdout, false, true /*filterEmptyLines*/);
+		const lines: string[] = CommandHelper.SplitIntoLines(
+			executionResult.stdout,
+			false,
+			true /*filterEmptyLines*/
+		);
 
-        const filesUndone: string[] = [];
-        let path: string = "";
-        for (let index: number = 0; index < lines.length; index++) {
-            const line: string = lines[index];
-            if (CommandHelper.IsFilePath(line)) {
-                path = line;
-            } else if (line) {
-                const file: string = this.getFileFromLine(line);
-                filesUndone.push(CommandHelper.GetFilePath(path, file));
-            }
-        }
-        return filesUndone;
-    }
+		const filesUndone: string[] = [];
+		let path: string = "";
+		for (let index: number = 0; index < lines.length; index++) {
+			const line: string = lines[index];
+			if (CommandHelper.IsFilePath(line)) {
+				path = line;
+			} else if (line) {
+				const file: string = this.getFileFromLine(line);
+				filesUndone.push(CommandHelper.GetFilePath(path, file));
+			}
+		}
+		return filesUndone;
+	}
 
-    public GetExeArguments(): IArgumentProvider {
-        return new ArgumentBuilder("delete", this._serverContext, true /* skipCollectionOption */)
-            .AddAll(this._itemPaths);
-    }
+	public GetExeArguments(): IArgumentProvider {
+		return new ArgumentBuilder(
+			"delete",
+			this._serverContext,
+			true /* skipCollectionOption */
+		).AddAll(this._itemPaths);
+	}
 
-    public GetExeOptions(): any {
-        return this.GetOptions();
-    }
+	public GetExeOptions(): any {
+		return this.GetOptions();
+	}
 
-    public async ParseExeOutput(executionResult: IExecutionResult): Promise<string[]> {
-        return await this.ParseOutput(executionResult);
-    }
+	public async ParseExeOutput(
+		executionResult: IExecutionResult
+	): Promise<string[]> {
+		return await this.ParseOutput(executionResult);
+	}
 
-    private getFileFromLine(line: string): string {
-        //There's no prefix on the filename line for the Delete command
-        return line;
-    }
+	private getFileFromLine(line: string): string {
+		//There's no prefix on the filename line for the Delete command
+		return line;
+	}
 }
