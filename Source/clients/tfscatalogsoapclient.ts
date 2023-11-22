@@ -1,7 +1,7 @@
 /*---------------------------------------------------------------------------------------------
-*  Copyright (c) Microsoft Corporation. All rights reserved.
-*  Licensed under the MIT License. See License.txt in the project root for license information.
-*--------------------------------------------------------------------------------------------*/
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 "use strict";
 
 import Q = require("q");
@@ -15,35 +15,43 @@ import * as url from "url";
 // This class is the 'bridge' between the calling RepositoryInfoClient (which uses the
 // async/await pattern) and the SoapClient which (has to) implement the callback pattern
 export class TfsCatalogSoapClient {
-    private soapClient: SoapClient;
-    private serverUrl: string;
-    private endpointUrl: string;
+	private soapClient: SoapClient;
+	private serverUrl: string;
+	private endpointUrl: string;
 
-    /* tslint:disable:variable-name */
-    private static readonly SingleRecurseStar: string = "*";
-    private static readonly QueryOptionsNone: string = "0";
-    private static readonly QueryOptionsExpandDependencies: string = "1";
-    // These guids brought over from our friends at vso-intellij...
-    // https://github.com/Microsoft/vso-intellij/blob/master/plugin/src/com/microsoft/alm/plugin/context/soap/CatalogServiceImpl.java#L56-L58
-    // Ensure that they rename lower-case
-    private static readonly OrganizationalRoot: string = "69a51c5e-c093-447e-a177-a09e47a60974";
-    private static readonly TeamFoundationServerInstance: string = "b36f1bda-df2d-482b-993a-f194a31a1fa2";
-    private static readonly ProjectCollection: string = "26338d9e-d437-44aa-91f2-55880a328b54";
-    // Xml nodes in SOAP envelopes are case-sensitive (so don't change the values below)
-    private static readonly XmlSoapBody: string = "soap:Body";
-    private static readonly XmlQueryNodesResponse: string = "QueryNodesResponse";
-    private static readonly XmlQueryNodesResult: string = "QueryNodesResult";
-    private static readonly XmlCatalogResources: string = "CatalogResources";
-    private static readonly XmlNodeReferencesPaths: string = "NodeReferencePaths";
-    /* tslint:enable:variable-name */
+	/* tslint:disable:variable-name */
+	private static readonly SingleRecurseStar: string = "*";
+	private static readonly QueryOptionsNone: string = "0";
+	private static readonly QueryOptionsExpandDependencies: string = "1";
+	// These guids brought over from our friends at vso-intellij...
+	// https://github.com/Microsoft/vso-intellij/blob/master/plugin/src/com/microsoft/alm/plugin/context/soap/CatalogServiceImpl.java#L56-L58
+	// Ensure that they rename lower-case
+	private static readonly OrganizationalRoot: string =
+		"69a51c5e-c093-447e-a177-a09e47a60974";
+	private static readonly TeamFoundationServerInstance: string =
+		"b36f1bda-df2d-482b-993a-f194a31a1fa2";
+	private static readonly ProjectCollection: string =
+		"26338d9e-d437-44aa-91f2-55880a328b54";
+	// Xml nodes in SOAP envelopes are case-sensitive (so don't change the values below)
+	private static readonly XmlSoapBody: string = "soap:Body";
+	private static readonly XmlQueryNodesResponse: string =
+		"QueryNodesResponse";
+	private static readonly XmlQueryNodesResult: string = "QueryNodesResult";
+	private static readonly XmlCatalogResources: string = "CatalogResources";
+	private static readonly XmlNodeReferencesPaths: string =
+		"NodeReferencePaths";
+	/* tslint:enable:variable-name */
 
-    constructor(serverUrl: string, handlers: IRequestHandler[]) {
-        this.serverUrl = serverUrl;
-        this.endpointUrl = url.resolve(serverUrl, "TeamFoundation/Administration/v3.0/CatalogService.asmx");
-        this.soapClient = new SoapClient(UserAgentProvider.UserAgent, handlers);
-    }
+	constructor(serverUrl: string, handlers: IRequestHandler[]) {
+		this.serverUrl = serverUrl;
+		this.endpointUrl = url.resolve(
+			serverUrl,
+			"TeamFoundation/Administration/v3.0/CatalogService.asmx"
+		);
+		this.soapClient = new SoapClient(UserAgentProvider.UserAgent, handlers);
+	}
 
-    /*
+	/*
         Sample value of the parameter sent to this function:
 
         <?xml version="1.0" encoding="UTF-8"?>
@@ -94,36 +102,63 @@ export class TfsCatalogSoapClient {
         </soap:Body>
         </soap:Envelope>
     */
-    private parseOrganizationRootPath(envelopeXml: any): string {
-        if (!envelopeXml) {
-            throw new Error(`No SOAP envelope was received for OrganizationRoot from ${this.endpointUrl}`);
-        }
-        const organizationDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(envelopeXml);
-        const soapBody: xmldoc.XmlElement = organizationDocument.childNamed(TfsCatalogSoapClient.XmlSoapBody);
-        const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(TfsCatalogSoapClient.XmlQueryNodesResponse);
-        const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(TfsCatalogSoapClient.XmlQueryNodesResult);
-        const catalogResources: any = nodesResult.childNamed(TfsCatalogSoapClient.XmlCatalogResources);
-        if (!catalogResources) {
-            throw new Error(`No CatalogResources were received for OrganizationRoot from ${this.endpointUrl}`);
-        }
-        //Spin through children doing insensitive check
-        let orgRoot: any;
-        for (let idx: number = 0; idx < catalogResources.children.length; idx++) {
-            if (catalogResources.children[idx].attr.ResourceTypeIdentifier.toLowerCase() === TfsCatalogSoapClient.OrganizationalRoot) {
-                orgRoot = catalogResources.children[idx];
-                break;
-            }
-        }
-        if (!orgRoot) {
-            throw new Error(`No organizationRoot was found in SOAP envelope from ${this.endpointUrl}`);
-        }
-        const nodeRefPaths: any = orgRoot.childNamed(TfsCatalogSoapClient.XmlNodeReferencesPaths);
-        const nodeRefPath: string = nodeRefPaths.children[0].val;
+	private parseOrganizationRootPath(envelopeXml: any): string {
+		if (!envelopeXml) {
+			throw new Error(
+				`No SOAP envelope was received for OrganizationRoot from ${this.endpointUrl}`
+			);
+		}
+		const organizationDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(
+			envelopeXml
+		);
+		const soapBody: xmldoc.XmlElement = organizationDocument.childNamed(
+			TfsCatalogSoapClient.XmlSoapBody
+		);
+		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResponse
+		);
+		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResult
+		);
+		const catalogResources: any = nodesResult.childNamed(
+			TfsCatalogSoapClient.XmlCatalogResources
+		);
+		if (!catalogResources) {
+			throw new Error(
+				`No CatalogResources were received for OrganizationRoot from ${this.endpointUrl}`
+			);
+		}
+		//Spin through children doing insensitive check
+		let orgRoot: any;
+		for (
+			let idx: number = 0;
+			idx < catalogResources.children.length;
+			idx++
+		) {
+			if (
+				catalogResources.children[
+					idx
+				].attr.ResourceTypeIdentifier.toLowerCase() ===
+				TfsCatalogSoapClient.OrganizationalRoot
+			) {
+				orgRoot = catalogResources.children[idx];
+				break;
+			}
+		}
+		if (!orgRoot) {
+			throw new Error(
+				`No organizationRoot was found in SOAP envelope from ${this.endpointUrl}`
+			);
+		}
+		const nodeRefPaths: any = orgRoot.childNamed(
+			TfsCatalogSoapClient.XmlNodeReferencesPaths
+		);
+		const nodeRefPath: string = nodeRefPaths.children[0].val;
 
-        return nodeRefPath;
-    }
+		return nodeRefPath;
+	}
 
-    /*
+	/*
         Sample value of the parameter sent to this function:
 
         <?xml version="1.0" encoding="UTF-8"?>
@@ -185,35 +220,61 @@ export class TfsCatalogSoapClient {
         </soap:Body>
         </soap:Envelope>
     */
-    private parseFoundationServerRootPath(envelopeXml: any): string {
-        if (!envelopeXml) {
-            throw new Error(`No SOAP envelope was received for FoundationServer from ${this.endpointUrl}`);
-        }
-        const foundationServerDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(envelopeXml);
-        const soapBody: xmldoc.XmlElement = foundationServerDocument.childNamed(TfsCatalogSoapClient.XmlSoapBody);
-        const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(TfsCatalogSoapClient.XmlQueryNodesResponse);
-        const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(TfsCatalogSoapClient.XmlQueryNodesResult);
-        const catalogResources: any = nodesResult.childNamed(TfsCatalogSoapClient.XmlCatalogResources);
-        if (!catalogResources) {
-            throw new Error(`No CatalogResources were received for FoundationServer from ${this.endpointUrl}`);
-        }
-        let serverInstance: xmldoc.XmlElement;
-        //Spin through children doing insensitive check
-        for (let idx: number = 0; idx < catalogResources.children.length; idx++) {
-            if (catalogResources.children[idx].attr.ResourceTypeIdentifier.toLowerCase() === TfsCatalogSoapClient.TeamFoundationServerInstance) {
-                serverInstance = catalogResources.children[idx];
-                break;
-            }
-        }
-        if (!serverInstance) {
-            throw new Error(`No serverInstance was found in SOAP envelope from ${this.endpointUrl}`);
-        }
-        const nodeRefPaths: any = serverInstance.childNamed(TfsCatalogSoapClient.XmlNodeReferencesPaths);
-        const nodeRefPath: string = nodeRefPaths.children[0].val;
-        return nodeRefPath;
-    }
+	private parseFoundationServerRootPath(envelopeXml: any): string {
+		if (!envelopeXml) {
+			throw new Error(
+				`No SOAP envelope was received for FoundationServer from ${this.endpointUrl}`
+			);
+		}
+		const foundationServerDocument: xmldoc.XmlDocument =
+			new xmldoc.XmlDocument(envelopeXml);
+		const soapBody: xmldoc.XmlElement = foundationServerDocument.childNamed(
+			TfsCatalogSoapClient.XmlSoapBody
+		);
+		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResponse
+		);
+		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResult
+		);
+		const catalogResources: any = nodesResult.childNamed(
+			TfsCatalogSoapClient.XmlCatalogResources
+		);
+		if (!catalogResources) {
+			throw new Error(
+				`No CatalogResources were received for FoundationServer from ${this.endpointUrl}`
+			);
+		}
+		let serverInstance: xmldoc.XmlElement;
+		//Spin through children doing insensitive check
+		for (
+			let idx: number = 0;
+			idx < catalogResources.children.length;
+			idx++
+		) {
+			if (
+				catalogResources.children[
+					idx
+				].attr.ResourceTypeIdentifier.toLowerCase() ===
+				TfsCatalogSoapClient.TeamFoundationServerInstance
+			) {
+				serverInstance = catalogResources.children[idx];
+				break;
+			}
+		}
+		if (!serverInstance) {
+			throw new Error(
+				`No serverInstance was found in SOAP envelope from ${this.endpointUrl}`
+			);
+		}
+		const nodeRefPaths: any = serverInstance.childNamed(
+			TfsCatalogSoapClient.XmlNodeReferencesPaths
+		);
+		const nodeRefPath: string = nodeRefPaths.children[0].val;
+		return nodeRefPath;
+	}
 
-    /*
+	/*
         Sample value of the parameter sent to this function:
 
         <?xml version="1.0" encoding="UTF-8"?>
@@ -486,100 +547,163 @@ export class TfsCatalogSoapClient {
         </soap:Body>
         </soap:Envelope>
     */
-    private parseProjectCollections(envelopeXml: any): any[] {
-        if (!envelopeXml) {
-            throw new Error(`No SOAP envelope was received for ProjectCollections from ${this.endpointUrl}`);
-        }
-        const projectCollectionsDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(envelopeXml);
-        const soapBody: xmldoc.XmlElement = projectCollectionsDocument.childNamed(TfsCatalogSoapClient.XmlSoapBody);
-        const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(TfsCatalogSoapClient.XmlQueryNodesResponse);
-        const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(TfsCatalogSoapClient.XmlQueryNodesResult);
-        const catalogResources: any = nodesResult.childNamed(TfsCatalogSoapClient.XmlCatalogResources);
-        if (!catalogResources) {
-            throw new Error(`No CatalogResources were received for ProjectCollections from ${this.endpointUrl}`);
-        }
-        const collectionNodes: any[] = [];
-        catalogResources.eachChild(function(catalogResource) {
-            if (catalogResource.attr.ResourceTypeIdentifier.toLowerCase() === TfsCatalogSoapClient.ProjectCollection) {
-                collectionNodes.push(catalogResource);
-            }
-        });
-        return collectionNodes;
-    }
+	private parseProjectCollections(envelopeXml: any): any[] {
+		if (!envelopeXml) {
+			throw new Error(
+				`No SOAP envelope was received for ProjectCollections from ${this.endpointUrl}`
+			);
+		}
+		const projectCollectionsDocument: xmldoc.XmlDocument =
+			new xmldoc.XmlDocument(envelopeXml);
+		const soapBody: xmldoc.XmlElement =
+			projectCollectionsDocument.childNamed(
+				TfsCatalogSoapClient.XmlSoapBody
+			);
+		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResponse
+		);
+		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
+			TfsCatalogSoapClient.XmlQueryNodesResult
+		);
+		const catalogResources: any = nodesResult.childNamed(
+			TfsCatalogSoapClient.XmlCatalogResources
+		);
+		if (!catalogResources) {
+			throw new Error(
+				`No CatalogResources were received for ProjectCollections from ${this.endpointUrl}`
+			);
+		}
+		const collectionNodes: any[] = [];
+		catalogResources.eachChild(function (catalogResource) {
+			if (
+				catalogResource.attr.ResourceTypeIdentifier.toLowerCase() ===
+				TfsCatalogSoapClient.ProjectCollection
+			) {
+				collectionNodes.push(catalogResource);
+			}
+		});
+		return collectionNodes;
+	}
 
-    // Based on the passed in collectionName, it queries the TFS Catalog Service to find
-    // the collection's display name, id (guid), and API URL (_apis/projectCollections/)
-    // This method returns 'any' (of the _shape_ TeamProjectCollectionReference) which will
-    // match "good enough" to the type expected in repositoryinfoclient.
-    public GetProjectCollection(collectionName: string): Q.Promise<any> {
-        const deferred: Q.Deferred<any> = Q.defer<any>();
+	// Based on the passed in collectionName, it queries the TFS Catalog Service to find
+	// the collection's display name, id (guid), and API URL (_apis/projectCollections/)
+	// This method returns 'any' (of the _shape_ TeamProjectCollectionReference) which will
+	// match "good enough" to the type expected in repositoryinfoclient.
+	public GetProjectCollection(collectionName: string): Q.Promise<any> {
+		const deferred: Q.Deferred<any> = Q.defer<any>();
 
-        //Get the organizational root
-        this.getCatalogDataFromServer(TfsCatalogSoapClient.SingleRecurseStar, TfsCatalogSoapClient.QueryOptionsNone).then((catalogDataXml: any) => {
-            const orgRootPath: string = this.parseOrganizationRootPath(catalogDataXml);
+		//Get the organizational root
+		this.getCatalogDataFromServer(
+			TfsCatalogSoapClient.SingleRecurseStar,
+			TfsCatalogSoapClient.QueryOptionsNone
+		)
+			.then((catalogDataXml: any) => {
+				const orgRootPath: string =
+					this.parseOrganizationRootPath(catalogDataXml);
 
-            //Get the foundationServer, orgRootPath looks something like 3eYRYkJOok6GHrKam0AcAA==
-            this.getCatalogDataFromServer(orgRootPath + TfsCatalogSoapClient.SingleRecurseStar, TfsCatalogSoapClient.QueryOptionsExpandDependencies).then((catalogDataXml:any) => {
-                const foundationServerRootPath: string = this.parseFoundationServerRootPath(catalogDataXml);
+				//Get the foundationServer, orgRootPath looks something like 3eYRYkJOok6GHrKam0AcAA==
+				this.getCatalogDataFromServer(
+					orgRootPath + TfsCatalogSoapClient.SingleRecurseStar,
+					TfsCatalogSoapClient.QueryOptionsExpandDependencies
+				).then((catalogDataXml: any) => {
+					const foundationServerRootPath: string =
+						this.parseFoundationServerRootPath(catalogDataXml);
 
-                //Get the project collections, foundationServerRootPath looks something like 3eYRYkJOok6GHrKam0AcAA==GJQSi7i010yMVKSDvyLgHQ==
-                this.getCatalogDataFromServer(foundationServerRootPath + TfsCatalogSoapClient.SingleRecurseStar, TfsCatalogSoapClient.QueryOptionsExpandDependencies).then((catalogDataXml:any) => {
-                    const collectionNodes: any[] = this.parseProjectCollections(catalogDataXml);
+					//Get the project collections, foundationServerRootPath looks something like 3eYRYkJOok6GHrKam0AcAA==GJQSi7i010yMVKSDvyLgHQ==
+					this.getCatalogDataFromServer(
+						foundationServerRootPath +
+							TfsCatalogSoapClient.SingleRecurseStar,
+						TfsCatalogSoapClient.QueryOptionsExpandDependencies
+					).then((catalogDataXml: any) => {
+						const collectionNodes: any[] =
+							this.parseProjectCollections(catalogDataXml);
 
-                    //Now go and find the project collection we're looking for
-                    let foundTeamProject: any;
-                    for (let idx: number = 0; idx < collectionNodes.length; idx++) {
-                        if (collectionNodes[idx].attr.DisplayName.toLowerCase() === collectionName.toLowerCase()) {
-                            foundTeamProject = collectionNodes[idx];
-                            break;
-                        }
-                    }
-                    if (foundTeamProject) {
-                        const props: any = foundTeamProject.childNamed("Properties");
-                        const strstr: any = props.childNamed("KeyValueOfStringString");
-                        const id: any = strstr.childNamed("Value");
-                        //Resolve an object that +looks_ like a TeamProjectCollectionReference object
-                        deferred.resolve({ name: foundTeamProject.attr.DisplayName, id: id.val, url: url.resolve(this.serverUrl, "_apis/projectCollections/" + id.val)});
-                    } else {
-                        deferred.resolve(undefined);
-                    }
-                });
-            });
-        }).fail((err) => {
-            //Apparently, we will fail if auth fails when getting organizational root
-            deferred.reject(err);
-        });
+						//Now go and find the project collection we're looking for
+						let foundTeamProject: any;
+						for (
+							let idx: number = 0;
+							idx < collectionNodes.length;
+							idx++
+						) {
+							if (
+								collectionNodes[
+									idx
+								].attr.DisplayName.toLowerCase() ===
+								collectionName.toLowerCase()
+							) {
+								foundTeamProject = collectionNodes[idx];
+								break;
+							}
+						}
+						if (foundTeamProject) {
+							const props: any =
+								foundTeamProject.childNamed("Properties");
+							const strstr: any = props.childNamed(
+								"KeyValueOfStringString"
+							);
+							const id: any = strstr.childNamed("Value");
+							//Resolve an object that +looks_ like a TeamProjectCollectionReference object
+							deferred.resolve({
+								name: foundTeamProject.attr.DisplayName,
+								id: id.val,
+								url: url.resolve(
+									this.serverUrl,
+									"_apis/projectCollections/" + id.val
+								),
+							});
+						} else {
+							deferred.resolve(undefined);
+						}
+					});
+				});
+			})
+			.fail((err) => {
+				//Apparently, we will fail if auth fails when getting organizational root
+				deferred.reject(err);
+			});
 
-        return deferred.promise;
-    }
+		return deferred.promise;
+	}
 
-    private getCatalogDataFromServer(pathSpecs: string, queryOptions: string) : Q.Promise<any> {
-        const deferred: Q.Deferred<any> = Q.defer<any>();
+	private getCatalogDataFromServer(
+		pathSpecs: string,
+		queryOptions: string
+	): Q.Promise<any> {
+		const deferred: Q.Deferred<any> = Q.defer<any>();
 
-        const onResult = (err: any, statusCode: number, responseEnvelope: any) => {
-            if (err) {
-                err.statusCode = statusCode;
-                deferred.reject(err);
-            } else {
-                deferred.resolve(responseEnvelope);
-            }
-        };
+		const onResult = (
+			err: any,
+			statusCode: number,
+			responseEnvelope: any
+		) => {
+			if (err) {
+				err.statusCode = statusCode;
+				deferred.reject(err);
+			} else {
+				deferred.resolve(responseEnvelope);
+			}
+		};
 
-        const envelope: string = "<?xml version='1.0' encoding='UTF-8'?>"
-            + "<soap:Envelope xmlns:soap=\"http://www.w3.org/2003/05/soap-envelope\" xmlns:xsi=\"http://www.w3.org/2001/XMLSchema-instance\" "
-            + "xmlns:xsd=\"http://www.w3.org/2001/XMLSchema\">"
-            + "<soap:Body xmlns=\"http://microsoft.com/webservices/\">"
-            + "<QueryNodes>"
-            + "<pathSpecs>"
-            + "<string>" + pathSpecs + "</string>"
-            + "</pathSpecs>"
-            + "<queryOptions>" + queryOptions + "</queryOptions>"
-            + "</QueryNodes>"
-            + "</soap:Body>"
-            + "</soap:Envelope>";
+		const envelope: string =
+			"<?xml version='1.0' encoding='UTF-8'?>" +
+			'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
+			'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
+			'<soap:Body xmlns="http://microsoft.com/webservices/">' +
+			"<QueryNodes>" +
+			"<pathSpecs>" +
+			"<string>" +
+			pathSpecs +
+			"</string>" +
+			"</pathSpecs>" +
+			"<queryOptions>" +
+			queryOptions +
+			"</queryOptions>" +
+			"</QueryNodes>" +
+			"</soap:Body>" +
+			"</soap:Envelope>";
 
-        this.soapClient.post(this.endpointUrl, envelope, onResult);
+		this.soapClient.post(this.endpointUrl, envelope, onResult);
 
-        return deferred.promise;
-    }
+		return deferred.promise;
+	}
 }
