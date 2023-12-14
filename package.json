@@ -513,7 +513,6 @@
     "gulp-util": "3.0.7",
     "mocha-junit-reporter": "2.2.1",
     "should": "13.2.3",
-    "tslint": "5.20.1",
     "typescript": "5.3.3",
     "typescript-esbuild": "0.3.3",
     "vscode": "1.0.0",
