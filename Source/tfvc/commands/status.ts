@@ -30,7 +30,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 	public constructor(
 		serverContext: TeamServerContext,
 		ignoreFolders: boolean,
-		localPaths?: string[]
+		localPaths?: string[],
 	) {
 		this._serverContext = serverContext;
 		this._ignoreFolders = ignoreFolders;
@@ -40,7 +40,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"status",
-			this._serverContext
+			this._serverContext,
 		)
 			.AddSwitchWithValue("format", "xml", false)
 			.AddSwitch("recursive");
@@ -72,7 +72,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 	 * </status>
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IPendingChange[]> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -89,7 +89,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 					this.add(
 						changes,
 						this.convert(pending[i].$, false),
-						this._ignoreFolders
+						this._ignoreFolders,
 					);
 				}
 			}
@@ -101,7 +101,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 					this.add(
 						changes,
 						this.convert(candidate[i].$, true),
-						this._ignoreFolders
+						this._ignoreFolders,
 					);
 				}
 			}
@@ -113,7 +113,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		//return this.GetArguments();
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"status",
-			this._serverContext
+			this._serverContext,
 		)
 			.AddSwitchWithValue("format", "detailed", false)
 			.AddSwitch("recursive");
@@ -157,7 +157,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
     1 change(s), 0 detected change(s)
     */
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IPendingChange[]> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -170,7 +170,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			true,
-			false
+			false,
 		); //leave empty lines
 		let detectedChanges: boolean = false;
 		let curChange: IPendingChange;
@@ -223,7 +223,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 				const colonPos: number = line.indexOf(":");
 				if (colonPos > 0) {
 					const propertyName = this.getPropertyName(
-						line.slice(0, colonPos).trim().toLowerCase()
+						line.slice(0, colonPos).trim().toLowerCase(),
 					);
 					if (propertyName) {
 						let propertyValue: string =
@@ -268,7 +268,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 	private add(
 		changes: IPendingChange[],
 		newChange: IPendingChange,
-		ignoreFolders: boolean
+		ignoreFolders: boolean,
 	) {
 		// Deleted files won't exist, but we still include them in the results
 		if (ignoreFolders && fs.existsSync(newChange.localItem)) {

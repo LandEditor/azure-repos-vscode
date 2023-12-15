@@ -45,7 +45,7 @@ function list() {
 		.pipe(
 			es.mapSync(function (line) {
 				return line.replace(/\\134/g, "\\");
-			})
+			}),
 		)
 		.pipe(new parser.ParsingStream());
 }
@@ -109,7 +109,7 @@ function set(userName, service, description, password, callback) {
 	childProcess.execFile(securityPath, args, function (err, stdout, stderr) {
 		if (err) {
 			return callback(
-				new Error("Could not add password to keychain: " + stderr)
+				new Error("Could not add password to keychain: " + stderr),
 			);
 		}
 		return callback();

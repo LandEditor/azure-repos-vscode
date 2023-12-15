@@ -56,7 +56,7 @@ function list() {
 		es.mapSync(function (cred) {
 			cred.targetName = removePrefix(cred.targetName);
 			return cred;
-		})
+		}),
 	);
 }
 
@@ -92,8 +92,8 @@ function get(targetName, callback) {
 					"Getting credential failed, exit code " +
 						code +
 						": " +
-						errors.join(", ")
-				)
+						errors.join(", "),
+				),
 			);
 		}
 	});

@@ -64,9 +64,9 @@ _.extend(WinCredStoreParsingStream.prototype, {
 					new Error(
 						util.format(
 							"Multiple passes attempting to parse line [%s]. Possible bug in parser and infinite loop",
-							line
-						)
-					)
+							line,
+						),
+					),
 				);
 			}
 

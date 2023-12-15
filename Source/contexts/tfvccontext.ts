@@ -31,7 +31,7 @@ export class TfvcContext implements IRepositoryContext {
 		Logger.LogDebug(`Looking for TFVC repository at ${this._tfvcFolder}`);
 		this._repo = TfCommandLineRunner.CreateRepository(
 			undefined,
-			this._tfvcFolder
+			this._tfvcFolder,
 		);
 		//Ensure we have an appropriate ENU version of tf executable
 		//The call will throw if we have tf configured properly but it isn't ENU
@@ -39,14 +39,14 @@ export class TfvcContext implements IRepositoryContext {
 		this._tfvcWorkspace = await this._repo.FindWorkspace(this._tfvcFolder);
 		this._tfvcRemoteUrl = this._tfvcWorkspace.server;
 		this._isTeamServicesUrl = RepoUtils.IsTeamFoundationServicesRepo(
-			this._tfvcRemoteUrl
+			this._tfvcRemoteUrl,
 		);
 		this._isTeamFoundationServer = RepoUtils.IsTeamFoundationServerRepo(
-			this._tfvcRemoteUrl
+			this._tfvcRemoteUrl,
 		);
 		this._teamProjectName = this._tfvcWorkspace.defaultTeamProject;
 		Logger.LogDebug(
-			`Found a TFVC repository for url: '${this._tfvcRemoteUrl}' and team project: '${this._teamProjectName}'.`
+			`Found a TFVC repository for url: '${this._tfvcRemoteUrl}' and team project: '${this._teamProjectName}'.`,
 		);
 		return true;
 	}

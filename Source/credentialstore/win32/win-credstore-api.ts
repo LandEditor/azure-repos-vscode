@@ -58,7 +58,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: any
+		password: any,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 		const targetName: string = this.createTargetName(service, username);
@@ -97,7 +97,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 	// Adding for test purposes (to ensure a particular credential doesn't exist)
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 		let credential: Credential;
@@ -131,7 +131,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 		const targetName: string = this.createTargetName(service, username);
@@ -154,11 +154,11 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	private createCredential(cred: any): Credential {
 		const password: string = new Buffer(cred.credential, "hex").toString(
-			"utf8"
+			"utf8",
 		);
 		// http://servername:port|\\domain\username
 		const segments: Array<string> = cred.targetName.split(
-			WindowsCredentialStoreApi.separator
+			WindowsCredentialStoreApi.separator,
 		);
 		const username: string = segments[segments.length - 1];
 		const service: string = segments[0];

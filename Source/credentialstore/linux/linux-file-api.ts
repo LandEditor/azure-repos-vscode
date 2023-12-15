@@ -29,7 +29,7 @@ export class LinuxFileApi implements ICredentialStore {
 		this._folder = folder;
 		this._filename = filename;
 		this._fts = new FileTokenStorage(
-			path.join(path.join(os.homedir(), this._folder, this._filename))
+			path.join(path.join(os.homedir(), this._folder, this._filename)),
 		);
 	}
 
@@ -44,7 +44,7 @@ export class LinuxFileApi implements ICredentialStore {
 				});
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
-						entryArray[0]
+						entryArray[0],
 					);
 					deferred.resolve(credential);
 				} else {
@@ -60,7 +60,7 @@ export class LinuxFileApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: string
+		password: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -120,7 +120,7 @@ export class LinuxFileApi implements ICredentialStore {
 
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 
@@ -133,7 +133,7 @@ export class LinuxFileApi implements ICredentialStore {
 				});
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
-						entryArray[0]
+						entryArray[0],
 					);
 					deferred.resolve(credential);
 				} else {
@@ -148,7 +148,7 @@ export class LinuxFileApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 

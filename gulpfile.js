@@ -46,7 +46,7 @@ gulp.task("clean", function (done) {
 			"!out/src/credentialstore/osx",
 			"!out/src/credentialstore/win32",
 		],
-		done
+		done,
 	);
 });
 
@@ -70,7 +70,7 @@ gulp.task("build", ["copyresources"], function () {
 					// "file.base"" is the out dir where all the js and map files are located.
 					return file.base;
 				},
-			})
+			}),
 		)
 		.pipe(gulp.dest("./out"));
 });
@@ -85,22 +85,22 @@ gulp.task("tslint", ["build"], function () {
 
 gulp.task("publishbuild", ["tslint"], function () {
 	gulp.src(["./src/credentialstore/**/*.js"]).pipe(
-		gulp.dest("./out/src/credentialstore")
+		gulp.dest("./out/src/credentialstore"),
 	);
 	gulp.src(["./src/credentialstore/bin/win32/*"]).pipe(
-		gulp.dest("./out/src/credentialstore/bin/win32")
+		gulp.dest("./out/src/credentialstore/bin/win32"),
 	);
 });
 
 gulp.task("publishall", ["publishbuild"], function () {
 	gulp.src(["./test/contexts/testrepos/**/*"]).pipe(
-		gulp.dest("./out/test/contexts/testrepos")
+		gulp.dest("./out/test/contexts/testrepos"),
 	);
 	gulp.src(["./test/helpers/testrepos/**/*"]).pipe(
-		gulp.dest("./out/test/helpers/testrepos")
+		gulp.dest("./out/test/helpers/testrepos"),
 	);
 	gulp.src(["./patches/vso-node-api/handlers/ntlm.js"]).pipe(
-		gulp.dest("./node_modules/vso-node-api/handlers")
+		gulp.dest("./node_modules/vso-node-api/handlers"),
 	);
 });
 
@@ -173,7 +173,7 @@ gulp.task("test-coverage", function () {
 							dir: "out/results/coverage",
 							reporters: ["cobertura", "html"],
 							reportOpts: { dir: "out/results/coverage" },
-						})
+						}),
 					);
 			})
 			.on("error", errorHandler)
@@ -189,7 +189,7 @@ gulp.task("upload-coverage-file", function () {
 		"cobertura",
 		path.join(__dirname, "out/results/coverage/cobertura-coverage.xml"),
 		path.join(__dirname, "out/results/coverage"),
-		""
+		"",
 	);
 });
 

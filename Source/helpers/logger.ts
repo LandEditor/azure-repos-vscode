@@ -21,7 +21,7 @@ export class Logger {
 				json: false,
 				filename: path.join(
 					Logger.logPath,
-					Constants.ExtensionName + "-extension.log"
+					Constants.ExtensionName + "-extension.log",
 				),
 				level: LoggingLevel[Logger.loggingLevel].toLowerCase(),
 				maxsize: 4000000,

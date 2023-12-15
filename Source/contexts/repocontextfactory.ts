@@ -16,7 +16,7 @@ export class RepositoryContextFactory {
 	//Returns an IRepositoryContext if the repository is either TFS or Team Services
 	public static async CreateRepositoryContext(
 		path: string,
-		settings: Settings
+		settings: Settings,
 	): Promise<IRepositoryContext> {
 		let repoContext: IRepositoryContext;
 		let initialized: boolean = false;
@@ -56,13 +56,13 @@ export class RepositoryContextFactory {
 	 */
 	public static UpdateRepositoryContext(
 		currentRepo: IRepositoryContext,
-		serverContext: TeamServerContext
+		serverContext: TeamServerContext,
 	): IRepositoryContext {
 		if (currentRepo && currentRepo instanceof TfvcContext) {
 			const context: TfvcContext = <TfvcContext>currentRepo;
 			context.TfvcRepository = TfCommandLineRunner.CreateRepository(
 				serverContext,
-				context.RepoFolder
+				context.RepoFolder,
 			);
 		}
 		return currentRepo;

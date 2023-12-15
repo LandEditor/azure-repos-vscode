@@ -30,7 +30,10 @@ export class FeedbackClient {
 
 			const choice: BaseQuickPickItem = await window.showQuickPick(
 				choices,
-				{ matchOnDescription: false, placeHolder: Strings.SendFeedback }
+				{
+					matchOnDescription: false,
+					placeHolder: Strings.SendFeedback,
+				},
 			);
 			if (choice) {
 				const value: string = await window.showInputBox({
@@ -41,7 +44,7 @@ export class FeedbackClient {
 				});
 				if (value === undefined) {
 					const disposable = window.setStatusBarMessage(
-						Strings.NoFeedbackSent
+						Strings.NoFeedbackSent,
 					);
 					setTimeout(() => disposable.dispose(), 1000 * 5);
 					return;
@@ -57,7 +60,7 @@ export class FeedbackClient {
 				});
 
 				const disposable: Disposable = window.setStatusBarMessage(
-					Strings.ThanksForFeedback
+					Strings.ThanksForFeedback,
 				);
 				setTimeout(() => disposable.dispose(), 1000 * 5);
 			}
@@ -65,7 +68,7 @@ export class FeedbackClient {
 			const message: string = Utils.GetMessageForStatusCode(
 				0,
 				err.message,
-				"Failed getting SendFeedback selection"
+				"Failed getting SendFeedback selection",
 			);
 			Logger.LogError(message);
 			Telemetry.SendException(err);

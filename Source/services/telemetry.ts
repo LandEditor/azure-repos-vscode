@@ -30,7 +30,7 @@ export class Telemetry {
 	//to the Telemetry service so we can send telemetry from just about anywhere at anytime.
 	public static Initialize(
 		settings: Settings,
-		context?: TeamServerContext
+		context?: TeamServerContext,
 	): void {
 		Telemetry._serverContext = context;
 		Telemetry._telemetryEnabled = settings.AppInsightsEnabled;
@@ -86,7 +86,7 @@ export class Telemetry {
 	private static ensureInitialized(): void {
 		if (Telemetry._appInsightsClient === undefined) {
 			throw new Error(
-				"Telemetry service was called before being initialized."
+				"Telemetry service was called before being initialized.",
 			);
 		}
 	}

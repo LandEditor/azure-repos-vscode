@@ -45,7 +45,7 @@ export class CredentialStore implements ICredentialStore {
 					this._prefix = this._defaultPrefix;
 				}
 				this._credentialStore = new WindowsCredentialStoreApi(
-					this._prefix
+					this._prefix,
 				);
 				break;
 			case "darwin":
@@ -66,7 +66,7 @@ export class CredentialStore implements ICredentialStore {
 				}
 				this._credentialStore = new LinuxFileApi(
 					this._folder,
-					this._filename
+					this._filename,
 				);
 				break;
 		}
@@ -79,7 +79,7 @@ export class CredentialStore implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: any
+		password: any,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -126,7 +126,7 @@ export class CredentialStore implements ICredentialStore {
 	// Used by tests to ensure certain credentials we create don't exist
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		return this._credentialStore.getCredentialByName(service, username);
 	}
@@ -134,7 +134,7 @@ export class CredentialStore implements ICredentialStore {
 	// Used by tests to remove certain credentials
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		return this._credentialStore.removeCredentialByName(service, username);
 	}

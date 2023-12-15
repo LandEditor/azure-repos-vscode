@@ -81,7 +81,7 @@ export class TfvcSCMProvider {
 			};
 		} catch (err) {
 			Logger.LogDebug(
-				"Failed to GetCheckinInfo. Details: " + err.message
+				"Failed to GetCheckinInfo. Details: " + err.message,
 			);
 			throw TfvcError.CreateUnknownError(err);
 		}
@@ -103,7 +103,7 @@ export class TfvcSCMProvider {
 			}
 		} catch (err) {
 			Logger.LogDebug(
-				"Failed to get all workitems from message: " + message
+				"Failed to get all workitems from message: " + message,
 			);
 		}
 		return ids;
@@ -144,21 +144,21 @@ export class TfvcSCMProvider {
 		TfvcSCMProvider.instance = this;
 		this._sourceControl = scm.createSourceControl(
 			TfvcSCMProvider.scmScheme,
-			"TFVC"
+			"TFVC",
 		);
 		this._disposables.push(this._sourceControl);
 
 		this.conflictsGroup = this._sourceControl.createResourceGroup(
 			this._model.ConflictsGroup.id,
-			this._model.ConflictsGroup.label
+			this._model.ConflictsGroup.label,
 		);
 		this.includedGroup = this._sourceControl.createResourceGroup(
 			this._model.IncludedGroup.id,
-			this._model.IncludedGroup.label
+			this._model.IncludedGroup.label,
 		);
 		this.excludedGroup = this._sourceControl.createResourceGroup(
 			this._model.ExcludedGroup.id,
-			this._model.ExcludedGroup.label
+			this._model.ExcludedGroup.label,
 		);
 		this.conflictsGroup.hideWhenEmpty = true;
 
@@ -214,19 +214,19 @@ export class TfvcSCMProvider {
 		const onWorkspaceChange = anyEvent(
 			fsWatcher.onDidChange,
 			fsWatcher.onDidCreate,
-			fsWatcher.onDidDelete
+			fsWatcher.onDidDelete,
 		);
 		const onTfvcChange = filterEvent(onWorkspaceChange, (uri) =>
-			/^\$tf\//.test(workspace.asRelativePath(uri))
+			/^\$tf\//.test(workspace.asRelativePath(uri)),
 		);
 		this._model = new Model(
 			repoContext.RepoFolder,
 			repoContext.TfvcRepository,
-			onWorkspaceChange
+			onWorkspaceChange,
 		);
 		// Hook up the model change event to trigger our own event
 		this._disposables.push(
-			this._model.onDidChange(this.onDidModelChange, this)
+			this._model.onDidChange(this.onDidModelChange, this),
 		);
 
 		let version: string = "unknown";
@@ -240,7 +240,7 @@ export class TfvcSCMProvider {
 				repoContext.TfvcRepository.TfvcLocation +
 				" (" +
 				version +
-				")"
+				")",
 		);
 
 		const commitHoverProvider: CommitHoverProvider =
@@ -248,7 +248,7 @@ export class TfvcSCMProvider {
 		const contentProvider: TfvcContentProvider = new TfvcContentProvider(
 			repoContext.TfvcRepository,
 			rootPath,
-			onTfvcChange
+			onTfvcChange,
 		);
 		//const checkoutStatusBar = new CheckoutStatusBar(model);
 		//const syncStatusBar = new SyncStatusBar(model);
@@ -258,7 +258,7 @@ export class TfvcSCMProvider {
 		this._tempDisposables.push(
 			commitHoverProvider,
 			contentProvider,
-			fsWatcher
+			fsWatcher,
 			//checkoutStatusBar,
 			//syncStatusBar,
 			//autoFetcher,
@@ -291,7 +291,7 @@ export class TfvcSCMProvider {
 		// TODO is this too simple? The Git provider does more
 		return this._model.Resources.reduce(
 			(r, g) => r + g.resources.length,
-			0
+			0,
 		);
 	}
 
@@ -359,7 +359,7 @@ export class TfvcSCMProvider {
 	public static async OpenDiff(resource: Resource): Promise<void> {
 		return await commands.executeCommand<void>(
 			TfvcCommandNames.Open,
-			resource
+			resource,
 		);
 	}
 }

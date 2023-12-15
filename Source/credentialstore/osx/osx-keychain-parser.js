@@ -63,8 +63,8 @@ _.extend(OsxSecurityParsingStream.prototype, {
 					new Error(
 						"Multiple passes attempting to parse line [" +
 							line +
-							"]. Possible bug in parser and infinite loop"
-					)
+							"]. Possible bug in parser and infinite loop",
+					),
 				);
 			}
 

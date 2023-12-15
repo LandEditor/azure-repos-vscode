@@ -18,13 +18,13 @@ export class CoreApiService {
 	constructor(remoteUrl: string) {
 		this._coreApi = new WebApi(
 			remoteUrl,
-			CredentialManager.GetCredentialHandler()
+			CredentialManager.GetCredentialHandler(),
 		).getCoreApi();
 	}
 
 	//Get the
 	public async GetProjectCollection(
-		collectionName: string
+		collectionName: string,
 	): Promise<TeamProjectCollection> {
 		return await this._coreApi.getProjectCollection(collectionName);
 	}

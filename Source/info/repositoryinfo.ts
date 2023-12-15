@@ -71,7 +71,7 @@ export class RepositoryInfo {
 			if (RepoUtils.IsTeamFoundationServicesRepo(repositoryUrl)) {
 				if (
 					RepoUtils.IsTeamFoundationServicesAzureRepo(
-						this._repositoryUrl
+						this._repositoryUrl,
 					)
 				) {
 					const splitPath = this._path.split("/");
@@ -79,7 +79,7 @@ export class RepositoryInfo {
 						this._account = splitPath[1];
 					} else {
 						throw new Error(
-							`Could not parse account from ${this._path}`
+							`Could not parse account from ${this._path}`,
 						);
 					}
 				} else {
@@ -94,7 +94,7 @@ export class RepositoryInfo {
 			}
 			if (typeof repositoryInfo === "object") {
 				Logger.LogDebug(
-					"Parsing values from repositoryInfo object as any"
+					"Parsing values from repositoryInfo object as any",
 				);
 				//The following properties are returned from the vsts/info api
 				//If you add additional properties to the server context, they need to be set here
@@ -115,7 +115,7 @@ export class RepositoryInfo {
 				}
 			} else {
 				Logger.LogDebug(
-					"Parsing values from repositoryInfo as string url"
+					"Parsing values from repositoryInfo as string url",
 				);
 			}
 		}

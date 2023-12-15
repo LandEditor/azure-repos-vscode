@@ -62,7 +62,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	 * $/tfsTest_01: D:\tmp\test
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -126,11 +126,11 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			for (let i: number = 0; i < mappings.length; i++) {
 				const isWithin: boolean = this.pathIsWithin(
 					this._localPath,
-					mappings[i].localPath
+					mappings[i].localPath,
 				);
 				if (isWithin) {
 					const project: string = this.getTeamProject(
-						mappings[i].serverPath
+						mappings[i].serverPath,
 					); //maintain case in serverPath
 					teamProject = project;
 					break;
@@ -186,7 +186,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	 * $/tfsTest_01: D:\tmp\test
 	 */
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		const workspace: IWorkspace = await this.ParseOutput(executionResult);
 		if (workspace && workspace.name) {

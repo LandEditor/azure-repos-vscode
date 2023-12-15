@@ -30,7 +30,7 @@ export class Checkin implements ITfvcCommand<string> {
 		serverContext: TeamServerContext,
 		files: string[],
 		comment?: string,
-		workItemIds?: number[]
+		workItemIds?: number[],
 	) {
 		CommandHelper.RequireStringArrayArgument(files, "files");
 		this._serverContext = serverContext;
@@ -42,7 +42,7 @@ export class Checkin implements ITfvcCommand<string> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"checkin",
-			this._serverContext
+			this._serverContext,
 		).AddAll(this._files);
 		if (this._comment) {
 			builder.AddSwitchWithValue("comment", this.getComment(), false);
@@ -51,7 +51,7 @@ export class Checkin implements ITfvcCommand<string> {
 			builder.AddSwitchWithValue(
 				"associate",
 				this.getAssociatedWorkItems(),
-				false
+				false,
 			);
 		}
 		return builder;
@@ -94,7 +94,7 @@ export class Checkin implements ITfvcCommand<string> {
 	 * No files checked in.
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		if (executionResult.exitCode === 100) {
 			CommandHelper.ProcessErrors(executionResult);
@@ -107,7 +107,7 @@ export class Checkin implements ITfvcCommand<string> {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"checkin",
 			this._serverContext,
-			true /* skipCollectionOption */
+			true /* skipCollectionOption */,
 		).AddAll(this._files);
 		if (this._comment) {
 			builder.AddSwitchWithValue("comment", this.getComment(), false);
@@ -123,7 +123,7 @@ export class Checkin implements ITfvcCommand<string> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		return await this.ParseOutput(executionResult);
 	}

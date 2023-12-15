@@ -49,7 +49,7 @@ export class Model implements Disposable {
 	public constructor(
 		repositoryRoot: string,
 		repository: TfvcRepository,
-		onWorkspaceChange: Event<Uri>
+		onWorkspaceChange: Event<Uri>,
 	) {
 		this._repositoryRoot = repositoryRoot;
 		this._repository = repository;
@@ -127,7 +127,7 @@ export class Model implements Disposable {
 					Promise.resolve();
 				}
 				await this.update();
-			}
+			},
 		);
 	}
 
@@ -152,7 +152,7 @@ export class Model implements Disposable {
 				if (_.contains(this._explicitlyExcluded, normalizedPath)) {
 					this._explicitlyExcluded = _.without(
 						this._explicitlyExcluded,
-						normalizedPath
+						normalizedPath,
 					);
 				}
 			});
@@ -183,7 +183,7 @@ export class Model implements Disposable {
 		const conflict: IConflict = foundConflicts.find(
 			(c) =>
 				c.type === ConflictType.NAME_AND_CONTENT ||
-				c.type === ConflictType.RENAME
+				c.type === ConflictType.RENAME,
 		);
 		if (conflict) {
 			if (conflict.type === ConflictType.RENAME) {
@@ -199,7 +199,7 @@ export class Model implements Disposable {
 
 		changes.forEach((raw) => {
 			const conflict: IConflict = foundConflicts.find((c) =>
-				this.conflictMatchesPendingChange(raw, c)
+				this.conflictMatchesPendingChange(raw, c),
 			);
 			const resource: Resource = new Resource(raw, conflict);
 
@@ -210,7 +210,7 @@ export class Model implements Disposable {
 				if (
 					_.contains(
 						this._explicitlyExcluded,
-						resource.resourceUri.fsPath.toLowerCase()
+						resource.resourceUri.fsPath.toLowerCase(),
 					)
 				) {
 					return excluded.push(resource);
@@ -241,7 +241,7 @@ export class Model implements Disposable {
 
 	private conflictMatchesPendingChange(
 		change: IPendingChange,
-		conflict: IConflict
+		conflict: IConflict,
 	): boolean {
 		let result: boolean = false;
 		if (change && change.localItem && conflict && conflict.localPath) {

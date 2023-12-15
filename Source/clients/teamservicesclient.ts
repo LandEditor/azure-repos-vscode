@@ -9,7 +9,7 @@ import VsoBaseInterfaces = require("vso-node-api/interfaces/common/VsoBaseInterf
 export class TeamServicesApi extends basem.ClientApiBase {
 	constructor(
 		baseUrl: string,
-		handlers: VsoBaseInterfaces.IRequestHandler[]
+		handlers: VsoBaseInterfaces.IRequestHandler[],
 	) {
 		super(baseUrl, handlers, "node-vsts-vscode-api");
 	}
@@ -32,7 +32,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					} else {
 						resolve(obj);
 					}
-				}
+				},
 			);
 		});
 		return promise;
@@ -56,7 +56,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					} else {
 						resolve(obj);
 					}
-				}
+				},
 			);
 		});
 		return promise;

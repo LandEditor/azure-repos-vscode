@@ -15,12 +15,12 @@ export interface ICredentialStore {
 	SetCredential(
 		service: string,
 		username: string,
-		password: any
+		password: any,
 	): Q.Promise<void>;
 	RemoveCredential(service: string): Q.Promise<void>;
 	getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential>;
 	removeCredentialByName(service: string, username: string): Q.Promise<void>;
 }

@@ -72,7 +72,7 @@ export class RepoUtils {
 
 	//Checks to ensure it's a Team Foundation Git repo, then ensures it's hosted on azure.com
 	public static IsTeamFoundationServicesAzureRepo(
-		respositoryUrl: string
+		respositoryUrl: string,
 	): boolean {
 		try {
 			// check for ssh based url that will not parse as a standard url
@@ -85,14 +85,14 @@ export class RepoUtils {
 			}
 		} catch (err) {
 			Logger.LogDebug(
-				"Could not parse repository url: " + respositoryUrl
+				"Could not parse repository url: " + respositoryUrl,
 			);
 		}
 		return false;
 	}
 
 	public static IsTeamFoundationServicesV3SshRepo(
-		respositoryUrl: string
+		respositoryUrl: string,
 	): boolean {
 		return RepoUtils.sshV3.test(respositoryUrl.toLowerCase());
 	}
@@ -125,7 +125,7 @@ export class RepoUtils {
 			);
 		}
 		Logger.LogDebug(
-			"Could not parse as v3 repository url: " + respositoryUrl
+			"Could not parse as v3 repository url: " + respositoryUrl,
 		);
 		return undefined;
 	}

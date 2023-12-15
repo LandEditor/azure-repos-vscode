@@ -29,7 +29,7 @@ export class TfvcVersion {
 
 	public static Compare(
 		version1: TfvcVersion,
-		version2: TfvcVersion
+		version2: TfvcVersion,
 	): number {
 		if (version1._major !== version2._major) {
 			return version1._major - version2._major;
@@ -47,7 +47,7 @@ export class TfvcVersion {
 		major: number,
 		minor: number,
 		revision: number,
-		build: string
+		build: string,
 	) {
 		this._major = major;
 		this._minor = minor;

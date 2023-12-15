@@ -26,7 +26,7 @@ export class Rename implements ITfvcCommand<string> {
 	public constructor(
 		serverContext: TeamServerContext,
 		sourcePath: string,
-		destinationPath: string
+		destinationPath: string,
 	) {
 		CommandHelper.RequireStringArgument(sourcePath, "sourcePath");
 		CommandHelper.RequireStringArgument(destinationPath, "destinationPath");
@@ -65,7 +65,7 @@ export class Rename implements ITfvcCommand<string> {
         //0
     */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		//Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -73,7 +73,7 @@ export class Rename implements ITfvcCommand<string> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			false,
-			true /*filterEmptyLines*/
+			true /*filterEmptyLines*/,
 		);
 
 		let path: string = "";
@@ -93,7 +93,7 @@ export class Rename implements ITfvcCommand<string> {
 		return new ArgumentBuilder(
 			"rename",
 			this._serverContext,
-			true /* skipCollectionOption */
+			true /* skipCollectionOption */,
 		)
 			.Add(this._sourcePath)
 			.Add(this._destinationPath);
@@ -104,7 +104,7 @@ export class Rename implements ITfvcCommand<string> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		return await this.ParseOutput(executionResult);
 	}

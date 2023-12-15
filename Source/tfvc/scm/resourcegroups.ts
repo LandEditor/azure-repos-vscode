@@ -21,7 +21,7 @@ export abstract class ResourceGroup {
 	public constructor(
 		private _id: string,
 		private _label: string,
-		private _resources: Resource[]
+		private _resources: Resource[],
 	) {}
 }
 
