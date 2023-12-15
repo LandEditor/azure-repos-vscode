@@ -210,7 +210,7 @@ notice.
     [\#304](https://github.com/microsoft/azure-repos-vscode/issues/304)
 -   Visual Studio authentication popup
     [\#303](https://github.com/microsoft/azure-repos-vscode/issues/303)
--             Team 00 关闭 错误command 'team.Signin' not found [\#301](https://github.com/microsoft/azure-repos-vscode/issues/301)
+-               Team 00 关闭 错误command 'team.Signin' not found [\#301](https://github.com/microsoft/azure-repos-vscode/issues/301)
 -   Impossible to switch to TFS
     [\#290](https://github.com/microsoft/azure-repos-vscode/issues/290)
 -   \(team\) socket hang up / \(team\) undefined after switch to Azure VM
