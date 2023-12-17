@@ -10,7 +10,7 @@ export class TfvcOutput {
 	private static _outputChannel: OutputChannel;
 
 	public static async CreateChannel(
-		disposables: Disposable[],
+		disposables: Disposable[]
 	): Promise<void> {
 		if (TfvcOutput._outputChannel !== undefined) {
 			return;

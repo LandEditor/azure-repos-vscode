@@ -18,7 +18,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	public constructor(
 		command: string,
 		serverContext?: TeamServerContext,
-		skipCollectionOption?: boolean,
+		skipCollectionOption?: boolean
 	) {
 		if (!command) {
 			throw TfvcError.CreateArgumentMissingError("command");
@@ -36,7 +36,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 				this.AddSwitchWithValue(
 					"collection",
 					serverContext.RepoInfo.CollectionUrl,
-					false,
+					false
 				);
 			}
 			if (serverContext.CredentialInfo) {
@@ -48,7 +48,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 						serverContext.CredentialInfo.Username +
 						"," +
 						serverContext.CredentialInfo.Password,
-					true,
+					true
 				);
 			}
 		}
@@ -81,7 +81,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	public AddSwitchWithValue(
 		switchName: string,
 		switchValue: string,
-		isSecret: boolean,
+		isSecret: boolean
 	): ArgumentBuilder {
 		let arg: string;
 		if (!switchValue) {

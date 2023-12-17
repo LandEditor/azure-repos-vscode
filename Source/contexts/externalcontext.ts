@@ -35,10 +35,10 @@ export class ExternalContext implements IRepositoryContext {
 		}
 		this._remoteUrl = settings.RemoteUrl;
 		this._isTeamServicesUrl = RepoUtils.IsTeamFoundationServicesRepo(
-			this._remoteUrl,
+			this._remoteUrl
 		);
 		this._isTeamFoundationServer = RepoUtils.IsTeamFoundationServerRepo(
-			this._remoteUrl,
+			this._remoteUrl
 		);
 		this._teamProjectName = settings.TeamProject;
 		Logger.LogDebug(`Found an External Context at ${this._folder}`);

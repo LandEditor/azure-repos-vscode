@@ -33,7 +33,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 
 	public GetArguments(): IArgumentProvider {
 		return new ArgumentBuilder("info", this._serverContext).AddAll(
-			this._itemPaths,
+			this._itemPaths
 		);
 	}
 
@@ -61,7 +61,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 	 * Size:          1385
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<IItemInfo[]> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -74,7 +74,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			true,
-			true,
+			true
 		);
 		let curMode: string = ""; // "" is local mode, "server" is server mode
 		let curItem: IItemInfo;
@@ -102,7 +102,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 				const colonPos: number = line.indexOf(":");
 				if (colonPos > 0) {
 					const propertyName: string = this.getPropertyName(
-						curMode + line.slice(0, colonPos).trim().toLowerCase(),
+						curMode + line.slice(0, colonPos).trim().toLowerCase()
 					);
 					if (propertyName) {
 						const propertyValue =
@@ -143,7 +143,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<IItemInfo[]> {
 		return await this.ParseOutput(executionResult);
 	}

@@ -30,7 +30,7 @@ export class Add implements ITfvcCommand<string[]> {
 
 	public GetArguments(): IArgumentProvider {
 		return new ArgumentBuilder("add", this._serverContext).AddAll(
-			this._itemPaths,
+			this._itemPaths
 		);
 	}
 
@@ -45,7 +45,7 @@ export class Add implements ITfvcCommand<string[]> {
 	 * file2.java
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string[]> {
 		// Any exit code other than 0 or 1 means that something went wrong, so simply throw the error
 		if (executionResult.exitCode !== 0 && executionResult.exitCode !== 1) {
@@ -55,12 +55,12 @@ export class Add implements ITfvcCommand<string[]> {
 		let lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			false,
-			true /*filterEmptyLines*/,
+			true /*filterEmptyLines*/
 		);
 
 		//Remove any lines indicating that there were no files to add (e.g., calling add on files that don't exist)
 		lines = lines.filter(
-			(e) => !e.startsWith("No arguments matched any files to add."),
+			(e) => !e.startsWith("No arguments matched any files to add.")
 		); //CLC
 		//Ex. /usr/alias/repos/Tfvc.L2VSCodeExtension.RC/file-does-not-exist.md: No file matches.
 		lines = lines.filter((e) => !e.endsWith(" No file matches.")); //tf.exe
@@ -83,7 +83,7 @@ export class Add implements ITfvcCommand<string[]> {
 		return new ArgumentBuilder(
 			"add",
 			this._serverContext,
-			true /* skipCollectionOption */,
+			true /* skipCollectionOption */
 		).AddAll(this._itemPaths);
 	}
 
@@ -92,7 +92,7 @@ export class Add implements ITfvcCommand<string[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string[]> {
 		return await this.ParseOutput(executionResult);
 	}

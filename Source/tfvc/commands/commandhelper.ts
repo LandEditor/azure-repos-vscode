@@ -24,7 +24,7 @@ export class CommandHelper {
 
 	public static RequireStringArgument(
 		argument: string,
-		argumentName: string,
+		argumentName: string
 	) {
 		if (!argument || argument.trim().length === 0) {
 			throw TfvcError.CreateArgumentMissingError(argumentName);
@@ -33,7 +33,7 @@ export class CommandHelper {
 
 	public static RequireStringArrayArgument(
 		argument: string[],
-		argumentName: string,
+		argumentName: string
 	) {
 		if (!argument || argument.length === 0) {
 			throw TfvcError.CreateArgumentMissingError(argumentName);
@@ -42,7 +42,7 @@ export class CommandHelper {
 
 	public static HasError(
 		result: IExecutionResult,
-		errorPattern: string,
+		errorPattern: string
 	): boolean {
 		if (result && result.stderr && errorPattern) {
 			return new RegExp(errorPattern, "i").test(result.stderr);
@@ -61,10 +61,10 @@ export class CommandHelper {
 			} else if (
 				/workspace could not be determined/i.test(result.stderr) ||
 				/The workspace could not be determined from any argument paths or the current working directory/i.test(
-					result.stderr,
+					result.stderr
 				) || // CLC error
 				/Unable to determine the source control server/i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				// EXE error
@@ -74,28 +74,28 @@ export class CommandHelper {
 				tfvcErrorCode = TfvcErrorCodes.RepositoryNotFound;
 			} else if (
 				/project collection URL to use could not be determined/i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.NotATfvcRepository;
 				message = Strings.NotATfvcRepository;
 			} else if (
 				/Access denied connecting.*authenticating as OAuth/i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.AuthenticationFailed;
 				message = Strings.TokenNotAllScopes;
 			} else if (
 				/'java' is not recognized as an internal or external command/i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.NotFound;
 				message = Strings.TfInitializeFailureError;
 			} else if (
 				/Error occurred during initialization of VM/i.test(
-					result.stdout,
+					result.stdout
 				)
 			) {
 				//Example: "Error occurred during initialization of VM\nCould not reserve enough space for 2097152KB object heap\n"
@@ -110,7 +110,7 @@ export class CommandHelper {
 				tfvcErrorCode = TfvcErrorCodes.FileNotInMappings;
 			} else if (
 				/could not be found in your workspace, or you do not have permission to access it./i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.FileNotInWorkspace;
@@ -128,7 +128,7 @@ export class CommandHelper {
 				];
 			} else if (
 				/TF400017: The local properties table for the local workspace/i.test(
-					result.stderr,
+					result.stderr
 				)
 			) {
 				//For now, we're assuming this is an indication of a workspace the CLC doesn't know about (but exists locally)
@@ -189,7 +189,7 @@ export class CommandHelper {
 	public static SplitIntoLines(
 		stdout: string,
 		skipWarnings?: boolean,
-		filterEmptyLines?: boolean,
+		filterEmptyLines?: boolean
 	): string[] {
 		if (!stdout) {
 			return [];
@@ -229,7 +229,7 @@ export class CommandHelper {
 					} else {
 						resolve(result);
 					}
-				},
+				}
 			);
 		});
 	}
@@ -272,7 +272,7 @@ export class CommandHelper {
 	public static GetFilePath(
 		filePath: string,
 		filename: string,
-		pathRoot?: string,
+		pathRoot?: string
 	): string {
 		let folderPath: string = filePath;
 		//Remove any ending ':'

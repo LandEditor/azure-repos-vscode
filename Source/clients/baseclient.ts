@@ -26,7 +26,7 @@ export abstract class BaseClient {
 		err: Error,
 		offlineText: string,
 		polling: boolean,
-		infoMessage?: string,
+		infoMessage?: string
 	): void {
 		const offline: boolean = Utils.IsOffline(err);
 		const msg: string = Utils.GetMessageForStatusCode(err, err.message);

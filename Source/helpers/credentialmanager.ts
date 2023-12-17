@@ -22,7 +22,7 @@ export class CredentialManager {
 		this._credentialStore = new CredentialStore(
 			"team:",
 			".team",
-			"team-secrets.json",
+			"team-secrets.json"
 		);
 	}
 
@@ -31,7 +31,7 @@ export class CredentialManager {
 	}
 
 	public GetCredentials(
-		context: TeamServerContext,
+		context: TeamServerContext
 	): Q.Promise<CredentialInfo> {
 		const deferred: Q.Deferred<CredentialInfo> = Q.defer<CredentialInfo>();
 
@@ -68,7 +68,7 @@ export class CredentialManager {
 	public StoreCredentials(
 		context: TeamServerContext,
 		username: string,
-		password: string,
+		password: string
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -76,7 +76,7 @@ export class CredentialManager {
 			.SetCredential(
 				CredentialManager.getKeyFromContext(context),
 				username,
-				password,
+				password
 			)
 			.then(() => {
 				deferred.resolve(undefined);
@@ -88,7 +88,7 @@ export class CredentialManager {
 	}
 
 	private getCredentials(
-		context: TeamServerContext,
+		context: TeamServerContext
 	): Q.Promise<CredentialInfo> {
 		const deferred: Q.Deferred<CredentialInfo> = Q.defer<CredentialInfo>();
 
@@ -111,8 +111,8 @@ export class CredentialManager {
 								user,
 								cred.Password,
 								domain,
-								/*workstation*/ undefined,
-							),
+								/*workstation*/ undefined
+							)
 						);
 					}
 				} else {
@@ -128,7 +128,7 @@ export class CredentialManager {
 	private static getKeyFromContext(context: TeamServerContext): string {
 		if (
 			RepoUtils.IsTeamFoundationServicesAzureRepo(
-				context.RepoInfo.AccountUrl,
+				context.RepoInfo.AccountUrl
 			)
 		) {
 			return context.RepoInfo.Host + "/" + context.RepoInfo.Account;

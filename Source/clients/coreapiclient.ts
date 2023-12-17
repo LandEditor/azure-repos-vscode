@@ -17,7 +17,7 @@ export class CoreApiClient {
 
 	public async GetTeamProject(
 		remoteUrl: string,
-		teamProjectName: string,
+		teamProjectName: string
 	): Promise<TeamProject> {
 		const svc: CoreApiService = new CoreApiService(remoteUrl);
 		const teamProject: TeamProject =
@@ -27,7 +27,7 @@ export class CoreApiClient {
 
 	public async GetProjectCollection(
 		remoteUrl: string,
-		collectionName: string,
+		collectionName: string
 	): Promise<TeamProjectCollection> {
 		const svc: CoreApiService = new CoreApiService(remoteUrl);
 		const collection: TeamProjectCollection =

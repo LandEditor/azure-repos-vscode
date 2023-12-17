@@ -31,7 +31,7 @@ export class GetVersion implements ITfvcCommand<string> {
 	}
 
 	public async ParseOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string> {
 		//Ex. Team Explorer Everywhere Command Line Client (Version 14.0.3.201603291047)
 		return await this.getVersion(executionResult, /version\s+([\.\d]+)/i);
@@ -46,7 +46,7 @@ export class GetVersion implements ITfvcCommand<string> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string> {
 		//Ex. Microsoft (R) TF - Team Foundation Version Control Tool, Version 14.102.25619.0
 		return await this.getVersion(executionResult, /version\s+([\.\d]+)/i);
@@ -54,7 +54,7 @@ export class GetVersion implements ITfvcCommand<string> {
 
 	private async getVersion(
 		executionResult: IExecutionResult,
-		expression: RegExp,
+		expression: RegExp
 	): Promise<string> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);

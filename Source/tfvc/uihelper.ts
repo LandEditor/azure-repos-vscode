@@ -19,7 +19,7 @@ import * as path from "path";
 
 export class UIHelper {
 	public static async ChoosePendingChange(
-		changes: IPendingChange[],
+		changes: IPendingChange[]
 	): Promise<IPendingChange> {
 		if (changes && changes.length > 0) {
 			// First, create an array of quick pick items from the changes
@@ -63,7 +63,7 @@ export class UIHelper {
 	public static async ShowSyncResults(
 		syncResults: ISyncResults,
 		showPopup: boolean,
-		onlyShowErrors,
+		onlyShowErrors
 	): Promise<void> {
 		const items: QuickPickItem[] = [];
 		if (syncResults.itemResults.length === 0) {
@@ -80,10 +80,10 @@ export class UIHelper {
 					continue;
 				}
 				const type: string = this.GetDisplayTextForSyncType(
-					item.syncType,
+					item.syncType
 				);
 				TfvcOutput.AppendLine(
-					type + ": " + item.itemPath + " : " + item.message,
+					type + ": " + item.itemPath + " : " + item.message
 				);
 				items.push({
 					label: type,
@@ -132,7 +132,7 @@ export class UIHelper {
 	}
 
 	public static GetDisplayTextForAutoResolveType(
-		type: AutoResolveType,
+		type: AutoResolveType
 	): string {
 		switch (type) {
 			case AutoResolveType.AutoMerge:
@@ -171,13 +171,13 @@ export class UIHelper {
 
 	public static async PromptForConfirmation(
 		message: string,
-		okButtonText?: string,
+		okButtonText?: string
 	): Promise<boolean> {
 		okButtonText = okButtonText ? okButtonText : "OK";
 		//TODO: use Modal api once vscode.d.ts exposes it (currently proposed)
 		const pick: string = await window.showWarningMessage(
 			message,
-			/*{ modal: true },*/ okButtonText,
+			/*{ modal: true },*/ okButtonText
 		);
 		return pick === okButtonText;
 	}

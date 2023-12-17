@@ -29,7 +29,7 @@ export class GitVcService {
 	constructor(context: TeamServerContext) {
 		this._gitApi = new WebApi(
 			context.RepoInfo.CollectionUrl,
-			CredentialManager.GetCredentialHandler(),
+			CredentialManager.GetCredentialHandler()
 		).getGitApi();
 	}
 
@@ -39,7 +39,7 @@ export class GitVcService {
 		repositoryId: string,
 		creatorId?: string,
 		reviewerId?: string,
-		status?: PullRequestStatus,
+		status?: PullRequestStatus
 	): Promise<GitPullRequest[]> {
 		const criteria: GitPullRequestSearchCriteria = {
 			creatorId: creatorId,
@@ -63,7 +63,7 @@ export class GitVcService {
 	public static GetFileBlameUrl(
 		remoteUrl: string,
 		currentFile: string,
-		currentBranch: string,
+		currentBranch: string
 	): string {
 		const file: string = encodeURIComponent(currentFile);
 		const branch: string = encodeURIComponent(currentBranch);
@@ -71,7 +71,7 @@ export class GitVcService {
 			remoteUrl,
 			`path=${file}`,
 			`version=GB${branch}`,
-			`annotate=true`,
+			`annotate=true`
 		);
 	}
 
@@ -80,7 +80,7 @@ export class GitVcService {
 	public static GetFileHistoryUrl(
 		remoteUrl: string,
 		currentFile: string,
-		currentBranch: string,
+		currentBranch: string
 	): string {
 		const file: string = encodeURIComponent(currentFile);
 		const branch: string = encodeURIComponent(currentBranch);
@@ -88,7 +88,7 @@ export class GitVcService {
 			remoteUrl,
 			`path=${file}`,
 			`version=GB${branch}`,
-			`_a=history`,
+			`_a=history`
 		);
 	}
 
@@ -96,14 +96,14 @@ export class GitVcService {
 	//https://account.visualstudio.com/project/_git/VSCode.Extension/history?itemVersion=GBmaster&_a=history
 	public static GetRepositoryHistoryUrl(
 		remoteUrl: string,
-		currentBranch: string,
+		currentBranch: string
 	): string {
 		const branch: string = encodeURIComponent(currentBranch);
 		const repoHistoryUrl: string = UrlBuilder.Join(remoteUrl, "history");
 		return UrlBuilder.AddQueryParams(
 			repoHistoryUrl,
 			`itemVersion=GB${branch}`,
-			`_a=history`,
+			`_a=history`
 		);
 	}
 
@@ -111,13 +111,13 @@ export class GitVcService {
 	//https://account.visualstudio.com/DefaultCollection/project/_git/VSCode.Health/pullrequests#_a=createnew&sourceRef=master
 	public static GetCreatePullRequestUrl(
 		remoteUrl: string,
-		currentBranch: string,
+		currentBranch: string
 	): string {
 		const branch: string = encodeURIComponent(currentBranch);
 		return UrlBuilder.AddHashes(
 			GitVcService.GetPullRequestsUrl(remoteUrl),
 			`_a=createnew`,
-			`sourceRef=${branch}`,
+			`sourceRef=${branch}`
 		);
 	}
 
@@ -125,16 +125,16 @@ export class GitVcService {
 	//https://account.visualstudio.com/DefaultCollection/VSOnline/project/_git/Java.VSCode/pullrequest/79184?view=discussion
 	public static GetPullRequestDiscussionUrl(
 		repositoryUrl: string,
-		requestId: string,
+		requestId: string
 	): string {
 		let discussionUrl: string = UrlBuilder.Join(
 			repositoryUrl,
 			"pullrequest",
-			requestId,
+			requestId
 		);
 		discussionUrl = UrlBuilder.AddQueryParams(
 			discussionUrl,
-			"view=discussion",
+			"view=discussion"
 		);
 		return discussionUrl;
 	}
@@ -148,7 +148,7 @@ export class GitVcService {
 	//Returns the 'score' of the pull request so the client knows if the PR failed,
 	//didn't receive any reponses, succeeded or is waiting for the author.
 	public static GetPullRequestScore(
-		pullRequest: GitPullRequest,
+		pullRequest: GitPullRequest
 	): PullRequestScore {
 		const mergeStatus: PullRequestAsyncStatus = pullRequest.mergeStatus;
 		if (

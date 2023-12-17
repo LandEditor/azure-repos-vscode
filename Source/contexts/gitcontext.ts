@@ -68,14 +68,14 @@ export class GitContext implements IRepositoryContext {
 				//Check if any heuristics for TFS/VSTS URLs match
 				if (
 					RepoUtils.IsTeamFoundationGitRepo(
-						this._gitOriginalRemoteUrl,
+						this._gitOriginalRemoteUrl
 					)
 				) {
 					const purl = url.parse(this._gitOriginalRemoteUrl);
 					if (purl) {
 						if (
 							RepoUtils.IsTeamFoundationServicesRepo(
-								this._gitOriginalRemoteUrl,
+								this._gitOriginalRemoteUrl
 							)
 						) {
 							this._isTeamServicesUrl = true;
@@ -92,7 +92,7 @@ export class GitContext implements IRepositoryContext {
 										purl.pathname;
 								} else if (
 									RepoUtils.IsTeamFoundationServicesV3SshRepo(
-										purl.href,
+										purl.href
 									)
 								) {
 									this._gitRemoteUrl =
@@ -109,7 +109,7 @@ export class GitContext implements IRepositoryContext {
 										purl.auth + ".visualstudio.com";
 									const path = purl.pathname.replace(
 										"_ssh",
-										"_git",
+										"_git"
 									);
 									this._gitRemoteUrl =
 										scheme + hostname + path;
@@ -119,7 +119,7 @@ export class GitContext implements IRepositoryContext {
 							}
 						} else if (
 							RepoUtils.IsTeamFoundationServerRepo(
-								this._gitOriginalRemoteUrl,
+								this._gitOriginalRemoteUrl
 							)
 						) {
 							this._isTeamFoundationServer = true;

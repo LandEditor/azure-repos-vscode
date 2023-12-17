@@ -16,14 +16,14 @@ export class CredentialInfo {
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string,
+		workstation?: string
 	);
 
 	constructor(
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string,
+		workstation?: string
 	) {
 		if (username !== undefined && password !== undefined) {
 			// NTLM (we don't support Basic auth)
@@ -31,7 +31,7 @@ export class CredentialInfo {
 				username,
 				password,
 				domain,
-				workstation,
+				workstation
 			);
 		} else {
 			// Personal Access Token

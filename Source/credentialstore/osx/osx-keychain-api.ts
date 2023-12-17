@@ -61,11 +61,11 @@ export class OsxKeychainApi implements ICredentialStore {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
-									cred,
+									cred
 								);
 								deferred.resolve(credential);
 							}
-						},
+						}
 					);
 				} else {
 					deferred.resolve(undefined);
@@ -80,7 +80,7 @@ export class OsxKeychainApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: string,
+		password: string
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -96,7 +96,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				} else {
 					deferred.resolve(undefined);
 				}
-			},
+			}
 		);
 		return deferred.promise;
 	}
@@ -116,7 +116,7 @@ export class OsxKeychainApi implements ICredentialStore {
 
 	public getCredentialByName(
 		service: string,
-		username: string,
+		username: string
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 		let credential: Credential;
@@ -153,11 +153,11 @@ export class OsxKeychainApi implements ICredentialStore {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
-									cred,
+									cred
 								);
 								deferred.resolve(credential);
 							}
-						},
+						}
 					);
 				} else {
 					deferred.resolve(undefined);
@@ -171,7 +171,7 @@ export class OsxKeychainApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string,
+		username: string
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -200,7 +200,7 @@ export class OsxKeychainApi implements ICredentialStore {
 					} else {
 						deferred.resolve(undefined);
 					}
-				},
+				}
 			);
 		}
 		return deferred.promise;
@@ -216,10 +216,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				const promises: Q.Promise<void>[] = [];
 				creds.forEach((cred) => {
 					promises.push(
-						this.removeCredentialByName(
-							cred.Service,
-							cred.Username,
-						),
+						this.removeCredentialByName(cred.Service, cred.Username)
 					);
 				});
 				Q.all(promises).then(() => {
@@ -244,14 +241,14 @@ export class OsxKeychainApi implements ICredentialStore {
 			if (cred.svce !== undefined) {
 				if (cred.svce.indexOf(this._prefix) === 0) {
 					const svc: string = cred.svce.substring(
-						this._prefix.length,
+						this._prefix.length
 					);
 					const username: string = cred.acct;
 					//password is undefined because we don't have it yet
 					const credential: Credential = new Credential(
 						svc,
 						username,
-						undefined,
+						undefined
 					);
 
 					// Only add the credential if we want them all or it's a match on service

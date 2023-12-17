@@ -25,7 +25,7 @@ export class HttpClient {
 	constructor(
 		userAgent: string,
 		handlers?: ifm.IRequestHandler[],
-		socketTimeout?: number,
+		socketTimeout?: number
 	) {
 		this.userAgent = userAgent;
 		this.handlers = handlers;
@@ -43,11 +43,7 @@ export class HttpClient {
 		requestUrl: string,
 		objs: any,
 		headers: ifm.IHeaders,
-		onResult: (
-			err: any,
-			res: http.ClientResponse,
-			contents: string,
-		) => void,
+		onResult: (err: any, res: http.ClientResponse, contents: string) => void
 	): void {
 		var options = this._getOptions(verb, requestUrl, headers);
 		this.request(options.protocol, options.options, objs, onResult);
@@ -121,17 +117,13 @@ export class HttpClient {
 		protocol: any,
 		options: any,
 		objs: any,
-		onResult: (
-			err: any,
-			res: http.ClientResponse,
-			contents: string,
-		) => void,
+		onResult: (err: any, res: http.ClientResponse, contents: string) => void
 	): void {
 		// Set up a callback to pass off 401s to an authentication handler that can deal with it
 		var callback = (
 			err: any,
 			res: http.ClientResponse,
-			contents: string,
+			contents: string
 		) => {
 			var authHandler;
 			if (this.handlers) {
@@ -150,7 +142,7 @@ export class HttpClient {
 					protocol,
 					options,
 					objs,
-					onResult,
+					onResult
 				);
 			} else {
 				// No auth handler found, call onResult normally
@@ -165,11 +157,7 @@ export class HttpClient {
 		protocol: any,
 		options: any,
 		objs: any,
-		onResult: (
-			err: any,
-			res: http.ClientResponse,
-			contents: string,
-		) => void,
+		onResult: (err: any, res: http.ClientResponse, contents: string) => void
 	): void {
 		var reqData;
 		var socket;
@@ -182,7 +170,7 @@ export class HttpClient {
 		var handleResult = (
 			err: any,
 			res: http.ClientResponse,
-			contents: string,
+			contents: string
 		) => {
 			if (!callbackCalled) {
 				callbackCalled = true;
@@ -236,7 +224,7 @@ export class HttpClient {
 			handleResult(
 				new Error("Request timeout: " + options.path),
 				null,
-				null,
+				null
 			);
 		});
 

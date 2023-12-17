@@ -68,7 +68,7 @@ export class Utils {
 	public static GetMessageForStatusCode(
 		reason: any,
 		message?: string,
-		prefix?: string,
+		prefix?: string
 	): string {
 		let msg: string = undefined;
 		if (prefix === undefined) {

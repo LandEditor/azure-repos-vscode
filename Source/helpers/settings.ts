@@ -45,11 +45,11 @@ export class PinnedQuerySettings extends BaseSettings {
 	private getPinnedQuery(account: string): IPinnedQuery {
 		const pinnedQueries = this.readSetting<IPinnedQuery[]>(
 			SettingNames.PinnedQueries,
-			undefined,
+			undefined
 		);
 		if (pinnedQueries !== undefined) {
 			Logger.LogDebug(
-				"Found pinned queries in user configuration settings.",
+				"Found pinned queries in user configuration settings."
 			);
 			let global: IPinnedQuery = undefined;
 			for (let index: number = 0; index < pinnedQueries.length; index++) {
@@ -65,13 +65,13 @@ export class PinnedQuerySettings extends BaseSettings {
 			}
 			if (global !== undefined) {
 				Logger.LogDebug(
-					"No account-specific pinned query found, using global pinned query.",
+					"No account-specific pinned query found, using global pinned query."
 				);
 				return global;
 			}
 		}
 		Logger.LogDebug(
-			"No account-specific pinned query or global pinned query found. Using default.",
+			"No account-specific pinned query or global pinned query found. Using default."
 		);
 		return undefined;
 	}
@@ -119,43 +119,43 @@ export class Settings extends BaseSettings implements ISettings {
 		this._pollingInterval = this.readSetting<number>(pollingInterval, 10);
 		Logger.LogDebug(
 			"Polling interval value (minutes): " +
-				this._pollingInterval.toString(),
+				this._pollingInterval.toString()
 		);
 		// Ensure a minimum value when an invalid value is set
 		if (this._pollingInterval < 10) {
 			Logger.LogDebug(
-				"Polling interval must be greater than 10 minutes.",
+				"Polling interval must be greater than 10 minutes."
 			);
 			this._pollingInterval = 10;
 		}
 
 		this._appInsightsEnabled = this.readSetting<boolean>(
 			SettingNames.AppInsightsEnabled,
-			true,
+			true
 		);
 		this._appInsightsKey = this.readSetting<string>(
 			SettingNames.AppInsightsKey,
-			undefined,
+			undefined
 		);
 		this._remoteUrl = this.readSetting<string>(
 			SettingNames.RemoteUrl,
-			undefined,
+			undefined
 		);
 		this._teamProject = this.readSetting<string>(
 			SettingNames.TeamProject,
-			undefined,
+			undefined
 		);
 		this._buildDefinitionId = this.readSetting<number>(
 			SettingNames.BuildDefinitionId,
-			0,
+			0
 		);
 		this._showWelcomeMessage = this.readSetting<boolean>(
 			SettingNames.ShowWelcomeMessage,
-			true,
+			true
 		);
 		this._showFarewellMessage = this.readSetting<boolean>(
 			SettingNames.ShowFarewellMessage,
-			true,
+			true
 		);
 	}
 
@@ -194,7 +194,7 @@ export class Settings extends BaseSettings implements ISettings {
 		this.writeSetting(
 			SettingNames.ShowWelcomeMessage,
 			value,
-			true /*global*/,
+			true /*global*/
 		);
 	}
 
@@ -205,7 +205,7 @@ export class Settings extends BaseSettings implements ISettings {
 		this.writeSetting(
 			SettingNames.ShowFarewellMessage,
 			value,
-			true /*global*/,
+			true /*global*/
 		);
 	}
 }

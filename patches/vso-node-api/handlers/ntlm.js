@@ -48,7 +48,7 @@ var NtlmCredentialHandler = (function () {
 		protocol,
 		options,
 		objs,
-		finalCallback,
+		finalCallback
 	) {
 		// Set up the headers for NTLM authentication
 		var ntlmOptions = _.extend(options, {
@@ -85,10 +85,10 @@ var NtlmCredentialHandler = (function () {
 						objs,
 						keepaliveAgent,
 						res,
-						finalCallback,
+						finalCallback
 					);
 				});
-			},
+			}
 		);
 	};
 	// The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
@@ -98,7 +98,7 @@ var NtlmCredentialHandler = (function () {
 		options,
 		objs,
 		keepaliveAgent,
-		callback,
+		callback
 	) {
 		var type1msg = ntlm.createType1Message(options);
 		var type1options = {
@@ -122,13 +122,13 @@ var NtlmCredentialHandler = (function () {
 		objs,
 		keepaliveAgent,
 		res,
-		callback,
+		callback
 	) {
 		if (!res.headers["www-authenticate"]) {
 			return callback(
 				new Error(
-					"www-authenticate not found on response of second request",
-				),
+					"www-authenticate not found on response of second request"
+				)
 			);
 		}
 		// parse type2 message from server:

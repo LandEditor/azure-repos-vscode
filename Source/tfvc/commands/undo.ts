@@ -36,7 +36,7 @@ export class Undo implements ITfvcCommand<string[]> {
 				.AddSwitch("recursive");
 		}
 		return new ArgumentBuilder("undo", this._serverContext).AddAll(
-			this._itemPaths,
+			this._itemPaths
 		);
 	}
 
@@ -50,12 +50,12 @@ export class Undo implements ITfvcCommand<string[]> {
 	 * Undoing add: file2.java
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string[]> {
 		let lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			false,
-			true /*filterEmptyLines*/,
+			true /*filterEmptyLines*/
 		);
 
 		//If we didn't succeed without any issues, we have a bit of work to do.
@@ -100,7 +100,7 @@ export class Undo implements ITfvcCommand<string[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<string[]> {
 		return await this.ParseOutput(executionResult);
 	}

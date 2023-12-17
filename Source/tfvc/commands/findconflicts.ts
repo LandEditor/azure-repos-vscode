@@ -35,7 +35,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"resolve",
-			this._serverContext,
+			this._serverContext
 		)
 			.Add(this._itemPath)
 			.AddSwitch("recursive")
@@ -54,7 +54,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 	 * tfsTest_01/TestAdd.txt: The item content has changed
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<IConflict[]> {
 		// Any exit code other than 0 or 1 means that something went wrong, so simply throw the error
 		if (executionResult.exitCode !== 0 && executionResult.exitCode !== 1) {
@@ -75,7 +75,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			outputToProcess,
 			false,
-			true,
+			true
 		);
 		for (let i: number = 0; i < lines.length; i++) {
 			const line: string = lines[i];
@@ -106,7 +106,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 				} else if (
 					/The item has already been deleted/i.test(line) ||
 					/The item has been deleted in the source branch/i.test(
-						line,
+						line
 					) ||
 					/The item has been deleted from the server/i.test(line)
 				) {
@@ -131,7 +131,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"resolve",
 			this._serverContext,
-			true /* skipCollectionOption */,
+			true /* skipCollectionOption */
 		)
 			.Add(this._itemPath)
 			.AddSwitch("recursive")
@@ -144,7 +144,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult,
+		executionResult: IExecutionResult
 	): Promise<IConflict[]> {
 		return await this.ParseOutput(executionResult);
 	}

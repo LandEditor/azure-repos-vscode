@@ -46,7 +46,7 @@ export class VsCodeUtils {
 			selection.start.line,
 			selection.start.character,
 			selection.end.line,
-			selection.end.character,
+			selection.end.character
 		);
 		const value = editor.document.getText(range).trim();
 
@@ -68,7 +68,7 @@ export class VsCodeUtils {
 	}
 
 	public static async ShowWarningMessage(
-		message: string,
+		message: string
 	): Promise<IButtonMessageItem> {
 		return this.showMessage(message, MessageTypes.Warn);
 	}
@@ -92,19 +92,19 @@ export class VsCodeUtils {
 			case MessageTypes.Error:
 				chosenItem = await window.showErrorMessage(
 					messageToDisplay,
-					...messageItems,
+					...messageItems
 				);
 				break;
 			case MessageTypes.Info:
 				chosenItem = await window.showInformationMessage(
 					messageToDisplay,
-					...messageItems,
+					...messageItems
 				);
 				break;
 			case MessageTypes.Warn:
 				chosenItem = await window.showWarningMessage(
 					messageToDisplay,
-					...messageItems,
+					...messageItems
 				);
 				break;
 			default:

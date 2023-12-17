@@ -20,7 +20,7 @@ export class TfvcSettings extends BaseSettings {
 
 		this._location = this.readSetting<string>(
 			SettingNames.Location,
-			undefined,
+			undefined
 		);
 		// Support replacing leading ~/ on macOS and linux
 		if (
@@ -30,7 +30,7 @@ export class TfvcSettings extends BaseSettings {
 		) {
 			this._location = this._location.replace(
 				/^~(\/)/,
-				`${os.homedir()}$1`,
+				`${os.homedir()}$1`
 			);
 		}
 		if (this._location) {
@@ -39,7 +39,7 @@ export class TfvcSettings extends BaseSettings {
 		this._proxy = this.readSetting<string>(SettingNames.Proxy, undefined);
 		this._restrictWorkspace = this.readSetting<boolean>(
 			SettingNames.RestrictWorkspace,
-			false,
+			false
 		);
 	}
 
