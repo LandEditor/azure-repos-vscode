@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 export class UrlBuilder {
 	//Joins multiple paths with '/'. Not intended to use with query params or hashes
@@ -17,7 +16,7 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
-		for (let idx: number = 0; idx < args.length; idx++) {
+		for (let idx = 0; idx < args.length; idx++) {
 			let arg: string = args[idx];
 			//Ensure each arg doesn't start with a '/', we'll be adding those
 			if (arg.startsWith("/")) {
@@ -39,7 +38,7 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
-		for (let idx: number = 0; idx < args.length; idx++) {
+		for (let idx = 0; idx < args.length; idx++) {
 			const prefix: string = idx === 0 ? "?" : "&";
 
 			let arg: string = args[idx];
@@ -63,7 +62,7 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
-		for (let idx: number = 0; idx < args.length; idx++) {
+		for (let idx = 0; idx < args.length; idx++) {
 			const prefix: string = idx === 0 ? "#" : "&";
 
 			let arg: string = args[idx];

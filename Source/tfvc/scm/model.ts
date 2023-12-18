@@ -2,33 +2,32 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import {
-	Uri,
-	EventEmitter,
-	Event,
 	Disposable,
+	Event,
+	EventEmitter,
 	ProgressLocation,
+	Uri,
 	window,
 } from "vscode";
-import { Telemetry } from "../../services/telemetry";
 import { TfvcTelemetryEvents } from "../../helpers/constants";
+import { Telemetry } from "../../services/telemetry";
+import { IConflict, IPendingChange } from "../interfaces";
+import { TfvcOutput } from "../tfvcoutput";
 import { TfvcRepository } from "../tfvcrepository";
 import { filterEvent } from "../util";
 import { Resource } from "./resource";
 import {
-	ResourceGroup,
-	IncludedGroup,
-	ExcludedGroup,
 	ConflictsGroup,
+	ExcludedGroup,
+	IncludedGroup,
+	ResourceGroup,
 } from "./resourcegroups";
-import { IConflict, IPendingChange } from "../interfaces";
 import { ConflictType, Status } from "./status";
-import { TfvcOutput } from "../tfvcoutput";
 
-import * as _ from "underscore";
 import * as path from "path";
+import * as _ from "underscore";
 
 export class Model implements Disposable {
 	private _disposables: Disposable[] = [];
@@ -49,7 +48,7 @@ export class Model implements Disposable {
 	public constructor(
 		repositoryRoot: string,
 		repository: TfvcRepository,
-		onWorkspaceChange: Event<Uri>
+		onWorkspaceChange: Event<Uri>,
 	) {
 		this._repositoryRoot = repositoryRoot;
 		this._repository = repository;
@@ -127,7 +126,7 @@ export class Model implements Disposable {
 					Promise.resolve();
 				}
 				await this.update();
-			}
+			},
 		);
 	}
 
@@ -152,7 +151,7 @@ export class Model implements Disposable {
 				if (_.contains(this._explicitlyExcluded, normalizedPath)) {
 					this._explicitlyExcluded = _.without(
 						this._explicitlyExcluded,
-						normalizedPath
+						normalizedPath,
 					);
 				}
 			});
@@ -183,7 +182,7 @@ export class Model implements Disposable {
 		const conflict: IConflict = foundConflicts.find(
 			(c) =>
 				c.type === ConflictType.NAME_AND_CONTENT ||
-				c.type === ConflictType.RENAME
+				c.type === ConflictType.RENAME,
 		);
 		if (conflict) {
 			if (conflict.type === ConflictType.RENAME) {
@@ -199,7 +198,7 @@ export class Model implements Disposable {
 
 		changes.forEach((raw) => {
 			const conflict: IConflict = foundConflicts.find((c) =>
-				this.conflictMatchesPendingChange(raw, c)
+				this.conflictMatchesPendingChange(raw, c),
 			);
 			const resource: Resource = new Resource(raw, conflict);
 
@@ -210,7 +209,7 @@ export class Model implements Disposable {
 				if (
 					_.contains(
 						this._explicitlyExcluded,
-						resource.resourceUri.fsPath.toLowerCase()
+						resource.resourceUri.fsPath.toLowerCase(),
 					)
 				) {
 					return excluded.push(resource);
@@ -241,9 +240,9 @@ export class Model implements Disposable {
 
 	private conflictMatchesPendingChange(
 		change: IPendingChange,
-		conflict: IConflict
+		conflict: IConflict,
 	): boolean {
-		let result: boolean = false;
+		let result = false;
 		if (change && change.localItem && conflict && conflict.localPath) {
 			// TODO: If resource or conflict are renames we have a lot more work to do
 			//       We are postponing this work for now until we have evidence that it happens a lot

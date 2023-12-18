@@ -2,13 +2,12 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { IRepositoryContext } from "../contexts/repositorycontext";
-import { GitContext } from "../contexts/gitcontext";
-import { TfvcContext } from "../contexts/tfvccontext";
-import { TeamServerContext } from "../contexts/servercontext";
 import { ExternalContext } from "../contexts/externalcontext";
+import { GitContext } from "../contexts/gitcontext";
+import { IRepositoryContext } from "../contexts/repositorycontext";
+import { TeamServerContext } from "../contexts/servercontext";
+import { TfvcContext } from "../contexts/tfvccontext";
 import { Settings } from "../helpers/settings";
 import { TfCommandLineRunner } from "../tfvc/tfcommandlinerunner";
 
@@ -16,10 +15,10 @@ export class RepositoryContextFactory {
 	//Returns an IRepositoryContext if the repository is either TFS or Team Services
 	public static async CreateRepositoryContext(
 		path: string,
-		settings: Settings
+		settings: Settings,
 	): Promise<IRepositoryContext> {
 		let repoContext: IRepositoryContext;
-		let initialized: boolean = false;
+		let initialized = false;
 
 		//Check for remoteUrl and teamProject in settings first
 		repoContext = new ExternalContext(path);
@@ -56,13 +55,13 @@ export class RepositoryContextFactory {
 	 */
 	public static UpdateRepositoryContext(
 		currentRepo: IRepositoryContext,
-		serverContext: TeamServerContext
+		serverContext: TeamServerContext,
 	): IRepositoryContext {
 		if (currentRepo && currentRepo instanceof TfvcContext) {
 			const context: TfvcContext = <TfvcContext>currentRepo;
 			context.TfvcRepository = TfCommandLineRunner.CreateRepository(
 				serverContext,
-				context.RepoFolder
+				context.RepoFolder,
 			);
 		}
 		return currentRepo;

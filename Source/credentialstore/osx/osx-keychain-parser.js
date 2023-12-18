@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //
 // Parser for the output of the security(1) command line.
@@ -63,8 +62,8 @@ _.extend(OsxSecurityParsingStream.prototype, {
 					new Error(
 						"Multiple passes attempting to parse line [" +
 							line +
-							"]. Possible bug in parser and infinite loop"
-					)
+							"]. Possible bug in parser and infinite loop",
+					),
 				);
 			}
 

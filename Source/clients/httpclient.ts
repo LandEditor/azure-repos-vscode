@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //jeyou: Brought over from vso-node-api (v5.1.2), added support for sending SOAP and handling gzip compression
 /* tslint:disable */
@@ -25,7 +24,7 @@ export class HttpClient {
 	constructor(
 		userAgent: string,
 		handlers?: ifm.IRequestHandler[],
-		socketTimeout?: number
+		socketTimeout?: number,
 	) {
 		this.userAgent = userAgent;
 		this.handlers = handlers;
@@ -43,7 +42,11 @@ export class HttpClient {
 		requestUrl: string,
 		objs: any,
 		headers: ifm.IHeaders,
-		onResult: (err: any, res: http.ClientResponse, contents: string) => void
+		onResult: (
+			err: any,
+			res: http.ClientResponse,
+			contents: string,
+		) => void,
 	): void {
 		var options = this._getOptions(verb, requestUrl, headers);
 		this.request(options.protocol, options.options, objs, onResult);
@@ -117,17 +120,21 @@ export class HttpClient {
 		protocol: any,
 		options: any,
 		objs: any,
-		onResult: (err: any, res: http.ClientResponse, contents: string) => void
+		onResult: (
+			err: any,
+			res: http.ClientResponse,
+			contents: string,
+		) => void,
 	): void {
 		// Set up a callback to pass off 401s to an authentication handler that can deal with it
 		var callback = (
 			err: any,
 			res: http.ClientResponse,
-			contents: string
+			contents: string,
 		) => {
 			var authHandler;
 			if (this.handlers) {
-				this.handlers.some(function (handler /*, index, handlers*/) {
+				this.handlers.some((handler /*, index, handlers*/) => {
 					// Find the first one that can handle the auth based on the response
 					if (handler.canHandleAuthentication(res)) {
 						authHandler = handler;
@@ -142,7 +149,7 @@ export class HttpClient {
 					protocol,
 					options,
 					objs,
-					onResult
+					onResult,
 				);
 			} else {
 				// No auth handler found, call onResult normally
@@ -157,7 +164,11 @@ export class HttpClient {
 		protocol: any,
 		options: any,
 		objs: any,
-		onResult: (err: any, res: http.ClientResponse, contents: string) => void
+		onResult: (
+			err: any,
+			res: http.ClientResponse,
+			contents: string,
+		) => void,
 	): void {
 		var reqData;
 		var socket;
@@ -166,11 +177,11 @@ export class HttpClient {
 			reqData = objs;
 		}
 
-		var callbackCalled: boolean = false;
+		var callbackCalled = false;
 		var handleResult = (
 			err: any,
 			res: http.ClientResponse,
-			contents: string
+			contents: string,
 		) => {
 			if (!callbackCalled) {
 				callbackCalled = true;
@@ -178,7 +189,7 @@ export class HttpClient {
 			}
 		};
 
-		var req = protocol.request(options, function (res) {
+		var req = protocol.request(options, (res) => {
 			var buffer = [];
 			var output = "";
 
@@ -191,44 +202,44 @@ export class HttpClient {
 				res.pipe(gunzip);
 
 				gunzip
-					.on("data", function (data) {
+					.on("data", (data) => {
 						buffer.push(data.toString());
 					})
-					.on("end", function () {
+					.on("end", () => {
 						handleResult(null, res, buffer.join(""));
 					})
-					.on("error", function (err) {
+					.on("error", (err) => {
 						handleResult(err, null, null);
 					});
 			} else {
 				res.setEncoding("utf8"); //Do this only if we expect we're getting a string back
-				res.on("data", function (chunk) {
+				res.on("data", (chunk) => {
 					output += chunk;
 				});
-				res.on("end", function () {
+				res.on("end", () => {
 					// res has statusCode and headers
 					handleResult(null, res, output);
 				});
 			}
 		});
 
-		req.on("socket", function (sock) {
+		req.on("socket", (sock) => {
 			socket = sock;
 		});
 
 		// If we ever get disconnected, we want the socket to timeout eventually
-		req.setTimeout(this.socketTimeout, function () {
+		req.setTimeout(this.socketTimeout, () => {
 			if (socket) {
 				socket.end();
 			}
 			handleResult(
 				new Error("Request timeout: " + options.path),
 				null,
-				null
+				null,
 			);
 		});
 
-		req.on("error", function (err) {
+		req.on("error", (err) => {
 			// err has statusCode property
 			// res should have headers
 			handleResult(err, null, null);

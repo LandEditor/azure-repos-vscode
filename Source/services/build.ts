@@ -2,8 +2,9 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { IBuildApi } from "vso-node-api/BuildApi";
+import { WebApi } from "vso-node-api/WebApi";
 import {
 	Build,
 	BuildBadge,
@@ -12,8 +13,6 @@ import {
 	DefinitionReference,
 	QueryDeletedOption,
 } from "vso-node-api/interfaces/BuildInterfaces";
-import { IBuildApi } from "vso-node-api/BuildApi";
-import { WebApi } from "vso-node-api/WebApi";
 import { TeamServerContext } from "../contexts/servercontext";
 import { CredentialManager } from "../helpers/credentialmanager";
 import { UrlBuilder } from "../helpers/urlbuilder";
@@ -24,7 +23,7 @@ export class BuildService {
 	constructor(context: TeamServerContext) {
 		this._buildApi = new WebApi(
 			context.RepoInfo.CollectionUrl,
-			CredentialManager.GetCredentialHandler()
+			CredentialManager.GetCredentialHandler(),
 		).getBuildApi();
 	}
 
@@ -33,13 +32,13 @@ export class BuildService {
 		project: string,
 		repoType: string,
 		repoId: string,
-		branchName: string
+		branchName: string,
 	): Promise<BuildBadge> {
 		return await this._buildApi.getBuildBadge(
 			project,
 			repoType,
 			repoId,
-			branchName
+			branchName,
 		);
 	}
 
@@ -50,7 +49,7 @@ export class BuildService {
 
 	//Returns the build definitions (regardless of type) for the team project
 	public async GetBuildDefinitions(
-		teamProject: string
+		teamProject: string,
 	): Promise<DefinitionReference[]> {
 		return await this._buildApi.getDefinitions(teamProject);
 	}
@@ -75,7 +74,7 @@ export class BuildService {
 			null,
 			1,
 			QueryDeletedOption.ExcludeDeleted,
-			BuildQueryOrder.FinishTimeDescending
+			BuildQueryOrder.FinishTimeDescending,
 		);
 		/* tslint:enable:no-null-keyword */
 	}
@@ -83,7 +82,7 @@ export class BuildService {
 	//Returns the "latest" build for this definition
 	public async GetBuildsByDefinitionId(
 		teamProject: string,
-		definitionId: number
+		definitionId: number,
 	): Promise<Build[]> {
 		/* tslint:disable:no-null-keyword */
 		return await this._buildApi.getBuilds(
@@ -103,7 +102,7 @@ export class BuildService {
 			null,
 			1,
 			QueryDeletedOption.ExcludeDeleted,
-			BuildQueryOrder.FinishTimeDescending
+			BuildQueryOrder.FinishTimeDescending,
 		);
 		/* tslint:enable:no-null-keyword */
 	}
@@ -112,12 +111,12 @@ export class BuildService {
 	//https://account.visualstudio.com/DefaultCollection/project/_build#_a=completed&definitionId=34
 	public static GetBuildDefinitionUrl(
 		remoteUrl: string,
-		definitionId: string
+		definitionId: string,
 	): string {
 		return UrlBuilder.AddHashes(
 			BuildService.GetBuildsUrl(remoteUrl),
 			`_a=completed`,
-			`definitionId=${definitionId}`
+			`definitionId=${definitionId}`,
 		);
 	}
 
@@ -125,16 +124,16 @@ export class BuildService {
 	//https://account.visualstudio.com/DefaultCollection/project/_build/index?buildId=1977&_a=summary
 	public static GetBuildSummaryUrl(
 		remoteUrl: string,
-		buildId: string
+		buildId: string,
 	): string {
 		let summaryUrl: string = UrlBuilder.Join(
 			BuildService.GetBuildsUrl(remoteUrl),
-			"index"
+			"index",
 		);
 		summaryUrl = UrlBuilder.AddQueryParams(
 			summaryUrl,
 			`buildId=${buildId}`,
-			`_a=summary`
+			`_a=summary`,
 		);
 		return summaryUrl;
 	}

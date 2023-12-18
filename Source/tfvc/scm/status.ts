@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 export function GetStatuses(statusText: string): Status[] {
 	const result: Status[] = [];
@@ -11,7 +10,7 @@ export function GetStatuses(statusText: string): Status[] {
 	}
 
 	const statusStrings: string[] = statusText.split(",");
-	for (let i: number = 0; i < statusStrings.length; i++) {
+	for (let i = 0; i < statusStrings.length; i++) {
 		switch (statusStrings[i].trim().toLowerCase()) {
 			case "add":
 				result.push(Status.ADD);
@@ -50,24 +49,24 @@ export function GetStatuses(statusText: string): Status[] {
 }
 
 export enum Status {
-	ADD,
-	RENAME,
-	EDIT,
-	DELETE,
-	UNDELETE,
-	LOCK,
-	BRANCH,
-	MERGE,
-	CONFLICT,
-	UNKNOWN,
+	ADD = 0,
+	RENAME = 1,
+	EDIT = 2,
+	DELETE = 3,
+	UNDELETE = 4,
+	LOCK = 5,
+	BRANCH = 6,
+	MERGE = 7,
+	CONFLICT = 8,
+	UNKNOWN = 9,
 }
 
 export enum ConflictType {
-	CONTENT,
-	RENAME,
-	DELETE,
-	DELETE_TARGET,
-	NAME_AND_CONTENT,
-	MERGE,
-	RESOLVED,
+	CONTENT = 0,
+	RENAME = 1,
+	DELETE = 2,
+	DELETE_TARGET = 3,
+	NAME_AND_CONTENT = 4,
+	MERGE = 5,
+	RESOLVED = 6,
 }

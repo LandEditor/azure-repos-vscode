@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Credential } from "../credential";
 import { ICredentialStore } from "../interfaces/icredentialstore";
@@ -38,11 +37,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			.then((credentials) => {
 				// Spin through the returned credentials to ensure I got the one I want
 				// based on passed in 'service'
-				for (
-					let index: number = 0;
-					index < credentials.length;
-					index++
-				) {
+				for (let index = 0; index < credentials.length; index++) {
 					if (credentials[index].Service === service) {
 						credential = credentials[index];
 						break;
@@ -53,7 +48,7 @@ export class OsxKeychainApi implements ICredentialStore {
 					osxkeychain.get(
 						credential.Username,
 						credential.Service,
-						function (err, cred) {
+						(err, cred) => {
 							if (err) {
 								deferred.reject(err);
 							}
@@ -61,11 +56,11 @@ export class OsxKeychainApi implements ICredentialStore {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
-									cred
+									cred,
 								);
 								deferred.resolve(credential);
 							}
-						}
+						},
 					);
 				} else {
 					deferred.resolve(undefined);
@@ -80,7 +75,7 @@ export class OsxKeychainApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: string
+		password: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -90,13 +85,13 @@ export class OsxKeychainApi implements ICredentialStore {
 			service,
 			"" /*description*/,
 			password,
-			function (err) {
+			(err) => {
 				if (err) {
 					deferred.reject(err);
 				} else {
 					deferred.resolve(undefined);
 				}
-			}
+			},
 		);
 		return deferred.promise;
 	}
@@ -116,7 +111,7 @@ export class OsxKeychainApi implements ICredentialStore {
 
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 		let credential: Credential;
@@ -127,11 +122,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			.then((credentials) => {
 				// Spin through the returned credentials to ensure I got the one I want
 				// based on passed in 'service'
-				for (
-					let index: number = 0;
-					index < credentials.length;
-					index++
-				) {
+				for (let index = 0; index < credentials.length; index++) {
 					if (
 						credentials[index].Service === service &&
 						credentials[index].Username === username
@@ -145,7 +136,7 @@ export class OsxKeychainApi implements ICredentialStore {
 					osxkeychain.get(
 						credential.Username,
 						credential.Service,
-						function (err, cred) {
+						(err, cred) => {
 							if (err) {
 								deferred.reject(err);
 							}
@@ -153,11 +144,11 @@ export class OsxKeychainApi implements ICredentialStore {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
-									cred
+									cred,
 								);
 								deferred.resolve(credential);
 							}
-						}
+						},
 					);
 				} else {
 					deferred.resolve(undefined);
@@ -171,7 +162,7 @@ export class OsxKeychainApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
@@ -185,23 +176,18 @@ export class OsxKeychainApi implements ICredentialStore {
 					deferred.reject(reason);
 				});
 		} else {
-			osxkeychain.remove(
-				username,
-				service,
-				"" /*description*/,
-				function (err) {
-					if (err) {
-						if (err.code !== undefined && err.code === 44) {
-							// If credential is not found, don't fail.
-							deferred.resolve(undefined);
-						} else {
-							deferred.reject(err);
-						}
-					} else {
+			osxkeychain.remove(username, service, "" /*description*/, (err) => {
+				if (err) {
+					if (err.code !== undefined && err.code === 44) {
+						// If credential is not found, don't fail.
 						deferred.resolve(undefined);
+					} else {
+						deferred.reject(err);
 					}
+				} else {
+					deferred.resolve(undefined);
 				}
-			);
+			});
 		}
 		return deferred.promise;
 	}
@@ -216,7 +202,10 @@ export class OsxKeychainApi implements ICredentialStore {
 				const promises: Q.Promise<void>[] = [];
 				creds.forEach((cred) => {
 					promises.push(
-						this.removeCredentialByName(cred.Service, cred.Username)
+						this.removeCredentialByName(
+							cred.Service,
+							cred.Username,
+						),
 					);
 				});
 				Q.all(promises).then(() => {
@@ -241,14 +230,14 @@ export class OsxKeychainApi implements ICredentialStore {
 			if (cred.svce !== undefined) {
 				if (cred.svce.indexOf(this._prefix) === 0) {
 					const svc: string = cred.svce.substring(
-						this._prefix.length
+						this._prefix.length,
 					);
 					const username: string = cred.acct;
 					//password is undefined because we don't have it yet
 					const credential: Credential = new Credential(
 						svc,
 						username,
-						undefined
+						undefined,
 					);
 
 					// Only add the credential if we want them all or it's a match on service

@@ -2,14 +2,13 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import {
+	ProgressLocation,
+	SourceControlInputBox,
 	StatusBarAlignment,
 	StatusBarItem,
-	ProgressLocation,
 	window,
-	SourceControlInputBox,
 } from "vscode";
 import {
 	DeviceFlowAuthenticator,
@@ -17,7 +16,11 @@ import {
 	IDeviceFlowAuthenticationOptions,
 	IDeviceFlowTokenOptions,
 } from "vsts-device-flow-auth";
-import { PinnedQuerySettings } from "./helpers/settings";
+import { BuildClient } from "./clients/buildclient";
+import { GitClient } from "./clients/gitclient";
+import { WitClient } from "./clients/witclient";
+import { RepositoryType } from "./contexts/repositorycontext";
+import { ExtensionManager } from "./extensionmanager";
 import {
 	CommandNames,
 	Constants,
@@ -27,6 +30,7 @@ import {
 	WitTypes,
 } from "./helpers/constants";
 import { Logger } from "./helpers/logger";
+import { PinnedQuerySettings } from "./helpers/settings";
 import { Strings } from "./helpers/strings";
 import { UserAgentProvider } from "./helpers/useragentprovider";
 import { Utils } from "./helpers/utils";
@@ -35,12 +39,7 @@ import {
 	ButtonMessageItem,
 	VsCodeUtils,
 } from "./helpers/vscodeutils";
-import { RepositoryType } from "./contexts/repositorycontext";
-import { BuildClient } from "./clients/buildclient";
-import { GitClient } from "./clients/gitclient";
-import { WitClient } from "./clients/witclient";
 import { Telemetry } from "./services/telemetry";
-import { ExtensionManager } from "./extensionmanager";
 
 import * as os from "os";
 import * as util from "util";
@@ -57,8 +56,8 @@ export class TeamExtension {
 	private _pinnedQuerySettings: PinnedQuerySettings;
 	private _pollingTimer: NodeJS.Timer;
 	private _initialTimer: NodeJS.Timer;
-	private _signedOut: boolean = false;
-	private _signingIn: boolean = false;
+	private _signedOut = false;
+	private _signingIn = false;
 
 	constructor(manager: ExtensionManager) {
 		this._manager = manager;
@@ -70,7 +69,7 @@ export class TeamExtension {
 			this._buildClient.DisplayCurrentBuildStatus(
 				this._manager.RepoContext,
 				false,
-				this._manager.Settings.BuildDefinitionId
+				this._manager.Settings.BuildDefinitionId,
 			);
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -129,7 +128,7 @@ export class TeamExtension {
 				return token;
 			} else if (choice.id === DeviceFlowConstants.DeviceFlowOption) {
 				Logger.LogDebug(
-					`Device flow personal access token option chosen.`
+					`Device flow personal access token option chosen.`,
 				);
 				const authOptions: IDeviceFlowAuthenticationOptions = {
 					clientId: DeviceFlowConstants.ClientId,
@@ -145,7 +144,7 @@ export class TeamExtension {
 					new DeviceFlowAuthenticator(
 						this._manager.ServerContext.RepoInfo.AccountUrl,
 						authOptions,
-						tokenOptions
+						tokenOptions,
 					);
 				const details: DeviceFlowDetails =
 					await dfa.GetDeviceFlowDetails();
@@ -173,7 +172,7 @@ export class TeamExtension {
 					/* tslint:disable:align */
 					const timer: NodeJS.Timer = setTimeout(() => {
 						Logger.LogDebug(
-							`Device flow authentication canceled after ${timeout}ms.`
+							`Device flow authentication canceled after ${timeout}ms.`,
 						);
 						Telemetry.SendEvent(TelemetryEvents.DeviceFlowCanceled);
 						dfa.Cancel(true); //throw on canceling
@@ -183,7 +182,7 @@ export class TeamExtension {
 					//We need to await on withProgress here because we need a token before continuing forward
 					const title: string = util.format(
 						Strings.DeviceFlowAuthenticatingToTeamServices,
-						details.UserCode
+						details.UserCode,
 					);
 					const token: string = await window.withProgress(
 						{ location: ProgressLocation.Window, title: title },
@@ -194,17 +193,17 @@ export class TeamExtension {
 							if (accessToken) {
 								clearTimeout(timer);
 								Telemetry.SendEvent(
-									TelemetryEvents.DeviceFlowPat
+									TelemetryEvents.DeviceFlowPat,
 								);
 							}
 							return accessToken;
-						}
+						},
 					);
 
 					return token;
 				} else {
 					Logger.LogDebug(
-						`User has canceled the device flow authentication mechanism.`
+						`User has canceled the device flow authentication mechanism.`,
 					);
 				}
 			}
@@ -245,17 +244,17 @@ export class TeamExtension {
 					});
 					if (password !== undefined) {
 						Logger.LogInfo(
-							"Signin: Username and Password provided as authentication."
+							"Signin: Username and Password provided as authentication.",
 						);
 						this._manager.CredentialManager.StoreCredentials(
 							this._manager.ServerContext,
 							username,
-							password
+							password,
 						)
 							.then(() => {
 								// We don't test the credentials to make sure they're good here.  Do so on the next command that's run.
 								Logger.LogDebug(
-									`Reinitializing after successfully storing credentials for Team Foundation Server.`
+									`Reinitializing after successfully storing credentials for Team Foundation Server.`,
 								);
 								this._manager.Reinitialize();
 							})
@@ -278,16 +277,16 @@ export class TeamExtension {
 						await this.requestPersonalAccessToken();
 					if (token !== undefined) {
 						Logger.LogInfo(
-							`Signin: Personal Access Token provided as authentication.`
+							`Signin: Personal Access Token provided as authentication.`,
 						);
 						this._manager.CredentialManager.StoreCredentials(
 							this._manager.ServerContext,
 							Constants.OAuth,
-							token.trim()
+							token.trim(),
 						)
 							.then(() => {
 								Logger.LogDebug(
-									`Reinitializing after successfully storing credentials for Azure DevOps Services.`
+									`Reinitializing after successfully storing credentials for Azure DevOps Services.`,
 								);
 								this._manager.Reinitialize();
 							})
@@ -300,7 +299,7 @@ export class TeamExtension {
 				} catch (err) {
 					let msg: string = util.format(
 						Strings.ErrorRequestingToken,
-						this._manager.ServerContext.RepoInfo.AccountUrl
+						this._manager.ServerContext.RepoInfo.AccountUrl,
 					);
 					if (err.message) {
 						msg = `${msg} (${err.message})`;
@@ -310,7 +309,7 @@ export class TeamExtension {
 							-1
 						) {
 							Telemetry.SendEvent(
-								TelemetryEvents.DeviceFlowFailed
+								TelemetryEvents.DeviceFlowFailed,
 							);
 						}
 					}
@@ -336,7 +335,7 @@ export class TeamExtension {
 				VsCodeUtils.ShowErrorMessage(
 					Strings.NoRepoInformation,
 					messageItem,
-					tfvcInfoItem
+					tfvcInfoItem,
 				);
 			}
 		}
@@ -351,11 +350,11 @@ export class TeamExtension {
 		) {
 			Logger.LogDebug(`Starting sign out process`);
 			this._manager.CredentialManager.RemoveCredentials(
-				this._manager.ServerContext
+				this._manager.ServerContext,
 			)
 				.then(() => {
 					Logger.LogInfo(
-						`Signout: Removed credentials for host '${this._manager.ServerContext.RepoInfo.Host}'`
+						`Signout: Removed credentials for host '${this._manager.ServerContext.RepoInfo.Host}'`,
 					);
 				})
 				.catch((err) => {
@@ -429,7 +428,7 @@ export class TeamExtension {
 			if (this._gitClient) {
 				this._gitClient.OpenNewPullRequest(
 					this._manager.RepoContext.RemoteUrl,
-					this._manager.RepoContext.CurrentBranch
+					this._manager.RepoContext.CurrentBranch,
 				);
 			}
 		} else {
@@ -465,7 +464,7 @@ export class TeamExtension {
 			Telemetry.SendEvent(TelemetryEvents.OpenTeamSite);
 			Logger.LogInfo(
 				"OpenTeamProjectWebSite: " +
-					this._manager.ServerContext.RepoInfo.TeamProjectUrl
+					this._manager.ServerContext.RepoInfo.TeamProjectUrl,
 			);
 			Utils.OpenUrl(this._manager.ServerContext.RepoInfo.TeamProjectUrl);
 		} else {
@@ -515,7 +514,7 @@ export class TeamExtension {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Telemetry.SendEvent(TelemetryEvents.AssociateWorkItems);
 			const workitems: string[] = await this.chooseWorkItems();
-			for (let i: number = 0; i < workitems.length; i++) {
+			for (let i = 0; i < workitems.length; i++) {
 				// Append the string to end of the message
 				// Note: we are prefixing the message with a space so that the # char is not in the first column
 				//       This helps in case the user ends up editing the comment from the Git command line
@@ -562,7 +561,7 @@ export class TeamExtension {
 			if (!this._pullRequestStatusBarItem) {
 				this._pullRequestStatusBarItem = window.createStatusBarItem(
 					StatusBarAlignment.Left,
-					99
+					99,
 				);
 				this._pullRequestStatusBarItem.command =
 					CommandNames.GetPullRequests;
@@ -577,7 +576,7 @@ export class TeamExtension {
 		if (!this._buildStatusBarItem) {
 			this._buildStatusBarItem = window.createStatusBarItem(
 				StatusBarAlignment.Left,
-				98
+				98,
 			);
 			this._buildStatusBarItem.command =
 				CommandNames.OpenBuildSummaryPage;
@@ -589,7 +588,7 @@ export class TeamExtension {
 		if (!this._pinnedQueryStatusBarItem) {
 			this._pinnedQueryStatusBarItem = window.createStatusBarItem(
 				StatusBarAlignment.Left,
-				97
+				97,
 			);
 			this._pinnedQueryStatusBarItem.command =
 				CommandNames.ViewPinnedQueryWorkItems;
@@ -607,23 +606,23 @@ export class TeamExtension {
 		if (this._manager.EnsureInitialized(repoType)) {
 			//We can initialize for any repo type (just skip _gitClient if not Git)
 			this._pinnedQuerySettings = new PinnedQuerySettings(
-				this._manager.ServerContext.RepoInfo.Account
+				this._manager.ServerContext.RepoInfo.Account,
 			);
 			this._buildClient = new BuildClient(
 				this._manager.ServerContext,
-				this._buildStatusBarItem
+				this._buildStatusBarItem,
 			);
 			//Don't initialize the Git client if we aren't a Git repository
 			if (repoType === RepositoryType.GIT) {
 				this._gitClient = new GitClient(
 					this._manager.ServerContext,
-					this._pullRequestStatusBarItem
+					this._pullRequestStatusBarItem,
 				);
 			}
 			this._witClient = new WitClient(
 				this._manager.ServerContext,
 				this._pinnedQuerySettings.PinnedQuery,
-				this._pinnedQueryStatusBarItem
+				this._pinnedQueryStatusBarItem,
 			);
 			this.startPolling();
 		}
@@ -641,7 +640,7 @@ export class TeamExtension {
 			this._buildClient.DisplayCurrentBuildStatus(
 				this._manager.RepoContext,
 				true,
-				this._manager.Settings.BuildDefinitionId
+				this._manager.Settings.BuildDefinitionId,
 			);
 		}
 	}
@@ -678,11 +677,11 @@ export class TeamExtension {
 		if (!this._pollingTimer) {
 			this._initialTimer = setTimeout(
 				() => this.refreshPollingItems(),
-				1000 * 4
+				1000 * 4,
 			);
 			this._pollingTimer = setInterval(
 				() => this.refreshPollingItems(),
-				1000 * 60 * this._manager.Settings.PollingInterval
+				1000 * 60 * this._manager.Settings.PollingInterval,
 			);
 		}
 	}
@@ -692,7 +691,7 @@ export class TeamExtension {
 	 * @param fn A function that works with the input box.
 	 */
 	private withSourceControlInputBox(
-		fn: (input: SourceControlInputBox) => void
+		fn: (input: SourceControlInputBox) => void,
 	) {
 		const gitExtension = vscode.extensions.getExtension("vscode.git");
 		if (gitExtension) {

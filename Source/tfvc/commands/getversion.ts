@@ -2,19 +2,18 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
+import { Strings } from "../../helpers/strings";
+import { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
 import {
 	IArgumentProvider,
 	IExecutionResult,
 	ITfvcCommand,
 } from "../interfaces";
+import { TfvcError, TfvcErrorCodes } from "../tfvcerror";
 import { ArgumentBuilder } from "./argumentbuilder";
 import { CommandHelper } from "./commandhelper";
-import { TfvcError, TfvcErrorCodes } from "../tfvcerror";
-import { Strings } from "../../helpers/strings";
-import { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
-import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
 
 /**
  * This command calls the command line doing a simple call to get the help for the add command.
@@ -31,7 +30,7 @@ export class GetVersion implements ITfvcCommand<string> {
 	}
 
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		//Ex. Team Explorer Everywhere Command Line Client (Version 14.0.3.201603291047)
 		return await this.getVersion(executionResult, /version\s+([\.\d]+)/i);
@@ -46,7 +45,7 @@ export class GetVersion implements ITfvcCommand<string> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		//Ex. Microsoft (R) TF - Team Foundation Version Control Tool, Version 14.102.25619.0
 		return await this.getVersion(executionResult, /version\s+([\.\d]+)/i);
@@ -54,7 +53,7 @@ export class GetVersion implements ITfvcCommand<string> {
 
 	private async getVersion(
 		executionResult: IExecutionResult,
-		expression: RegExp
+		expression: RegExp,
 	): Promise<string> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);

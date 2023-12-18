@@ -2,15 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { ISettings } from "../helpers/settings";
 
 export enum RepositoryType {
-	GIT,
-	TFVC,
-	ANY,
-	EXTERNAL,
+	GIT = 0,
+	TFVC = 1,
+	ANY = 2,
+	EXTERNAL = 3,
 }
 
 export interface IRepositoryContext {

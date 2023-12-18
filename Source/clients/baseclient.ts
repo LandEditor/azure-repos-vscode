@@ -2,16 +2,15 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { StatusBarItem } from "vscode";
-import { Logger } from "../helpers/logger";
-import { Telemetry } from "../services/telemetry";
 import { TeamServerContext } from "../contexts/servercontext";
 import { CommandNames } from "../helpers/constants";
+import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
 import { VsCodeUtils } from "../helpers/vscodeutils";
+import { Telemetry } from "../services/telemetry";
 
 export abstract class BaseClient {
 	protected _serverContext: TeamServerContext;
@@ -26,7 +25,7 @@ export abstract class BaseClient {
 		err: Error,
 		offlineText: string,
 		polling: boolean,
-		infoMessage?: string
+		infoMessage?: string,
 	): void {
 		const offline: boolean = Utils.IsOffline(err);
 		const msg: string = Utils.GetMessageForStatusCode(err, err.message);

@@ -2,29 +2,28 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { StatusBarItem, window } from "vscode";
 import {
 	QueryHierarchyItem,
 	WorkItemType,
 } from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
-import { Logger } from "../helpers/logger";
-import {
-	SimpleWorkItem,
-	WorkItemTrackingService,
-} from "../services/workitemtracking";
-import { Telemetry } from "../services/telemetry";
 import { TeamServerContext } from "../contexts/servercontext";
+import { TelemetryEvents, WitQueries, WitTypes } from "../helpers/constants";
+import { Logger } from "../helpers/logger";
+import { IPinnedQuery } from "../helpers/settings";
+import { Strings } from "../helpers/strings";
+import { Utils } from "../helpers/utils";
 import {
 	BaseQuickPickItem,
 	VsCodeUtils,
 	WorkItemQueryQuickPickItem,
 } from "../helpers/vscodeutils";
-import { TelemetryEvents, WitQueries, WitTypes } from "../helpers/constants";
-import { Strings } from "../helpers/strings";
-import { Utils } from "../helpers/utils";
-import { IPinnedQuery } from "../helpers/settings";
+import { Telemetry } from "../services/telemetry";
+import {
+	SimpleWorkItem,
+	WorkItemTrackingService,
+} from "../services/workitemtracking";
 import { BaseClient } from "./baseclient";
 
 export class WitClient extends BaseClient {
@@ -34,7 +33,7 @@ export class WitClient extends BaseClient {
 	constructor(
 		context: TeamServerContext,
 		pinnedQuery: IPinnedQuery,
-		statusBarItem: StatusBarItem
+		statusBarItem: StatusBarItem,
 	) {
 		super(context, statusBarItem);
 		this._pinnedQuery = pinnedQuery;
@@ -48,7 +47,7 @@ export class WitClient extends BaseClient {
 			this._serverContext.RepoInfo.TeamProjectUrl,
 			itemType,
 			taskTitle,
-			this.getUserName(this._serverContext)
+			this.getUserName(this._serverContext),
 		);
 		Logger.LogInfo("New Work Item Url: " + newItemUrl);
 		Utils.OpenUrl(newItemUrl);
@@ -63,20 +62,20 @@ export class WitClient extends BaseClient {
 				{
 					matchOnDescription: true,
 					placeHolder: Strings.ChooseWorkItemType,
-				}
+				},
 			);
 			if (selectedType) {
 				Telemetry.SendEvent(TelemetryEvents.OpenNewWorkItem);
 
 				Logger.LogInfo(
-					"Selected work item type is " + selectedType.label
+					"Selected work item type is " + selectedType.label,
 				);
 				const newItemUrl: string =
 					WorkItemTrackingService.GetNewWorkItemUrl(
 						this._serverContext.RepoInfo.TeamProjectUrl,
 						selectedType.label,
 						taskTitle,
-						this.getUserName(this._serverContext)
+						this.getUserName(this._serverContext),
 					);
 				Logger.LogInfo("New Work Item Url: " + newItemUrl);
 				Utils.OpenUrl(newItemUrl);
@@ -86,7 +85,7 @@ export class WitClient extends BaseClient {
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error creating new work item"
+				"Error creating new work item",
 			);
 		}
 	}
@@ -110,29 +109,29 @@ export class WitClient extends BaseClient {
 				const workItem: BaseQuickPickItem = await window.showQuickPick(
 					this.getMyWorkItems(
 						this._serverContext.RepoInfo.TeamProject,
-						query.wiql
+						query.wiql,
 					),
 					{
 						matchOnDescription: true,
 						placeHolder: Strings.ChooseWorkItem,
-					}
+					},
 				);
 				if (workItem) {
 					let url: string = undefined;
 					if (workItem.id === undefined) {
 						Telemetry.SendEvent(
-							TelemetryEvents.OpenAdditionalQueryResults
+							TelemetryEvents.OpenAdditionalQueryResults,
 						);
 						url = WorkItemTrackingService.GetMyQueryResultsUrl(
 							this._serverContext.RepoInfo.TeamProjectUrl,
 							this._myQueriesFolder,
-							query.label
+							query.label,
 						);
 					} else {
 						Telemetry.SendEvent(TelemetryEvents.ViewWorkItem);
 						url = WorkItemTrackingService.GetEditWorkItemUrl(
 							this._serverContext.RepoInfo.TeamProjectUrl,
-							workItem.id
+							workItem.id,
 						);
 					}
 					Logger.LogInfo("Work Item Url: " + url);
@@ -144,7 +143,7 @@ export class WitClient extends BaseClient {
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error showing work item queries"
+				"Error showing work item queries",
 			);
 		}
 	}
@@ -160,7 +159,7 @@ export class WitClient extends BaseClient {
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error showing pinned query work items"
+				"Error showing pinned query work items",
 			);
 		}
 	}
@@ -175,7 +174,7 @@ export class WitClient extends BaseClient {
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error showing my work items"
+				"Error showing my work items",
 			);
 		}
 	}
@@ -188,12 +187,12 @@ export class WitClient extends BaseClient {
 			const workItem: BaseQuickPickItem = await window.showQuickPick(
 				this.getMyWorkItems(
 					this._serverContext.RepoInfo.TeamProject,
-					query
+					query,
 				),
 				{
 					matchOnDescription: true,
 					placeHolder: Strings.ChooseWorkItem,
-				}
+				},
 			);
 			if (workItem) {
 				return ["#" + workItem.id + " - " + workItem.description];
@@ -205,7 +204,7 @@ export class WitClient extends BaseClient {
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error showing my work items in order to choose (associate)"
+				"Error showing my work items in order to choose (associate)",
 			);
 			return [];
 		}
@@ -215,20 +214,20 @@ export class WitClient extends BaseClient {
 		Logger.LogInfo("Getting work items...");
 		const workItem: BaseQuickPickItem = await window.showQuickPick(
 			this.getMyWorkItems(this._serverContext.RepoInfo.TeamProject, wiql),
-			{ matchOnDescription: true, placeHolder: Strings.ChooseWorkItem }
+			{ matchOnDescription: true, placeHolder: Strings.ChooseWorkItem },
 		);
 		if (workItem) {
 			let url: string = undefined;
 			if (workItem.id === undefined) {
 				Telemetry.SendEvent(TelemetryEvents.OpenAdditionalQueryResults);
 				url = WorkItemTrackingService.GetWorkItemsBaseUrl(
-					this._serverContext.RepoInfo.TeamProjectUrl
+					this._serverContext.RepoInfo.TeamProjectUrl,
 				);
 			} else {
 				Telemetry.SendEvent(TelemetryEvents.ViewWorkItem);
 				url = WorkItemTrackingService.GetEditWorkItemUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
-					workItem.id
+					workItem.id,
 				);
 			}
 			Logger.LogInfo("Work Item Url: " + url);
@@ -241,23 +240,23 @@ export class WitClient extends BaseClient {
 			Logger.LogInfo(
 				"Running pinned work item query to get count (" +
 					this._serverContext.RepoInfo.TeamProject +
-					")..."
+					")...",
 			);
 			const queryText: string = await this.getPinnedQueryText();
 
 			const svc: WorkItemTrackingService = new WorkItemTrackingService(
-				this._serverContext
+				this._serverContext,
 			);
 			return svc.GetQueryResultCount(
 				this._serverContext.RepoInfo.TeamProject,
-				queryText
+				queryText,
 			);
 		} catch (err) {
 			this.handleWitError(
 				err,
 				WitClient.GetOfflinePinnedQueryStatusText(),
 				false,
-				"Error getting pinned query result count"
+				"Error getting pinned query result count",
 			);
 		}
 	}
@@ -278,10 +277,10 @@ export class WitClient extends BaseClient {
 						Logger.LogInfo(
 							"Getting my work item query (" +
 								this._serverContext.RepoInfo.TeamProject +
-								")..."
+								")...",
 						);
 						Logger.LogInfo(
-							"QueryPath: " + this._pinnedQuery.queryPath
+							"QueryPath: " + this._pinnedQuery.queryPath,
 						);
 						const svc: WorkItemTrackingService =
 							new WorkItemTrackingService(this._serverContext);
@@ -289,14 +288,14 @@ export class WitClient extends BaseClient {
 						const queryItem: QueryHierarchyItem =
 							await svc.GetWorkItemQuery(
 								this._serverContext.RepoInfo.TeamProject,
-								this._pinnedQuery.queryPath
+								this._pinnedQuery.queryPath,
 							);
 						resolve(queryItem.wiql);
 					}
 				} catch (err) {
 					reject(err);
 				}
-			}
+			},
 		);
 		return promise;
 	}
@@ -306,19 +305,19 @@ export class WitClient extends BaseClient {
 	> {
 		const queries: WorkItemQueryQuickPickItem[] = [];
 		const svc: WorkItemTrackingService = new WorkItemTrackingService(
-			this._serverContext
+			this._serverContext,
 		);
 		Logger.LogInfo(
 			"Getting my work item queries (" +
 				this._serverContext.RepoInfo.TeamProject +
-				")..."
+				")...",
 		);
 		const hierarchyItems: QueryHierarchyItem[] =
 			await svc.GetWorkItemHierarchyItems(
-				this._serverContext.RepoInfo.TeamProject
+				this._serverContext.RepoInfo.TeamProject,
 			);
 		Logger.LogInfo(
-			"Retrieved " + hierarchyItems.length + " hierarchyItems"
+			"Retrieved " + hierarchyItems.length + " hierarchyItems",
 		);
 		hierarchyItems.forEach((folder) => {
 			if (
@@ -332,7 +331,7 @@ export class WitClient extends BaseClient {
 				if (folder.hasChildren === true) {
 					//Gets all of the queries under "My Queries" and gets their name and wiql
 					for (
-						let index: number = 0;
+						let index = 0;
 						index < folder.children.length;
 						index++
 					) {
@@ -351,20 +350,20 @@ export class WitClient extends BaseClient {
 
 	private async getMyWorkItems(
 		teamProject: string,
-		wiql: string
+		wiql: string,
 	): Promise<BaseQuickPickItem[]> {
 		const workItems: BaseQuickPickItem[] = [];
 		const svc: WorkItemTrackingService = new WorkItemTrackingService(
-			this._serverContext
+			this._serverContext,
 		);
 		Logger.LogInfo(
 			"Getting my work items (" +
 				this._serverContext.RepoInfo.TeamProject +
-				")..."
+				")...",
 		);
 		const simpleWorkItems: SimpleWorkItem[] = await svc.GetWorkItems(
 			teamProject,
-			wiql
+			wiql,
 		);
 		Logger.LogInfo("Retrieved " + simpleWorkItems.length + " work items");
 		simpleWorkItems.forEach((wi) => {
@@ -387,10 +386,10 @@ export class WitClient extends BaseClient {
 	private getUserName(context: TeamServerContext): string {
 		let userName: string = undefined;
 		Logger.LogDebug(
-			"UserCustomDisplayName: " + context.UserInfo.CustomDisplayName
+			"UserCustomDisplayName: " + context.UserInfo.CustomDisplayName,
 		);
 		Logger.LogDebug(
-			"UserProviderDisplayName: " + context.UserInfo.ProviderDisplayName
+			"UserProviderDisplayName: " + context.UserInfo.ProviderDisplayName,
 		);
 		if (context.UserInfo.CustomDisplayName !== undefined) {
 			userName = context.UserInfo.CustomDisplayName;
@@ -403,10 +402,10 @@ export class WitClient extends BaseClient {
 
 	private async getWorkItemTypes(): Promise<BaseQuickPickItem[]> {
 		const svc: WorkItemTrackingService = new WorkItemTrackingService(
-			this._serverContext
+			this._serverContext,
 		);
 		const types: WorkItemType[] = await svc.GetWorkItemTypes(
-			this._serverContext.RepoInfo.TeamProject
+			this._serverContext.RepoInfo.TeamProject,
 		);
 		const workItemTypes: BaseQuickPickItem[] = [];
 		types.forEach((type) => {
@@ -426,11 +425,11 @@ export class WitClient extends BaseClient {
 		err: Error,
 		offlineText: string,
 		polling: boolean,
-		infoMessage?: string
+		infoMessage?: string,
 	): void {
 		if (
 			err.message.includes(
-				"Failed to find api location for area: wit id:"
+				"Failed to find api location for area: wit id:",
 			)
 		) {
 			Telemetry.SendEvent(TelemetryEvents.UnsupportedWitServerVersion);
@@ -467,7 +466,7 @@ export class WitClient extends BaseClient {
 			.then((numberOfItems) => {
 				this._statusBarItem.tooltip = Strings.ViewYourPinnedQuery;
 				this._statusBarItem.text = WitClient.GetPinnedQueryStatusText(
-					numberOfItems.toString()
+					numberOfItems.toString(),
 				);
 			})
 			.catch((err) => {
@@ -475,7 +474,7 @@ export class WitClient extends BaseClient {
 					err,
 					WitClient.GetOfflinePinnedQueryStatusText(),
 					true,
-					"Failed to get pinned query count during polling"
+					"Failed to get pinned query count during polling",
 				);
 			});
 	}

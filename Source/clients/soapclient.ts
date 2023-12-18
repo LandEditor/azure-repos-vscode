@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //jeyou: Based on RestClient from vso-node-api (v5.1.2)
 /* tslint:disable */
@@ -83,7 +82,7 @@ export class SoapClient {
 	post(
 		url: string,
 		requestEnvelope: string,
-		onResult: (err: any, statusCode: number, obj: any) => void
+		onResult: (err: any, statusCode: number, obj: any) => void,
 	): void {
 		this._sendSoap("POST", url, requestEnvelope, onResult);
 	}
@@ -92,9 +91,9 @@ export class SoapClient {
 		verb: string,
 		url: string,
 		requestEnvelope: string,
-		onResult: (err: any, statusCode: number, obj: any) => void
+		onResult: (err: any, statusCode: number, obj: any) => void,
 	): void {
-		let headers: ifm.IHeaders = {};
+		const headers: ifm.IHeaders = {};
 		headers["Accept-Encoding"] = "gzip"; //Tell the server we'd like to receive a gzip compressed response
 		headers["Accept-Language"] = env.language; //"en-US";
 		headers["Content-Type"] = "application/soap+xml; charset=utf-8";
@@ -113,7 +112,7 @@ export class SoapClient {
 				}
 
 				processResponse(url, res, responseEnvelope, onResult);
-			}
+			},
 		);
 	}
 }

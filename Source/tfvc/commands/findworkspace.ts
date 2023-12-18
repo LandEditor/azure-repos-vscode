@@ -2,11 +2,10 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
 import { Strings } from "../../helpers/strings";
 import { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
-import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
 import {
 	IArgumentProvider,
 	IExecutionResult,
@@ -14,9 +13,9 @@ import {
 	IWorkspace,
 	IWorkspaceMapping,
 } from "../interfaces";
+import { TfvcError, TfvcErrorCodes } from "../tfvcerror";
 import { ArgumentBuilder } from "./argumentbuilder";
 import { CommandHelper } from "./commandhelper";
-import { TfvcError, TfvcErrorCodes } from "../tfvcerror";
 
 /**
  * This command only returns a partial workspace object that allows you to get the name and server.
@@ -28,7 +27,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	private _localPath: string;
 	private _restrictWorkspace: boolean;
 
-	public constructor(localPath: string, restrictWorkspace: boolean = false) {
+	public constructor(localPath: string, restrictWorkspace = false) {
 		CommandHelper.RequireStringArgument(localPath, "localPath");
 		this._localPath = localPath;
 		this._restrictWorkspace = restrictWorkspace;
@@ -62,7 +61,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	 * $/tfsTest_01: D:\tmp\test
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		// Throw if any errors are found in stderr or if exitcode is not 0
 		CommandHelper.ProcessErrors(executionResult);
@@ -74,13 +73,13 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 
 		// Find the workspace name and collectionUrl
 		const lines = CommandHelper.SplitIntoLines(stdout);
-		let workspaceName: string = "";
-		let collectionUrl: string = "";
-		let equalsLineFound: boolean = false;
+		let workspaceName = "";
+		let collectionUrl = "";
+		let equalsLineFound = false;
 		const mappings: IWorkspaceMapping[] = [];
 		let teamProject: string = undefined;
 
-		for (let i: number = 0; i <= lines.length; i++) {
+		for (let i = 0; i <= lines.length; i++) {
 			const line: string = lines[i];
 			if (!line) {
 				continue;
@@ -123,14 +122,14 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 		}
 		//If we're restricting the workspace, find the proper teamProject name
 		if (this._restrictWorkspace) {
-			for (let i: number = 0; i < mappings.length; i++) {
+			for (let i = 0; i < mappings.length; i++) {
 				const isWithin: boolean = this.pathIsWithin(
 					this._localPath,
-					mappings[i].localPath
+					mappings[i].localPath,
 				);
 				if (isWithin) {
 					const project: string = this.getTeamProject(
-						mappings[i].serverPath
+						mappings[i].serverPath,
 					); //maintain case in serverPath
 					teamProject = project;
 					break;
@@ -186,7 +185,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	 * $/tfsTest_01: D:\tmp\test
 	 */
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		const workspace: IWorkspace = await this.ParseOutput(executionResult);
 		if (workspace && workspace.name) {

@@ -2,14 +2,13 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import basem = require("vso-node-api/ClientApiBases");
 import VsoBaseInterfaces = require("vso-node-api/interfaces/common/VsoBaseInterfaces");
 export class TeamServicesApi extends basem.ClientApiBase {
 	constructor(
 		baseUrl: string,
-		handlers: VsoBaseInterfaces.IRequestHandler[]
+		handlers: VsoBaseInterfaces.IRequestHandler[],
 	) {
 		super(baseUrl, handlers, "node-vsts-vscode-api");
 	}
@@ -32,7 +31,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					} else {
 						resolve(obj);
 					}
-				}
+				},
 			);
 		});
 		return promise;
@@ -56,7 +55,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					} else {
 						resolve(obj);
 					}
-				}
+				},
 			);
 		});
 		return promise;

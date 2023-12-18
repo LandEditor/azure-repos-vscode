@@ -1,5 +1,3 @@
-"use strict";
-
 var gulp = require("gulp"),
 	mocha = require("gulp-mocha"),
 	gutil = require("gulp-util");
@@ -37,8 +35,8 @@ function errorHandler(err) {
 	process.exit(1);
 }
 
-gulp.task("clean", function (done) {
-	return del(
+gulp.task("clean", (done) =>
+	del(
 		[
 			"out/**",
 			"!out",
@@ -46,17 +44,17 @@ gulp.task("clean", function (done) {
 			"!out/src/credentialstore/osx",
 			"!out/src/credentialstore/win32",
 		],
-		done
-	);
-});
+		done,
+	),
+);
 
-gulp.task("copyresources", ["clean"], function () {
-	return gulp.src("resources/**/*").pipe(gulp.dest("out/resources"));
-});
+gulp.task("copyresources", ["clean"], () =>
+	gulp.src("resources/**/*").pipe(gulp.dest("out/resources")),
+);
 
-gulp.task("build", ["copyresources"], function () {
-	let tsProject = typescript.createProject("./tsconfig.json");
-	let tsResult = tsProject
+gulp.task("build", ["copyresources"], () => {
+	const tsProject = typescript.createProject("./tsconfig.json");
+	const tsResult = tsProject
 		.src()
 		.pipe(sourcemaps.init())
 		.pipe(tsProject())
@@ -65,62 +63,62 @@ gulp.task("build", ["copyresources"], function () {
 	return tsResult.js
 		.pipe(
 			sourcemaps.write(".", {
-				sourceRoot: function (file) {
+				sourceRoot: (file) => {
 					// This override is needed because of a bug in sourcemaps base logic.
 					// "file.base"" is the out dir where all the js and map files are located.
 					return file.base;
 				},
-			})
+			}),
 		)
 		.pipe(gulp.dest("./out"));
 });
 
-gulp.task("tslint", ["build"], function () {
-	return gulp
+gulp.task("tslint", ["build"], () =>
+	gulp
 		.src(["./src/**/*.ts", "./test/**/*.ts", "./test-integration/**/*.ts"])
 		.pipe(tslint({ configuration: "tslint.json", formatter: "verbose" }))
 		.pipe(tslint.report({ emitError: true, summarizeFailureOutput: true }))
-		.on("error", errorHandler);
-});
+		.on("error", errorHandler),
+);
 
-gulp.task("publishbuild", ["tslint"], function () {
+gulp.task("publishbuild", ["tslint"], () => {
 	gulp.src(["./src/credentialstore/**/*.js"]).pipe(
-		gulp.dest("./out/src/credentialstore")
+		gulp.dest("./out/src/credentialstore"),
 	);
 	gulp.src(["./src/credentialstore/bin/win32/*"]).pipe(
-		gulp.dest("./out/src/credentialstore/bin/win32")
+		gulp.dest("./out/src/credentialstore/bin/win32"),
 	);
 });
 
-gulp.task("publishall", ["publishbuild"], function () {
+gulp.task("publishall", ["publishbuild"], () => {
 	gulp.src(["./test/contexts/testrepos/**/*"]).pipe(
-		gulp.dest("./out/test/contexts/testrepos")
+		gulp.dest("./out/test/contexts/testrepos"),
 	);
 	gulp.src(["./test/helpers/testrepos/**/*"]).pipe(
-		gulp.dest("./out/test/helpers/testrepos")
+		gulp.dest("./out/test/helpers/testrepos"),
 	);
 	gulp.src(["./patches/vso-node-api/handlers/ntlm.js"]).pipe(
-		gulp.dest("./node_modules/vso-node-api/handlers")
+		gulp.dest("./node_modules/vso-node-api/handlers"),
 	);
 });
 
 //Tests will fail with MODULE_NOT_FOUND if I try to run 'publishBuild' before test target
 //gulp.task('test', ['publishBuild'], function() {
-gulp.task("test", function () {
-	return gulp
+gulp.task("test", () =>
+	gulp
 		.src(["out/test/**/*.js"], { read: false })
 		.pipe(mocha(reporterUnitTest))
-		.on("error", errorHandler);
-});
+		.on("error", errorHandler),
+);
 
-gulp.task("test-integration", function () {
-	return gulp
+gulp.task("test-integration", () =>
+	gulp
 		.src(["out/test-integration/**/*.js"], { read: false })
 		.pipe(mocha(reporterIntegrationTest))
-		.on("error", errorHandler);
-});
+		.on("error", errorHandler),
+);
 
-gulp.task("test-coverage", function () {
+gulp.task("test-coverage", () => {
 	//credentialstore is brought in from separate repository, exclude it here
 	//exclude the files we know we can't get coverage on (e.g., vscode, etc.)
 	return (
@@ -165,7 +163,7 @@ gulp.task("test-coverage", function () {
 			.pipe(istanbul({ includeUntested: true }))
 			//.pipe(istanbul())
 			.pipe(istanbul.hookRequire()) //for using node.js
-			.on("finish", function () {
+			.on("finish", () => {
 				gulp.src("out/test*/**/*.js")
 					.pipe(mocha(reporterUnitTest))
 					.pipe(
@@ -173,7 +171,7 @@ gulp.task("test-coverage", function () {
 							dir: "out/results/coverage",
 							reporters: ["cobertura", "html"],
 							reportOpts: { dir: "out/results/coverage" },
-						})
+						}),
 					);
 			})
 			.on("error", errorHandler)
@@ -183,36 +181,36 @@ gulp.task("test-coverage", function () {
 //The following task is used by the CI build to upload code coverage files
 //Added due to race condition between writeReports and ccPublisher.publish
 //It's OK for this to fail if the coverage file doesn't exist
-gulp.task("upload-coverage-file", function () {
+gulp.task("upload-coverage-file", () => {
 	var ccPublisher = new tl.CodeCoveragePublisher();
 	ccPublisher.publish(
 		"cobertura",
 		path.join(__dirname, "out/results/coverage/cobertura-coverage.xml"),
 		path.join(__dirname, "out/results/coverage"),
-		""
+		"",
 	);
 });
 
-gulp.task("test-all", ["test", "test-integration"], function () {});
+gulp.task("test-all", ["test", "test-integration"], () => {});
 
-gulp.task("packageonly", function (cb) {
-	exec("vsce package", function (err, stdout, stderr) {
+gulp.task("packageonly", (cb) => {
+	exec("vsce package", (err, stdout, stderr) => {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);
 	});
 });
 
-gulp.task("package", ["publishall"], function (cb) {
-	exec("vsce package", function (err, stdout, stderr) {
+gulp.task("package", ["publishall"], (cb) => {
+	exec("vsce package", (err, stdout, stderr) => {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);
 	});
 });
 
-gulp.task("vsce-version", function (cb) {
-	exec("vsce -Version", function (err, stdout, stderr) {
+gulp.task("vsce-version", (cb) => {
+	exec("vsce -Version", (err, stdout, stderr) => {
 		console.log(stdout);
 		console.log(stderr);
 		cb(err);

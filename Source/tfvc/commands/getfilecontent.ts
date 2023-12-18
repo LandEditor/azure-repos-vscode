@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import {
@@ -30,7 +29,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 		serverContext: TeamServerContext,
 		localPath: string,
 		versionSpec?: string,
-		ignoreFileNotFound?: boolean
+		ignoreFileNotFound?: boolean,
 	) {
 		CommandHelper.RequireStringArgument(localPath, "localPath");
 
@@ -43,7 +42,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"print",
-			this._serverContext
+			this._serverContext,
 		).Add(this._localPath);
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
@@ -56,7 +55,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 	}
 
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		// Check for "The specified file does not exist at the specified version" (or "No file matches" in case of the EXE)
 		// and write out empty string
@@ -64,7 +63,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 			this._ignoreFileNotFound &&
 			(CommandHelper.HasError(
 				executionResult,
-				"The specified file does not exist at the specified version"
+				"The specified file does not exist at the specified version",
 			) ||
 				CommandHelper.HasError(executionResult, "No file matches"))
 		) {
@@ -77,17 +76,17 @@ export class GetFileContent implements ITfvcCommand<string> {
 
 		// Split the lines to take advantage of the WARNing skip logic and rejoin them to return
 		const lines: string[] = CommandHelper.SplitIntoLines(
-			executionResult.stdout
+			executionResult.stdout,
 		);
 		return lines.join(
-			CommandHelper.GetNewLineCharacter(executionResult.stdout)
+			CommandHelper.GetNewLineCharacter(executionResult.stdout),
 		);
 	}
 
 	public GetExeArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"view",
-			this._serverContext
+			this._serverContext,
 		).Add(this._localPath);
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
@@ -100,7 +99,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string> {
 		return await this.ParseOutput(executionResult);
 	}

@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Strings } from "../../helpers/strings";
 import { Resource } from "./resource";
@@ -21,7 +20,7 @@ export abstract class ResourceGroup {
 	public constructor(
 		private _id: string,
 		private _label: string,
-		private _resources: Resource[]
+		private _resources: Resource[],
 	) {}
 }
 

@@ -2,22 +2,21 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { IRepositoryContext, RepositoryType } from "./repositorycontext";
+import { Logger } from "../helpers/logger";
+import { RepoUtils } from "../helpers/repoutils";
+import { IWorkspace } from "../tfvc/interfaces";
 import { TfCommandLineRunner } from "../tfvc/tfcommandlinerunner";
 import { TfvcRepository } from "../tfvc/tfvcrepository";
-import { IWorkspace } from "../tfvc/interfaces";
-import { RepoUtils } from "../helpers/repoutils";
-import { Logger } from "../helpers/logger";
+import { IRepositoryContext, RepositoryType } from "./repositorycontext";
 
 export class TfvcContext implements IRepositoryContext {
 	private _tfvcFolder: string;
 	private _gitParentFolder: string;
 	private _tfvcRemoteUrl: string;
-	private _isSsh: boolean = false;
-	private _isTeamServicesUrl: boolean = false;
-	private _isTeamFoundationServer: boolean = false;
+	private _isSsh = false;
+	private _isTeamServicesUrl = false;
+	private _isTeamFoundationServer = false;
 	private _teamProjectName: string;
 	private _repo: TfvcRepository;
 	private _tfvcWorkspace: IWorkspace;
@@ -31,7 +30,7 @@ export class TfvcContext implements IRepositoryContext {
 		Logger.LogDebug(`Looking for TFVC repository at ${this._tfvcFolder}`);
 		this._repo = TfCommandLineRunner.CreateRepository(
 			undefined,
-			this._tfvcFolder
+			this._tfvcFolder,
 		);
 		//Ensure we have an appropriate ENU version of tf executable
 		//The call will throw if we have tf configured properly but it isn't ENU
@@ -39,14 +38,14 @@ export class TfvcContext implements IRepositoryContext {
 		this._tfvcWorkspace = await this._repo.FindWorkspace(this._tfvcFolder);
 		this._tfvcRemoteUrl = this._tfvcWorkspace.server;
 		this._isTeamServicesUrl = RepoUtils.IsTeamFoundationServicesRepo(
-			this._tfvcRemoteUrl
+			this._tfvcRemoteUrl,
 		);
 		this._isTeamFoundationServer = RepoUtils.IsTeamFoundationServerRepo(
-			this._tfvcRemoteUrl
+			this._tfvcRemoteUrl,
 		);
 		this._teamProjectName = this._tfvcWorkspace.defaultTeamProject;
 		Logger.LogDebug(
-			`Found a TFVC repository for url: '${this._tfvcRemoteUrl}' and team project: '${this._teamProjectName}'.`
+			`Found a TFVC repository for url: '${this._tfvcRemoteUrl}' and team project: '${this._teamProjectName}'.`,
 		);
 		return true;
 	}

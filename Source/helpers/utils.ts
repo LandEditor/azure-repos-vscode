@@ -2,11 +2,10 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import * as vscode from "vscode";
 import { BuildResult } from "vso-node-api/interfaces/BuildInterfaces";
 import { Strings } from "./strings";
-import * as vscode from "vscode";
 
 import * as fs from "fs";
 import * as path from "path";
@@ -68,7 +67,7 @@ export class Utils {
 	public static GetMessageForStatusCode(
 		reason: any,
 		message?: string,
-		prefix?: string
+		prefix?: string,
 	): string {
 		let msg: string = undefined;
 		if (prefix === undefined) {
@@ -77,7 +76,7 @@ export class Utils {
 			msg = prefix + " ";
 		}
 
-		let statusCode: string = "0";
+		let statusCode = "0";
 		if (reason.statusCode !== undefined) {
 			statusCode = reason.statusCode.toString();
 		} else if (reason.code !== undefined) {

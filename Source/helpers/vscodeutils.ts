@@ -2,13 +2,12 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { commands, MessageItem, QuickPickItem, Range, window } from "vscode";
-import { MessageTypes } from "./constants";
-import { IButtonMessageItem } from "./vscodeutils.interfaces";
-import { Utils } from "./utils";
+import { MessageItem, QuickPickItem, Range, commands, window } from "vscode";
 import { Telemetry } from "../services/telemetry";
+import { MessageTypes } from "./constants";
+import { Utils } from "./utils";
+import { IButtonMessageItem } from "./vscodeutils.interfaces";
 
 export class BaseQuickPickItem implements QuickPickItem {
 	label: string;
@@ -46,7 +45,7 @@ export class VsCodeUtils {
 			selection.start.line,
 			selection.start.character,
 			selection.end.line,
-			selection.end.character
+			selection.end.character,
 		);
 		const value = editor.document.getText(range).trim();
 
@@ -68,7 +67,7 @@ export class VsCodeUtils {
 	}
 
 	public static async ShowWarningMessage(
-		message: string
+		message: string,
 	): Promise<IButtonMessageItem> {
 		return this.showMessage(message, MessageTypes.Warn);
 	}
@@ -92,19 +91,19 @@ export class VsCodeUtils {
 			case MessageTypes.Error:
 				chosenItem = await window.showErrorMessage(
 					messageToDisplay,
-					...messageItems
+					...messageItems,
 				);
 				break;
 			case MessageTypes.Info:
 				chosenItem = await window.showInformationMessage(
 					messageToDisplay,
-					...messageItems
+					...messageItems,
 				);
 				break;
 			case MessageTypes.Warn:
 				chosenItem = await window.showWarningMessage(
 					messageToDisplay,
-					...messageItems
+					...messageItems,
 				);
 				break;
 			default:

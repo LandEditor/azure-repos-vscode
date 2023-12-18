@@ -2,15 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { FileTokenStorage } from "./file-token-storage";
 import { Credential } from "../credential";
 import { ICredentialStore } from "../interfaces/icredentialstore";
+import { FileTokenStorage } from "./file-token-storage";
 
-import * as Q from "q";
 import * as os from "os";
 import * as path from "path";
+import * as Q from "q";
 import * as _ from "underscore";
 
 /*
@@ -29,7 +28,7 @@ export class LinuxFileApi implements ICredentialStore {
 		this._folder = folder;
 		this._filename = filename;
 		this._fts = new FileTokenStorage(
-			path.join(path.join(os.homedir(), this._folder, this._filename))
+			path.join(path.join(os.homedir(), this._folder, this._filename)),
 		);
 	}
 
@@ -44,7 +43,7 @@ export class LinuxFileApi implements ICredentialStore {
 				});
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
-						entryArray[0]
+						entryArray[0],
 					);
 					deferred.resolve(credential);
 				} else {
@@ -60,18 +59,18 @@ export class LinuxFileApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: string
+		password: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
 		this.loadCredentials()
 			.then((entries) => {
 				// Remove any entries that are the same as the one I'm about to add
-				const existingEntries = _.reject(entries, function (elem) {
-					return (
-						elem.username === username && elem.service === service
-					);
-				});
+				const existingEntries = _.reject(
+					entries,
+					(elem) =>
+						elem.username === username && elem.service === service,
+				);
 				const newEntry = {
 					username: username,
 					password: password,
@@ -98,9 +97,10 @@ export class LinuxFileApi implements ICredentialStore {
 		this.loadCredentials()
 			.then((entries) => {
 				// Find the entry being asked to be removed; if found, remove it, save the remaining list
-				const existingEntries = _.reject(entries, function (elem) {
-					return elem.service === service;
-				});
+				const existingEntries = _.reject(
+					entries,
+					(elem) => elem.service === service,
+				);
 				// TODO: RemoveEntries doesn't do anything with second arg.  For now, do nothing to
 				// the api as I'm wrapping it in all its glory.  Could consider later.
 				this._fts
@@ -120,7 +120,7 @@ export class LinuxFileApi implements ICredentialStore {
 
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 
@@ -133,7 +133,7 @@ export class LinuxFileApi implements ICredentialStore {
 				});
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
-						entryArray[0]
+						entryArray[0],
 					);
 					deferred.resolve(credential);
 				} else {
@@ -148,14 +148,14 @@ export class LinuxFileApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 
 		this.loadCredentials()
 			.then((entries) => {
 				// Find the entry being asked to be removed; if found, remove it, save the remaining list
-				const existingEntries = _.reject(entries, function (elem) {
+				const existingEntries = _.reject(entries, (elem) => {
 					if (username === "*") {
 						return elem.service === service;
 					} else {

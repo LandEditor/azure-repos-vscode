@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import {
@@ -36,7 +35,7 @@ export class Undo implements ITfvcCommand<string[]> {
 				.AddSwitch("recursive");
 		}
 		return new ArgumentBuilder("undo", this._serverContext).AddAll(
-			this._itemPaths
+			this._itemPaths,
 		);
 	}
 
@@ -50,12 +49,12 @@ export class Undo implements ITfvcCommand<string[]> {
 	 * Undoing add: file2.java
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string[]> {
 		let lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			false,
-			true /*filterEmptyLines*/
+			true /*filterEmptyLines*/,
 		);
 
 		//If we didn't succeed without any issues, we have a bit of work to do.
@@ -78,8 +77,8 @@ export class Undo implements ITfvcCommand<string[]> {
 		}
 
 		const filesUndone: string[] = [];
-		let path: string = "";
-		for (let index: number = 0; index < lines.length; index++) {
+		let path = "";
+		for (let index = 0; index < lines.length; index++) {
 			const line: string = lines[index];
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
@@ -100,7 +99,7 @@ export class Undo implements ITfvcCommand<string[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string[]> {
 		return await this.ParseOutput(executionResult);
 	}

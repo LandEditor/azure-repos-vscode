@@ -2,17 +2,16 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Constants } from "./constants";
 
-import * as winston from "winston";
 import * as path from "path";
+import * as winston from "winston";
 
 export class Logger {
-	private static initialized: boolean = false;
+	private static initialized = false;
 	private static loggingLevel: LoggingLevel;
-	private static logPath: string = "";
+	private static logPath = "";
 
 	private static initalize() {
 		//Only initialize the logger if a logging level is set (in settings) and we haven't initialized it yet
@@ -21,7 +20,7 @@ export class Logger {
 				json: false,
 				filename: path.join(
 					Logger.logPath,
-					Constants.ExtensionName + "-extension.log"
+					Constants.ExtensionName + "-extension.log",
 				),
 				level: LoggingLevel[Logger.loggingLevel].toLowerCase(),
 				maxsize: 4000000,

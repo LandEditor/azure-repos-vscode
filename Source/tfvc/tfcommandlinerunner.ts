@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import * as cp from "child_process";
 import { TeamServerContext } from "../contexts/servercontext";
@@ -10,21 +9,21 @@ import { Constants, TelemetryEvents } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
-import { IDisposable, toDisposable, dispose } from "./util";
 import {
 	IArgumentProvider,
 	IExecutionResult,
 	ITfCommandLine,
 } from "./interfaces";
 import { TfvcError, TfvcErrorCodes } from "./tfvcerror";
+import { TfvcOutput } from "./tfvcoutput";
 import { TfvcRepository } from "./tfvcrepository";
 import { TfvcSettings } from "./tfvcsettings";
 import { TfvcVersion } from "./tfvcversion";
-import { TfvcOutput } from "./tfvcoutput";
+import { IDisposable, dispose, toDisposable } from "./util";
 
-import * as _ from "underscore";
 import * as fs from "fs";
 import * as path from "path";
+import * as _ from "underscore";
 
 /**
  * This is a static class that facilitates running the TFVC command line.
@@ -37,7 +36,7 @@ export class TfCommandLineRunner {
 	public static CreateRepository(
 		serverContext: TeamServerContext,
 		repositoryRootFolder: string,
-		env: any = {}
+		env: any = {},
 	): TfvcRepository {
 		const tfvc: ITfCommandLine = TfCommandLineRunner.GetCommandLine();
 		return new TfvcRepository(
@@ -45,13 +44,13 @@ export class TfCommandLineRunner {
 			tfvc,
 			repositoryRootFolder,
 			env,
-			tfvc.isExe
+			tfvc.isExe,
 		);
 	}
 
 	public static GetCommandLine(localPath?: string): ITfCommandLine {
 		Logger.LogDebug(
-			`TFVC Creating Tfvc object with localPath='${localPath}'`
+			`TFVC Creating Tfvc object with localPath='${localPath}'`,
 		);
 		// Get Proxy from settings
 		const settings: TfvcSettings = new TfvcSettings();
@@ -63,11 +62,11 @@ export class TfCommandLineRunner {
 			// get the location from settings
 			tfvcPath = settings.Location;
 			Logger.LogDebug(
-				`TFVC Retrieved from settings; localPath='${tfvcPath}'`
+				`TFVC Retrieved from settings; localPath='${tfvcPath}'`,
 			);
 			if (!tfvcPath) {
 				Logger.LogWarning(
-					`TFVC Couldn't find where the TF command lives on disk.`
+					`TFVC Couldn't find where the TF command lives on disk.`,
 				);
 				throw new TfvcError({
 					message: Strings.TfvcLocationMissingError,
@@ -83,7 +82,7 @@ export class TfCommandLineRunner {
 			const stats: fs.Stats = fs.lstatSync(tfvcPath);
 			if (!stats || (!stats.isFile() && !stats.isSymbolicLink())) {
 				Logger.LogWarning(
-					`TFVC ${tfvcPath} exists but isn't a file or symlink.`
+					`TFVC ${tfvcPath} exists but isn't a file or symlink.`,
 				);
 				throw new TfvcError({
 					message: Strings.TfMissingError,
@@ -100,7 +99,7 @@ export class TfCommandLineRunner {
 
 		// Determine the min version
 		const isExe: boolean = path.extname(tfvcPath).toLowerCase() === ".exe";
-		let minVersion: string = "14.0.4"; //CLC min version
+		let minVersion = "14.0.4"; //CLC min version
 		if (isExe) {
 			minVersion = "14.102.0"; //Minimum tf.exe version
 		}
@@ -131,7 +130,7 @@ export class TfCommandLineRunner {
 		const curVersion: TfvcVersion = TfvcVersion.FromString(version);
 		if (TfvcVersion.Compare(curVersion, minVersion) < 0) {
 			Logger.LogWarning(
-				`TFVC ${version} is less that the min version of ${tfvc.minVersion}.`
+				`TFVC ${version} is less that the min version of ${tfvc.minVersion}.`,
 			);
 			let options: IButtonMessageItem[] = [];
 			if (tfvc.isExe) {
@@ -156,7 +155,7 @@ export class TfCommandLineRunner {
 		tfvc: ITfCommandLine,
 		cwd: string,
 		args: IArgumentProvider,
-		options: any = {}
+		options: any = {},
 	): Promise<IExecutionResult> {
 		// default to the cwd passed in, but allow options.cwd to overwrite it
 		options = _.extend({ cwd }, options || {});
@@ -199,7 +198,7 @@ export class TfCommandLineRunner {
 		tfvc: ITfCommandLine,
 		args: IArgumentProvider,
 		options: any,
-		isExe: boolean
+		isExe: boolean,
 	): Promise<IExecutionResult> {
 		const start: number = new Date().getTime();
 		const tfInstance: cp.ChildProcess =
@@ -212,7 +211,7 @@ export class TfCommandLineRunner {
 		const result: IExecutionResult = await TfCommandLineRunner.runCommand(
 			argsForStandardInput,
 			tfInstance,
-			isExe
+			isExe,
 		);
 
 		// log the results
@@ -220,7 +219,7 @@ export class TfCommandLineRunner {
 		Logger.LogDebug(
 			`TFVC: ${args.GetCommand()} exit code: ${
 				result.exitCode
-			} (duration: ${end - start}ms)`
+			} (duration: ${end - start}ms)`,
 		);
 
 		return result;
@@ -233,14 +232,14 @@ export class TfCommandLineRunner {
 	 */
 	private static async getMatchingTfInstance(
 		tfvc: ITfCommandLine,
-		options: any
+		options: any,
 	): Promise<cp.ChildProcess> {
 		if (
 			!TfCommandLineRunner._runningInstance ||
 			tfvc.path !== TfCommandLineRunner._location ||
 			!TfCommandLineRunner.optionsMatch(
 				options,
-				TfCommandLineRunner._options
+				TfCommandLineRunner._options,
 			)
 		) {
 			if (TfCommandLineRunner._runningInstance) {
@@ -256,14 +255,14 @@ export class TfCommandLineRunner {
 
 	private static async startNewTfInstance(
 		tfvc: ITfCommandLine,
-		options: any
+		options: any,
 	): Promise<cp.ChildProcess> {
 		// Start up a new instance of TF for later use
 		TfCommandLineRunner._options = options;
 		TfCommandLineRunner._location = tfvc.path;
 		TfCommandLineRunner._runningInstance = await TfCommandLineRunner.spawn(
 			tfvc.path,
-			options
+			options,
 		);
 		return TfCommandLineRunner._runningInstance;
 	}
@@ -274,7 +273,7 @@ export class TfCommandLineRunner {
 
 	private static async spawn(
 		location: string,
-		options: any
+		options: any,
 	): Promise<cp.ChildProcess> {
 		if (!options) {
 			options = {};
@@ -286,7 +285,7 @@ export class TfCommandLineRunner {
 		const child: cp.ChildProcess = await cp.spawn(location, ["@"], options);
 		const end: number = new Date().getTime();
 		Logger.LogDebug(
-			`TFVC: spawned new process (duration: ${end - start}ms)`
+			`TFVC: spawned new process (duration: ${end - start}ms)`,
 		);
 		return child;
 	}
@@ -294,7 +293,7 @@ export class TfCommandLineRunner {
 	private static async runCommand(
 		argsForStandardInput: string,
 		child: cp.ChildProcess,
-		isExe: boolean
+		isExe: boolean,
 	): Promise<IExecutionResult> {
 		const disposables: IDisposable[] = [];
 

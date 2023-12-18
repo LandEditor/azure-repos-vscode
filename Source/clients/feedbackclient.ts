@@ -2,11 +2,10 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Disposable, window } from "vscode";
-import { Logger } from "../helpers/logger";
 import { TelemetryEvents } from "../helpers/constants";
+import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
 import { BaseQuickPickItem } from "../helpers/vscodeutils";
@@ -33,7 +32,7 @@ export class FeedbackClient {
 				{
 					matchOnDescription: false,
 					placeHolder: Strings.SendFeedback,
-				}
+				},
 			);
 			if (choice) {
 				const value: string = await window.showInputBox({
@@ -44,7 +43,7 @@ export class FeedbackClient {
 				});
 				if (value === undefined) {
 					const disposable = window.setStatusBarMessage(
-						Strings.NoFeedbackSent
+						Strings.NoFeedbackSent,
 					);
 					setTimeout(() => disposable.dispose(), 1000 * 5);
 					return;
@@ -60,7 +59,7 @@ export class FeedbackClient {
 				});
 
 				const disposable: Disposable = window.setStatusBarMessage(
-					Strings.ThanksForFeedback
+					Strings.ThanksForFeedback,
 				);
 				setTimeout(() => disposable.dispose(), 1000 * 5);
 			}
@@ -68,7 +67,7 @@ export class FeedbackClient {
 			const message: string = Utils.GetMessageForStatusCode(
 				0,
 				err.message,
-				"Failed getting SendFeedback selection"
+				"Failed getting SendFeedback selection",
 			);
 			Logger.LogError(message);
 			Telemetry.SendException(err);

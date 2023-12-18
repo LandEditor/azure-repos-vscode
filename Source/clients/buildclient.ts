@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { StatusBarItem } from "vscode";
 import {
@@ -11,21 +10,21 @@ import {
 	BuildResult,
 	BuildStatus,
 } from "vso-node-api/interfaces/BuildInterfaces";
-import { Logger } from "../helpers/logger";
-import { BuildService } from "../services/build";
-import { Telemetry } from "../services/telemetry";
+import {
+	IRepositoryContext,
+	RepositoryType,
+} from "../contexts/repositorycontext";
 import { TeamServerContext } from "../contexts/servercontext";
 import {
 	CommandNames,
 	TelemetryEvents,
 	WellKnownRepositoryTypes,
 } from "../helpers/constants";
+import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
-import {
-	IRepositoryContext,
-	RepositoryType,
-} from "../contexts/repositorycontext";
+import { BuildService } from "../services/build";
+import { Telemetry } from "../services/telemetry";
 import { BaseClient } from "./baseclient";
 
 export class BuildClient extends BaseClient {
@@ -39,7 +38,7 @@ export class BuildClient extends BaseClient {
 	public async DisplayCurrentBuildStatus(
 		context: IRepositoryContext,
 		polling: boolean,
-		definitionId?: number
+		definitionId?: number,
 	): Promise<void> {
 		try {
 			const svc: BuildService = new BuildService(this._serverContext);
@@ -50,7 +49,7 @@ export class BuildClient extends BaseClient {
 					this._serverContext.RepoInfo.TeamProject,
 					WellKnownRepositoryTypes.TfsGit,
 					this._serverContext.RepoInfo.RepositoryId,
-					context.CurrentRef
+					context.CurrentRef,
 				);
 			} else if (
 				context.Type === RepositoryType.TFVC ||
@@ -59,19 +58,19 @@ export class BuildClient extends BaseClient {
 				//If either TFVC or External and no definition Id, show default builds page
 				buildBadge = await this.getTfvcBuildBadge(
 					svc,
-					this._serverContext.RepoInfo.TeamProject
+					this._serverContext.RepoInfo.TeamProject,
 				);
 			} else if (definitionId) {
 				//TODO: Allow definitionId to override Git and TFVC defaults (above)?
 				const builds: Build[] = await svc.GetBuildsByDefinitionId(
 					this._serverContext.RepoInfo.TeamProject,
-					definitionId
+					definitionId,
 				);
 				if (builds.length > 0) {
 					buildBadge = { buildId: builds[0].id, imageUrl: undefined };
 				} else {
 					Logger.LogInfo(
-						`Found zero builds for definition id ${definitionId}`
+						`Found zero builds for definition id ${definitionId}`,
 					);
 				}
 			}
@@ -79,12 +78,12 @@ export class BuildClient extends BaseClient {
 				Logger.LogInfo(
 					"Found build id " +
 						buildBadge.buildId.toString() +
-						". Getting build details..."
+						". Getting build details...",
 				);
 				const build: Build = await svc.GetBuildById(buildBadge.buildId);
 				this._buildSummaryUrl = BuildService.GetBuildSummaryUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
-					build.id.toString()
+					build.id.toString(),
 				);
 				Logger.LogInfo(
 					"Build summary info: " +
@@ -94,7 +93,7 @@ export class BuildClient extends BaseClient {
 						" " +
 						BuildResult[build.result] +
 						" " +
-						this._buildSummaryUrl
+						this._buildSummaryUrl,
 				);
 
 				if (this._statusBarItem !== undefined) {
@@ -117,9 +116,9 @@ export class BuildClient extends BaseClient {
 						", repo id " +
 						this._serverContext.RepoInfo.RepositoryId.toString() +
 						", + branch " +
-						(!context.CurrentBranch
-							? "UNKNOWN"
-							: context.CurrentBranch.toString())
+						(context.CurrentBranch
+							? context.CurrentBranch.toString()
+							: "UNKNOWN"),
 				);
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.command =
@@ -136,7 +135,7 @@ export class BuildClient extends BaseClient {
 				err,
 				BuildClient.GetOfflineBuildStatusText(),
 				polling,
-				"Failed to get current build status"
+				"Failed to get current build status",
 			);
 		}
 	}
@@ -144,7 +143,7 @@ export class BuildClient extends BaseClient {
 	//Gets the appropriate build for TFVC repositories and returns a 'BuildBadge' for it
 	private async getTfvcBuildBadge(
 		svc: BuildService,
-		teamProjectId: string
+		teamProjectId: string,
 	): Promise<BuildBadge> {
 		//Create an build that doesn't exist and use as the default
 		const emptyBuild: BuildBadge = {
@@ -158,7 +157,7 @@ export class BuildClient extends BaseClient {
 		}
 
 		let matchingBuild: Build;
-		for (let idx: number = 0; idx < builds.length; idx++) {
+		for (let idx = 0; idx < builds.length; idx++) {
 			const b: Build = builds[idx];
 			// Ignore canceled builds
 			if (b.result === BuildResult.Canceled) {
@@ -184,10 +183,10 @@ export class BuildClient extends BaseClient {
 		let url: string = this._buildSummaryUrl;
 		if (url === undefined) {
 			Logger.LogInfo(
-				"No build summary available, using build definitions url."
+				"No build summary available, using build definitions url.",
 			);
 			url = BuildService.GetBuildDefinitionsUrl(
-				this._serverContext.RepoInfo.TeamProjectUrl
+				this._serverContext.RepoInfo.TeamProjectUrl,
 			);
 		}
 		Logger.LogInfo("OpenBuildSummaryPage: " + url);

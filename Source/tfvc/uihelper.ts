@@ -2,15 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { QuickPickItem, window, workspace } from "vscode";
 import { Strings } from "../helpers/strings";
 import {
 	AutoResolveType,
 	IPendingChange,
-	ISyncResults,
 	ISyncItemResult,
+	ISyncResults,
 	SyncType,
 } from "./interfaces";
 import { TfvcOutput } from "./tfvcoutput";
@@ -19,12 +18,12 @@ import * as path from "path";
 
 export class UIHelper {
 	public static async ChoosePendingChange(
-		changes: IPendingChange[]
+		changes: IPendingChange[],
 	): Promise<IPendingChange> {
 		if (changes && changes.length > 0) {
 			// First, create an array of quick pick items from the changes
 			const items: QuickPickItem[] = [];
-			for (let i: number = 0; i < changes.length; i++) {
+			for (let i = 0; i < changes.length; i++) {
 				items.push({
 					label: UIHelper.GetFileName(changes[i]),
 					description: changes[i].changeType,
@@ -39,7 +38,7 @@ export class UIHelper {
 
 			// Finally, find the matching pending change and return it
 			if (item) {
-				for (let i: number = 0; i < changes.length; i++) {
+				for (let i = 0; i < changes.length; i++) {
 					if (UIHelper.GetRelativePath(changes[i]) === item.detail) {
 						return changes[i];
 					}
@@ -63,7 +62,7 @@ export class UIHelper {
 	public static async ShowSyncResults(
 		syncResults: ISyncResults,
 		showPopup: boolean,
-		onlyShowErrors
+		onlyShowErrors,
 	): Promise<void> {
 		const items: QuickPickItem[] = [];
 		if (syncResults.itemResults.length === 0) {
@@ -74,16 +73,16 @@ export class UIHelper {
 				detail: undefined,
 			});
 		} else {
-			for (let i: number = 0; i < syncResults.itemResults.length; i++) {
+			for (let i = 0; i < syncResults.itemResults.length; i++) {
 				const item: ISyncItemResult = syncResults.itemResults[i];
 				if (onlyShowErrors && !UIHelper.isSyncError(item.syncType)) {
 					continue;
 				}
 				const type: string = this.GetDisplayTextForSyncType(
-					item.syncType
+					item.syncType,
 				);
 				TfvcOutput.AppendLine(
-					type + ": " + item.itemPath + " : " + item.message
+					type + ": " + item.itemPath + " : " + item.message,
 				);
 				items.push({
 					label: type,
@@ -132,7 +131,7 @@ export class UIHelper {
 	}
 
 	public static GetDisplayTextForAutoResolveType(
-		type: AutoResolveType
+		type: AutoResolveType,
 	): string {
 		switch (type) {
 			case AutoResolveType.AutoMerge:
@@ -171,13 +170,13 @@ export class UIHelper {
 
 	public static async PromptForConfirmation(
 		message: string,
-		okButtonText?: string
+		okButtonText?: string,
 	): Promise<boolean> {
 		okButtonText = okButtonText ? okButtonText : "OK";
 		//TODO: use Modal api once vscode.d.ts exposes it (currently proposed)
 		const pick: string = await window.showWarningMessage(
 			message,
-			/*{ modal: true },*/ okButtonText
+			/*{ modal: true },*/ okButtonText,
 		);
 		return pick === okButtonText;
 	}

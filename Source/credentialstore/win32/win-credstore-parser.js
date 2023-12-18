@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //
 // Parser for the output of the creds.exe helper program.
@@ -64,9 +63,9 @@ _.extend(WinCredStoreParsingStream.prototype, {
 					new Error(
 						util.format(
 							"Multiple passes attempting to parse line [%s]. Possible bug in parser and infinite loop",
-							line
-						)
-					)
+							line,
+						),
+					),
 				);
 			}
 

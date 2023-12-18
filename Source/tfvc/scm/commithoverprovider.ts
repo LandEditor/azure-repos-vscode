@@ -2,22 +2,21 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import {
-	workspace,
-	window,
-	languages,
 	Disposable,
-	Uri,
-	HoverProvider,
 	Hover,
-	TextEditor,
+	HoverProvider,
 	Position,
-	TextDocument,
 	Range,
+	TextDocument,
+	TextEditor,
 	TextEditorDecorationType,
+	Uri,
 	WorkspaceEdit,
+	languages,
+	window,
+	workspace,
 } from "vscode";
 import { filterEvent } from "../util";
 
@@ -43,7 +42,7 @@ export class CommitHoverProvider implements HoverProvider {
 		this.visibleTextEditorsDisposable =
 			window.onDidChangeVisibleTextEditors(
 				this.onVisibleTextEditors,
-				this
+				this,
 			);
 		this.onVisibleTextEditors(window.visibleTextEditors);
 
@@ -90,7 +89,7 @@ export class CommitHoverProvider implements HoverProvider {
 
 		const onDidChange = filterEvent(
 			workspace.onDidChangeTextDocument,
-			(e) => e.document && isSCMInput(e.document.uri)
+			(e) => e.document && isSCMInput(e.document.uri),
 		);
 		onDidChange(this.update, this, this.disposables);
 
@@ -103,17 +102,17 @@ export class CommitHoverProvider implements HoverProvider {
 		//TODO provide any diagnostic info based on the message here (see git commitcontroller)
 		this.editor.setDecorations(
 			this.decorationType,
-			this.diagnostics.map((d) => d.range)
+			this.diagnostics.map((d) => d.range),
 		);
 	}
 
 	/* Implement HoverProvider */
 	provideHover(
 		document: TextDocument,
-		position: Position
+		position: Position,
 	): Hover | undefined {
 		const [decoration] = this.diagnostics.filter((d) =>
-			d.range.contains(position)
+			d.range.contains(position),
 		);
 
 		if (!decoration || !document) {

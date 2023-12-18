@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import {
 	Disposable,
@@ -13,7 +12,16 @@ import {
 	window,
 	workspace,
 } from "vscode";
-import { Settings } from "./helpers/settings";
+import { FeedbackClient } from "./clients/feedbackclient";
+import { RepositoryInfoClient } from "./clients/repositoryinfoclient";
+import { TeamServicesApi } from "./clients/teamservicesclient";
+import { RepositoryContextFactory } from "./contexts/repocontextfactory";
+import {
+	IRepositoryContext,
+	RepositoryType,
+} from "./contexts/repositorycontext";
+import { TeamServerContext } from "./contexts/servercontext";
+import { TfvcContext } from "./contexts/tfvccontext";
 import {
 	CommandNames,
 	Constants,
@@ -22,30 +30,21 @@ import {
 } from "./helpers/constants";
 import { CredentialManager } from "./helpers/credentialmanager";
 import { Logger } from "./helpers/logger";
+import { Settings } from "./helpers/settings";
 import { Strings } from "./helpers/strings";
 import { UserAgentProvider } from "./helpers/useragentprovider";
 import { Utils } from "./helpers/utils";
 import { VsCodeUtils } from "./helpers/vscodeutils";
 import { IButtonMessageItem } from "./helpers/vscodeutils.interfaces";
-import { RepositoryContextFactory } from "./contexts/repocontextfactory";
-import {
-	IRepositoryContext,
-	RepositoryType,
-} from "./contexts/repositorycontext";
-import { TeamServerContext } from "./contexts/servercontext";
-import { TfvcContext } from "./contexts/tfvccontext";
-import { Telemetry } from "./services/telemetry";
-import { TeamServicesApi } from "./clients/teamservicesclient";
-import { FeedbackClient } from "./clients/feedbackclient";
-import { RepositoryInfoClient } from "./clients/repositoryinfoclient";
-import { UserInfo } from "./info/userinfo";
 import { CredentialInfo } from "./info/credentialinfo";
+import { UserInfo } from "./info/userinfo";
+import { Telemetry } from "./services/telemetry";
 import { TeamExtension } from "./team-extension";
 import { TfCommandLineRunner } from "./tfvc/tfcommandlinerunner";
 import { TfvcExtension } from "./tfvc/tfvc-extension";
 import { TfvcErrorCodes } from "./tfvc/tfvcerror";
-import { TfvcSCMProvider } from "./tfvc/tfvcscmprovider";
 import { TfvcRepository } from "./tfvc/tfvcrepository";
+import { TfvcSCMProvider } from "./tfvc/tfvcscmprovider";
 
 import * as path from "path";
 import * as util from "util";
@@ -71,7 +70,7 @@ export class ExtensionManager implements Disposable {
 		if (workspace) {
 			workspace.onDidChangeConfiguration(() => {
 				Logger.LogDebug(
-					"Reinitializing due to onDidChangeConfiguration"
+					"Reinitializing due to onDidChangeConfiguration",
 				);
 				//FUTURE: Check to see if we really need to do the re-initialization
 				this.Reinitialize();
@@ -129,7 +128,7 @@ export class ExtensionManager implements Disposable {
 			if (this._teamExtension.IsSignedOut) {
 				this.setErrorStatus(
 					Strings.UserMustSignIn,
-					CommandNames.Signin
+					CommandNames.Signin,
 				);
 			} else {
 				this.setErrorStatus(Strings.NoRepoInformation);
@@ -203,11 +202,7 @@ export class ExtensionManager implements Disposable {
 	}
 
 	//Logs an error to the logger and sends an exception to telemetry service
-	public ReportError(
-		err: Error,
-		message: string,
-		showToUser: boolean = false
-	): void {
+	public ReportError(err: Error, message: string, showToUser = false): void {
 		const fullMessage = err ? message + " " + err : message;
 
 		// Log the message
@@ -264,11 +259,11 @@ export class ExtensionManager implements Disposable {
 			//Add the account name to the message to help the user
 			error = util.format(
 				Strings.NoAccessTokenRunSignin,
-				this._serverContext.RepoInfo.Account
+				this._serverContext.RepoInfo.Account,
 			);
 			displayError = util.format(
 				Strings.NoAccessTokenLearnMoreRunSignin,
-				this._serverContext.RepoInfo.Account
+				this._serverContext.RepoInfo.Account,
 			);
 		}
 		Logger.LogError(error);
@@ -312,11 +307,11 @@ export class ExtensionManager implements Disposable {
 		this.logStart(this._settings.LoggingLevel, workspace.rootPath);
 		this._teamServicesStatusBarItem = window.createStatusBarItem(
 			StatusBarAlignment.Left,
-			100
+			100,
 		);
 		this._feedbackStatusBarItem = window.createStatusBarItem(
 			StatusBarAlignment.Left,
-			96
+			96,
 		);
 
 		try {
@@ -324,18 +319,18 @@ export class ExtensionManager implements Disposable {
 			this._repoContext =
 				await RepositoryContextFactory.CreateRepositoryContext(
 					workspace.rootPath,
-					this._settings
+					this._settings,
 				);
 			if (this._repoContext) {
 				this.showFeedbackItem();
 				this.setupFileSystemWatcherOnHead();
 				this._serverContext = new TeamServerContext(
-					this._repoContext.RemoteUrl
+					this._repoContext.RemoteUrl,
 				);
 				//Now that we have a server context, we can update it on the repository context
 				RepositoryContextFactory.UpdateRepositoryContext(
 					this._repoContext,
-					this._serverContext
+					this._serverContext,
 				);
 
 				this._feedbackClient = new FeedbackClient();
@@ -351,24 +346,24 @@ export class ExtensionManager implements Disposable {
 							this._serverContext.CredentialInfo = creds;
 							Telemetry.Initialize(
 								this._settings,
-								this._serverContext
+								this._serverContext,
 							); //Re-initialize the telemetry with the server context information
 							Logger.LogDebug(
-								"Started ApplicationInsights telemetry"
+								"Started ApplicationInsights telemetry",
 							);
 
 							//Set up the client we need to talk to the server for more repository information
 							const repositoryInfoClient: RepositoryInfoClient =
 								new RepositoryInfoClient(
 									this._repoContext,
-									CredentialManager.GetCredentialHandler()
+									CredentialManager.GetCredentialHandler(),
 								);
 
 							Logger.LogInfo(
-								"Getting repository information with repositoryInfoClient"
+								"Getting repository information with repositoryInfoClient",
 							);
 							Logger.LogDebug(
-								"RemoteUrl = " + this._repoContext.RemoteUrl
+								"RemoteUrl = " + this._repoContext.RemoteUrl,
 							);
 							try {
 								//At this point, we have either successfully called git.exe or tf.cmd (we just need to verify the remote urls)
@@ -390,33 +385,35 @@ export class ExtensionManager implements Disposable {
 										CredentialManager.GetCredentialHandler(),
 									]);
 								Logger.LogInfo(
-									"Getting connectionData with accountClient"
+									"Getting connectionData with accountClient",
 								);
 								Logger.LogDebug(
-									"connectionUrl = " + connectionUrl
+									"connectionUrl = " + connectionUrl,
 								);
 								try {
 									const settings: any =
 										await accountClient.connect();
 									Logger.LogInfo(
-										"Retrieved connectionData with accountClient"
+										"Retrieved connectionData with accountClient",
 									);
 									this.resetErrorStatus();
 
 									this._serverContext.UserInfo = new UserInfo(
 										settings.authenticatedUser.id,
-										settings.authenticatedUser.providerDisplayName,
-										settings.authenticatedUser.customDisplayName
+										settings.authenticatedUser
+											.providerDisplayName,
+										settings.authenticatedUser
+											.customDisplayName,
 									);
 
 									this.initializeStatusBars();
 									await this.initializeClients(
-										this._repoContext.Type
+										this._repoContext.Type,
 									);
 
 									this.sendStartupTelemetry();
 									Logger.LogInfo(
-										`Sent extension start up telemetry`
+										`Sent extension start up telemetry`,
 									);
 
 									Logger.LogObject(settings);
@@ -425,11 +422,11 @@ export class ExtensionManager implements Disposable {
 									this.setErrorStatus(
 										Utils.GetMessageForStatusCode(
 											err,
-											err.message
+											err.message,
 										),
 										err.statusCode === 401
 											? CommandNames.Signin
-											: undefined
+											: undefined,
 									);
 									//Wrap err here to get a useful call stack
 									this.ReportError(
@@ -437,8 +434,8 @@ export class ExtensionManager implements Disposable {
 										Utils.GetMessageForStatusCode(
 											err,
 											err.message,
-											"Failed to get results with accountClient: "
-										)
+											"Failed to get results with accountClient: ",
+										),
 									);
 								}
 							} catch (err) {
@@ -450,27 +447,27 @@ export class ExtensionManager implements Disposable {
 									(err.statusCode === 404 ||
 										(err.message &&
 											err.message.indexOf(
-												"Failed to find api location for area: core id:"
+												"Failed to find api location for area: core id:",
 											) === 0))
 								) {
 									this.setErrorStatus(
-										Strings.UnsupportedServerVersion
+										Strings.UnsupportedServerVersion,
 									);
 									Logger.LogError(
-										Strings.UnsupportedServerVersion
+										Strings.UnsupportedServerVersion,
 									);
 									Telemetry.SendEvent(
-										TelemetryEvents.UnsupportedServerVersion
+										TelemetryEvents.UnsupportedServerVersion,
 									);
 								} else {
 									this.setErrorStatus(
 										Utils.GetMessageForStatusCode(
 											err,
-											err.message
+											err.message,
 										),
 										err.statusCode === 401
 											? CommandNames.Signin
-											: undefined
+											: undefined,
 									);
 									//Wrap err here to get a useful call stack
 									this.ReportError(
@@ -478,8 +475,8 @@ export class ExtensionManager implements Disposable {
 										Utils.GetMessageForStatusCode(
 											err,
 											err.message,
-											"Failed call with repositoryClient: "
-										)
+											"Failed call with repositoryClient: ",
+										),
 									);
 								}
 							}
@@ -494,36 +491,36 @@ export class ExtensionManager implements Disposable {
 									this._repoContext
 								);
 								this.sendTfvcConfiguredTelemetry(
-									tfvcContext.TfvcRepository
+									tfvcContext.TfvcRepository,
 								);
 								Logger.LogInfo(`Sent TFVC tooling telemetry`);
-								if (!this._scmProvider) {
+								if (this._scmProvider) {
 									Logger.LogDebug(
-										`Initializing the TfvcSCMProvider`
-									);
-									this._scmProvider = new TfvcSCMProvider(
-										this
-									);
-									await this._scmProvider.Initialize();
-									Logger.LogDebug(
-										`Initialized the TfvcSCMProvider`
-									);
-								} else {
-									Logger.LogDebug(
-										`Re-initializing the TfvcSCMProvider`
+										`Re-initializing the TfvcSCMProvider`,
 									);
 									await this._scmProvider.Reinitialize();
 									Logger.LogDebug(
-										`Re-initialized the TfvcSCMProvider`
+										`Re-initialized the TfvcSCMProvider`,
+									);
+								} else {
+									Logger.LogDebug(
+										`Initializing the TfvcSCMProvider`,
+									);
+									this._scmProvider = new TfvcSCMProvider(
+										this,
+									);
+									await this._scmProvider.Initialize();
+									Logger.LogDebug(
+										`Initialized the TfvcSCMProvider`,
 									);
 								}
 								this.sendTfvcConnectedTelemetry(
-									tfvcContext.TfvcRepository
+									tfvcContext.TfvcRepository,
 								);
 							}
 						} catch (err) {
 							Logger.LogError(
-								`Caught an exception during Tfvc SCM Provider initialization`
+								`Caught an exception during Tfvc SCM Provider initialization`,
 							);
 							const logMsg: string =
 								this.formatErrorLogMessage(err);
@@ -534,12 +531,12 @@ export class ExtensionManager implements Disposable {
 								this._teamExtension.cleanup();
 								if (
 									this.shouldDisplayTfvcError(
-										err.tfvcErrorCode
+										err.tfvcErrorCode,
 									)
 								) {
 									VsCodeUtils.ShowErrorMessage(
 										err.message,
-										...err.messageOptions
+										...err.messageOptions,
 									);
 								}
 							}
@@ -550,13 +547,13 @@ export class ExtensionManager implements Disposable {
 							Utils.GetMessageForStatusCode(err, err.message),
 							err.statusCode === 401
 								? CommandNames.Signin
-								: undefined
+								: undefined,
 						);
 						//If we can't get a requestHandler, report the error via the feedbackclient
 						const message: string = Utils.GetMessageForStatusCode(
 							err,
 							err.message,
-							"Failed to get a credential handler"
+							"Failed to get a credential handler",
 						);
 						Logger.LogError(message);
 						Telemetry.SendException(err);
@@ -573,7 +570,7 @@ export class ExtensionManager implements Disposable {
 				this.setErrorStatus(err.message);
 				VsCodeUtils.ShowErrorMessage(
 					err.message,
-					...err.messageOptions
+					...err.messageOptions,
 				);
 			}
 		}
@@ -650,7 +647,7 @@ export class ExtensionManager implements Disposable {
 			const chosenItem: IButtonMessageItem =
 				await VsCodeUtils.ShowInfoMessage(
 					welcomeMessage,
-					...messageItems
+					...messageItems,
 				);
 			if (chosenItem && chosenItem.title === Strings.DontShowAgain) {
 				this._settings.ShowWelcomeMessage = false;
@@ -671,7 +668,7 @@ export class ExtensionManager implements Disposable {
 			const chosenItem: IButtonMessageItem =
 				await VsCodeUtils.ShowInfoMessage(
 					farewellMessage,
-					...messageItems
+					...messageItems,
 				);
 			if (chosenItem && chosenItem.title === Strings.DontShowAgain) {
 				this._settings.ShowFarewellMessage = false;
@@ -727,17 +724,17 @@ export class ExtensionManager implements Disposable {
 				" " +
 				"UserId: " +
 				this._serverContext.UserInfo.Id +
-				" "
+				" ",
 		);
 		Logger.LogDebug("repositoryFolder: " + this._repoContext.RepoFolder);
 		Logger.LogDebug("repositoryRemoteUrl: " + this._repoContext.RemoteUrl);
 		if (this._repoContext.Type === RepositoryType.GIT) {
 			Logger.LogDebug(
 				"gitRepositoryParentFolder: " +
-					this._repoContext.RepositoryParentFolder
+					this._repoContext.RepositoryParentFolder,
 			);
 			Logger.LogDebug(
-				"gitCurrentBranch: " + this._repoContext.CurrentBranch
+				"gitCurrentBranch: " + this._repoContext.CurrentBranch,
 			);
 			Logger.LogDebug("gitCurrentRef: " + this._repoContext.CurrentRef);
 		}
@@ -746,7 +743,7 @@ export class ExtensionManager implements Disposable {
 			"proxy: " +
 				(Utils.IsProxyEnabled() ? "enabled" : "not enabled") +
 				", azure devops services: " +
-				this._serverContext.RepoInfo.IsTeamServices.toString()
+				this._serverContext.RepoInfo.IsTeamServices.toString(),
 		);
 	}
 
@@ -790,19 +787,19 @@ export class ExtensionManager implements Disposable {
 				pattern,
 				true,
 				false,
-				true
+				true,
 			);
 			fsw.onDidChange(async (/*uri*/) => {
 				Logger.LogInfo(
-					"HEAD has changed, re-parsing RepoContext object"
+					"HEAD has changed, re-parsing RepoContext object",
 				);
 				this._repoContext =
 					await RepositoryContextFactory.CreateRepositoryContext(
 						workspace.rootPath,
-						this._settings
+						this._settings,
 					);
 				Logger.LogInfo(
-					"CurrentBranch is: " + this._repoContext.CurrentBranch
+					"CurrentBranch is: " + this._repoContext.CurrentBranch,
 				);
 				this.notifyBranchChanged(/*this._repoContext.CurrentBranch*/);
 			});
@@ -828,30 +825,30 @@ export class ExtensionManager implements Disposable {
 			const pattern: string = path.join(
 				workspace.rootPath,
 				".git",
-				"config"
+				"config",
 			);
 			//We want to listen to file creation, change and delete events
 			const fsw: FileSystemWatcher = workspace.createFileSystemWatcher(
 				pattern,
 				false,
 				false,
-				false
+				false,
 			);
 			fsw.onDidCreate((/*uri*/) => {
 				//When a new local repo is initialized (e.g., git init), re-initialize the extension
 				Logger.LogInfo(
-					"config has been created, re-initializing the extension"
+					"config has been created, re-initializing the extension",
 				);
 				this.Reinitialize();
 			});
 			fsw.onDidChange(async (uri) => {
 				Logger.LogInfo(
-					"config has changed, checking if 'remote origin' changed"
+					"config has changed, checking if 'remote origin' changed",
 				);
 				const context: IRepositoryContext =
 					await RepositoryContextFactory.CreateRepositoryContext(
 						uri.fsPath,
-						this._settings
+						this._settings,
 					);
 				const remote: string = context.RemoteUrl;
 				if (remote === undefined) {
@@ -859,14 +856,14 @@ export class ExtensionManager implements Disposable {
 					if (this._repoContext.RemoteUrl !== undefined) {
 						//We previously had a Team Services repo and now we don't, reinitialize
 						Logger.LogInfo(
-							"remote was removed, previously had an Azure Repos remote, re-initializing the extension"
+							"remote was removed, previously had an Azure Repos remote, re-initializing the extension",
 						);
 						this.Reinitialize();
 						return;
 					}
 					//There was no previous remote, so do nothing
 					Logger.LogInfo(
-						"remote does not exist, no previous Azure Repos remote, nothing to do"
+						"remote does not exist, no previous Azure Repos remote, nothing to do",
 					);
 				} else if (this._repoContext !== undefined) {
 					//We have a valid gitContext already, check to see what changed
@@ -878,14 +875,14 @@ export class ExtensionManager implements Disposable {
 						) {
 							//And they're different, reinitialize
 							Logger.LogInfo(
-								"remote changed to a different Azure Repos remote, re-initializing the extension"
+								"remote changed to a different Azure Repos remote, re-initializing the extension",
 							);
 							this.Reinitialize();
 						}
 					} else {
 						//The remote was initialized to a Team Services remote, reinitialize
 						Logger.LogInfo(
-							"remote initialized to an Azure Repos remote, re-initializing the extension"
+							"remote initialized to an Azure Repos remote, re-initializing the extension",
 						);
 						this.Reinitialize();
 					}
@@ -893,7 +890,7 @@ export class ExtensionManager implements Disposable {
 			});
 			fsw.onDidDelete((/*uri*/) => {
 				Logger.LogInfo(
-					"config has been deleted, re-initializing the extension"
+					"config has been deleted, re-initializing the extension",
 				);
 				this.Reinitialize();
 			});
@@ -907,7 +904,7 @@ export class ExtensionManager implements Disposable {
 		this._feedbackStatusBarItem.show();
 	}
 
-	private cleanup(preserveTeamExtension: boolean = false): void {
+	private cleanup(preserveTeamExtension = false): void {
 		if (this._teamServicesStatusBarItem) {
 			this._teamServicesStatusBarItem.dispose();
 			this._teamServicesStatusBarItem = undefined;

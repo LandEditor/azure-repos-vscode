@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Credential } from "../credential";
 import { ICredentialStore } from "../interfaces/icredentialstore";
@@ -18,7 +17,7 @@ var wincredstore = require("./win-credstore");
     User can provide a custom prefix for the credential.
  */
 export class WindowsCredentialStoreApi implements ICredentialStore {
-	private static separator: string = "|";
+	private static separator = "|";
 
 	constructor(credentialPrefix: string) {
 		if (credentialPrefix !== undefined) {
@@ -34,11 +33,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		this.listCredentials()
 			.then((credentials) => {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
-				for (
-					let index: number = 0;
-					index < credentials.length;
-					index++
-				) {
+				for (let index = 0; index < credentials.length; index++) {
 					credential = this.createCredential(credentials[index]);
 					if (credential.Service === service) {
 						break;
@@ -58,13 +53,13 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 	public SetCredential(
 		service: string,
 		username: string,
-		password: any
+		password: any,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 		const targetName: string = this.createTargetName(service, username);
 
 		// Here, `password` is either the password or pat
-		wincredstore.set(targetName, password, function (err) {
+		wincredstore.set(targetName, password, (err) => {
 			if (err) {
 				deferred.reject(err);
 			} else {
@@ -78,7 +73,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 		const targetName: string = this.createTargetName(service, "*");
 
-		wincredstore.remove(targetName, function (err) {
+		wincredstore.remove(targetName, (err) => {
 			if (err) {
 				if (err.code !== undefined && err.code === 1168) {
 					//code 1168: not found
@@ -97,7 +92,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 	// Adding for test purposes (to ensure a particular credential doesn't exist)
 	public getCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
 		let credential: Credential;
@@ -105,11 +100,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		this.listCredentials()
 			.then((credentials) => {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
-				for (
-					let index: number = 0;
-					index < credentials.length;
-					index++
-				) {
+				for (let index = 0; index < credentials.length; index++) {
 					credential = this.createCredential(credentials[index]);
 					if (
 						credential.Service === service &&
@@ -131,12 +122,12 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	public removeCredentialByName(
 		service: string,
-		username: string
+		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
 		const targetName: string = this.createTargetName(service, username);
 
-		wincredstore.remove(targetName, function (err) {
+		wincredstore.remove(targetName, (err) => {
 			if (err) {
 				if (err.code !== undefined && err.code === 1168) {
 					//code 1168: not found
@@ -154,11 +145,11 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	private createCredential(cred: any): Credential {
 		const password: string = new Buffer(cred.credential, "hex").toString(
-			"utf8"
+			"utf8",
 		);
 		// http://servername:port|\\domain\username
 		const segments: Array<string> = cred.targetName.split(
-			WindowsCredentialStoreApi.separator
+			WindowsCredentialStoreApi.separator,
 		);
 		const username: string = segments[segments.length - 1];
 		const service: string = segments[0];

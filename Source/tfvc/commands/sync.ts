@@ -2,15 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import {
 	IArgumentProvider,
 	IExecutionResult,
-	ITfvcCommand,
-	ISyncResults,
 	ISyncItemResult,
+	ISyncResults,
+	ITfvcCommand,
 	SyncType,
 } from "../interfaces";
 import { ArgumentBuilder } from "./argumentbuilder";
@@ -32,7 +31,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 	public constructor(
 		serverContext: TeamServerContext,
 		itemPaths: string[],
-		recursive: boolean
+		recursive: boolean,
 	) {
 		this._serverContext = serverContext;
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
@@ -43,7 +42,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"get",
-			this._serverContext
+			this._serverContext,
 		)
 			.AddSwitch("nosummary")
 			.AddAll(this._itemPaths);
@@ -80,7 +79,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 	 *
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<ISyncResults> {
 		// Any exit code other than 0 or 1 means that something went wrong, so simply throw the error
 		if (executionResult.exitCode !== 0 && executionResult.exitCode !== 1) {
@@ -98,19 +97,19 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		} else {
 			// Get the item results and any warnings or errors
 			const itemResults: ISyncItemResult[] = this.getItemResults(
-				executionResult.stdout
+				executionResult.stdout,
 			);
 			const errorMessages: ISyncItemResult[] = this.getErrorMessages(
-				executionResult.stderr
+				executionResult.stderr,
 			);
 			return {
 				hasConflicts:
 					errorMessages.filter(
-						(err) => err.syncType === SyncType.Conflict
+						(err) => err.syncType === SyncType.Conflict,
 					).length > 0,
 				hasErrors:
 					errorMessages.filter(
-						(err) => err.syncType !== SyncType.Conflict
+						(err) => err.syncType !== SyncType.Conflict,
 					).length > 0,
 				itemResults: itemResults.concat(errorMessages),
 			};
@@ -121,7 +120,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"get",
 			this._serverContext,
-			true /* skipCollectionOption */
+			true /* skipCollectionOption */,
 		)
 			.AddSwitch("nosummary")
 			.AddAll(this._itemPaths);
@@ -138,27 +137,27 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<ISyncResults> {
 		return await this.ParseOutput(executionResult);
 	}
 
 	private getItemResults(stdout: string): ISyncItemResult[] {
 		const itemResults: ISyncItemResult[] = [];
-		let folderPath: string = "";
+		let folderPath = "";
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			stdout,
 			true,
-			true
+			true,
 		);
-		for (let i: number = 0; i < lines.length; i++) {
+		for (let i = 0; i < lines.length; i++) {
 			const line = lines[i];
 			if (CommandHelper.IsFilePath(line)) {
 				folderPath = line;
 			} else if (line) {
 				const sr: ISyncItemResult = this.getSyncResultFromLine(
 					folderPath,
-					line
+					line,
 				);
 				if (sr) {
 					itemResults.push(sr);
@@ -170,7 +169,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 
 	private getSyncResultFromLine(
 		folderPath: string,
-		line: string
+		line: string,
 	): ISyncItemResult {
 		if (!line) {
 			return undefined;
@@ -182,7 +181,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				syncType: SyncType.New,
 				itemPath: CommandHelper.GetFilePath(
 					folderPath,
-					line.slice("Getting ".length).trim()
+					line.slice("Getting ".length).trim(),
 				),
 			};
 		} else if (line.startsWith("Replacing ")) {
@@ -190,7 +189,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				syncType: SyncType.Updated,
 				itemPath: CommandHelper.GetFilePath(
 					folderPath,
-					line.slice("Replacing ".length).trim()
+					line.slice("Replacing ".length).trim(),
 				),
 			};
 		} else if (line.startsWith("Deleting ")) {
@@ -198,7 +197,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				syncType: SyncType.Deleted,
 				itemPath: CommandHelper.GetFilePath(
 					folderPath,
-					line.slice("Deleting ".length).trim()
+					line.slice("Deleting ".length).trim(),
 				),
 			};
 		} else if (line.startsWith("Conflict ")) {
@@ -207,7 +206,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				syncType: SyncType.Conflict,
 				itemPath: CommandHelper.GetFilePath(
 					folderPath,
-					line.slice("Conflict ".length, dashIndex).trim()
+					line.slice("Conflict ".length, dashIndex).trim(),
 				),
 				message: line.slice(dashIndex + 1).trim(),
 			};
@@ -217,7 +216,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				syncType: SyncType.Warning,
 				itemPath: CommandHelper.GetFilePath(
 					folderPath,
-					line.slice("Warning ".length, dashIndex).trim()
+					line.slice("Warning ".length, dashIndex).trim(),
 				),
 				message: line.slice(dashIndex + 1).trim(),
 			};
@@ -229,7 +228,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 					syncType: SyncType.Error,
 					itemPath: CommandHelper.GetFilePath(
 						folderPath,
-						line.slice(0, index).trim()
+						line.slice(0, index).trim(),
 					),
 					message: line.slice(index + 1).trim(),
 				};
@@ -240,7 +239,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 						syncType: SyncType.Warning,
 						itemPath: CommandHelper.GetFilePath(
 							folderPath,
-							line.slice(0, index).trim()
+							line.slice(0, index).trim(),
 						),
 						message: line.trim(),
 					};
@@ -264,9 +263,9 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			stderr,
 			false,
-			true
+			true,
 		);
-		for (let i: number = 0; i < lines.length; i++) {
+		for (let i = 0; i < lines.length; i++) {
 			// stderr doesn't get any file path lines, so the files will all be just the filenames
 			errorMessages.push(this.getSyncResultFromLine("", lines[i]));
 		}

@@ -2,15 +2,14 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import {
 	AutoResolveType,
 	IArgumentProvider,
+	IConflict,
 	IExecutionResult,
 	ITfvcCommand,
-	IConflict,
 } from "../interfaces";
 import { ConflictType } from "../scm/status";
 import { ArgumentBuilder } from "./argumentbuilder";
@@ -31,7 +30,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 	public constructor(
 		serverContext: TeamServerContext,
 		itemPaths: string[],
-		autoResolveType: AutoResolveType
+		autoResolveType: AutoResolveType,
 	) {
 		this._serverContext = serverContext;
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
@@ -43,13 +42,13 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 	public GetArguments(): IArgumentProvider {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"resolve",
-			this._serverContext
+			this._serverContext,
 		)
 			.AddAll(this._itemPaths)
 			.AddSwitchWithValue(
 				"auto",
 				AutoResolveType[this._autoResolveType],
-				false
+				false,
 			);
 		return builder;
 	}
@@ -65,7 +64,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 	 * Resolved /Users/leantk/tfvc-tfs/tfsTest_01/addFold/testHere2 as KeepYours
 	 */
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IConflict[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
@@ -73,9 +72,9 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			true,
-			true
+			true,
 		);
-		for (let i: number = 0; i < lines.length; i++) {
+		for (let i = 0; i < lines.length; i++) {
 			const line: string = lines[i];
 			const startIndex: number = line.indexOf("Resolved ");
 			const endIndex: number = line.lastIndexOf(" as ");
@@ -83,7 +82,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 				conflicts.push({
 					localPath: line.slice(
 						startIndex + "Resolved ".length,
-						endIndex
+						endIndex,
 					),
 					type: ConflictType.RESOLVED,
 					message: line,
@@ -98,13 +97,13 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"resolve",
 			this._serverContext,
-			true /* skipCollectionOption */
+			true /* skipCollectionOption */,
 		)
 			.AddAll(this._itemPaths)
 			.AddSwitchWithValue(
 				"auto",
 				AutoResolveType[this._autoResolveType],
-				false
+				false,
 			);
 		return builder;
 	}
@@ -114,7 +113,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<IConflict[]> {
 		return await this.ParseOutput(executionResult);
 	}

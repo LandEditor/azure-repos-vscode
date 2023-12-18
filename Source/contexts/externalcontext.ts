@@ -2,19 +2,18 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { IRepositoryContext, RepositoryType } from "./repositorycontext";
-import { RepoUtils } from "../helpers/repoutils";
 import { Logger } from "../helpers/logger";
+import { RepoUtils } from "../helpers/repoutils";
 import { ISettings } from "../helpers/settings";
+import { IRepositoryContext, RepositoryType } from "./repositorycontext";
 
 export class ExternalContext implements IRepositoryContext {
 	private _folder: string;
 	private _remoteUrl: string;
-	private _isSsh: boolean = false;
-	private _isTeamServicesUrl: boolean = false;
-	private _isTeamFoundationServer: boolean = false;
+	private _isSsh = false;
+	private _isTeamServicesUrl = false;
+	private _isTeamFoundationServer = false;
 	private _teamProjectName: string;
 
 	constructor(rootPath: string) {
@@ -35,10 +34,10 @@ export class ExternalContext implements IRepositoryContext {
 		}
 		this._remoteUrl = settings.RemoteUrl;
 		this._isTeamServicesUrl = RepoUtils.IsTeamFoundationServicesRepo(
-			this._remoteUrl
+			this._remoteUrl,
 		);
 		this._isTeamFoundationServer = RepoUtils.IsTeamFoundationServerRepo(
-			this._remoteUrl
+			this._remoteUrl,
 		);
 		this._teamProjectName = settings.TeamProject;
 		Logger.LogDebug(`Found an External Context at ${this._folder}`);

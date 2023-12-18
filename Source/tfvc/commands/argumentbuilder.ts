@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import { IArgumentProvider } from "../interfaces";
@@ -18,7 +17,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	public constructor(
 		command: string,
 		serverContext?: TeamServerContext,
-		skipCollectionOption?: boolean
+		skipCollectionOption?: boolean,
 	) {
 		if (!command) {
 			throw TfvcError.CreateArgumentMissingError("command");
@@ -36,7 +35,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 				this.AddSwitchWithValue(
 					"collection",
 					serverContext.RepoInfo.CollectionUrl,
-					false
+					false,
 				);
 			}
 			if (serverContext.CredentialInfo) {
@@ -48,7 +47,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 						serverContext.CredentialInfo.Username +
 						"," +
 						serverContext.CredentialInfo.Password,
-					true
+					true,
 				);
 			}
 		}
@@ -61,7 +60,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 
 	public AddAll(args: string[]): ArgumentBuilder {
 		if (args) {
-			for (let i: number = 0; i < args.length; i++) {
+			for (let i = 0; i < args.length; i++) {
 				this.Add(args[i]);
 			}
 		}
@@ -81,13 +80,13 @@ export class ArgumentBuilder implements IArgumentProvider {
 	public AddSwitchWithValue(
 		switchName: string,
 		switchValue: string,
-		isSecret: boolean
+		isSecret: boolean,
 	): ArgumentBuilder {
 		let arg: string;
-		if (!switchValue) {
-			arg = "-" + switchName;
-		} else {
+		if (switchValue) {
 			arg = "-" + switchName + ":" + switchValue;
+		} else {
+			arg = "-" + switchName;
 		}
 
 		if (isSecret) {
@@ -108,7 +107,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	 * a response file is needed for the commands.
 	 */
 	public BuildCommandLine(): string {
-		let result: string = "";
+		let result = "";
 		this._arguments.forEach((arg) => {
 			const escapedArg = this.escapeArgument(arg);
 			result += escapedArg + " ";
@@ -134,7 +133,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	}
 
 	public ToString(): string {
-		let output: string = "";
+		let output = "";
 		for (let i = 0; i < this._arguments.length; i++) {
 			let arg: string = this._arguments[i];
 			if (this._secretArgumentIndexes.indexOf(i) >= 0) {

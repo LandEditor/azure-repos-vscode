@@ -2,12 +2,11 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import * as url from "url";
 import { Logger } from "../helpers/logger";
 import { RepoUtils } from "../helpers/repoutils";
 import { UrlBuilder } from "../helpers/urlbuilder";
-import * as url from "url";
 
 //When a RepositoryInfo object is created, we have already verified whether or not it
 //is either a Team Services or Team Foundation Server repository.  With the introduction
@@ -31,9 +30,9 @@ export class RepositoryInfo {
 	private _serverUrl: string;
 
 	// Indicates whether the repository is Team Services
-	private _isTeamServicesUrl: boolean = false;
+	private _isTeamServicesUrl = false;
 	// Indicates whether the repository is an on-premises server
-	private _isTeamFoundationServer: boolean = false;
+	private _isTeamFoundationServer = false;
 
 	private _repositoryId: string;
 
@@ -71,7 +70,7 @@ export class RepositoryInfo {
 			if (RepoUtils.IsTeamFoundationServicesRepo(repositoryUrl)) {
 				if (
 					RepoUtils.IsTeamFoundationServicesAzureRepo(
-						this._repositoryUrl
+						this._repositoryUrl,
 					)
 				) {
 					const splitPath = this._path.split("/");
@@ -79,7 +78,7 @@ export class RepositoryInfo {
 						this._account = splitPath[1];
 					} else {
 						throw new Error(
-							`Could not parse account from ${this._path}`
+							`Could not parse account from ${this._path}`,
 						);
 					}
 				} else {
@@ -94,7 +93,7 @@ export class RepositoryInfo {
 			}
 			if (typeof repositoryInfo === "object") {
 				Logger.LogDebug(
-					"Parsing values from repositoryInfo object as any"
+					"Parsing values from repositoryInfo object as any",
 				);
 				//The following properties are returned from the vsts/info api
 				//If you add additional properties to the server context, they need to be set here
@@ -115,7 +114,7 @@ export class RepositoryInfo {
 				}
 			} else {
 				Logger.LogDebug(
-					"Parsing values from repositoryInfo as string url"
+					"Parsing values from repositoryInfo as string url",
 				);
 			}
 		}

@@ -1,11 +1,10 @@
-"use strict";
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 var http = require("http");
 var https = require("https");
 var _ = require("underscore");
 var ntlm = require("../opensource/node-http-ntlm/ntlm");
-var NtlmCredentialHandler = (function () {
+var NtlmCredentialHandler = (() => {
 	function NtlmCredentialHandler(username, password, domain, workstation) {
 		this.username = username;
 		this.password = password;
@@ -16,14 +15,14 @@ var NtlmCredentialHandler = (function () {
 			this.workstation = workstation;
 		}
 	}
-	NtlmCredentialHandler.prototype.prepareRequest = function (options) {
+	NtlmCredentialHandler.prototype.prepareRequest = (options) => {
 		// No headers or options need to be set.  We keep the credentials on the handler itself.
 		// If a (proxy) agent is set, remove it as we don't support proxy for NTLM at this time
 		if (options.agent) {
 			delete options.agent;
 		}
 	};
-	NtlmCredentialHandler.prototype.canHandleAuthentication = function (res) {
+	NtlmCredentialHandler.prototype.canHandleAuthentication = (res) => {
 		if (res && res.statusCode === 401) {
 			// Ensure that we're talking NTLM here
 			// Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
@@ -48,7 +47,7 @@ var NtlmCredentialHandler = (function () {
 		protocol,
 		options,
 		objs,
-		finalCallback
+		finalCallback,
 	) {
 		// Set up the headers for NTLM authentication
 		var ntlmOptions = _.extend(options, {
@@ -63,7 +62,6 @@ var NtlmCredentialHandler = (function () {
 		} else {
 			keepaliveAgent = new http.Agent({ keepAlive: true });
 		}
-		var self = this;
 		// The following pattern of sending the type1 message following immediately (in a setImmediate) is
 		// critical for the NTLM exchange to happen.  If we removed setImmediate (or call in a different manner)
 		// the NTLM exchange will always fail with a 401.
@@ -73,33 +71,33 @@ var NtlmCredentialHandler = (function () {
 			ntlmOptions,
 			objs,
 			keepaliveAgent,
-			function (err, res) {
+			(err, res) => {
 				if (err) {
 					return finalCallback(err, null, null);
 				}
-				setImmediate(function () {
-					self.sendType3Message(
+				setImmediate(() => {
+					this.sendType3Message(
 						httpClient,
 						protocol,
 						ntlmOptions,
 						objs,
 						keepaliveAgent,
 						res,
-						finalCallback
+						finalCallback,
 					);
 				});
-			}
+			},
 		);
 	};
 	// The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
-	NtlmCredentialHandler.prototype.sendType1Message = function (
+	NtlmCredentialHandler.prototype.sendType1Message = (
 		httpClient,
 		protocol,
 		options,
 		objs,
 		keepaliveAgent,
-		callback
-	) {
+		callback,
+	) => {
 		var type1msg = ntlm.createType1Message(options);
 		var type1options = {
 			headers: {
@@ -115,20 +113,20 @@ var NtlmCredentialHandler = (function () {
 		httpClient.requestInternal(protocol, type1options, objs, callback);
 	};
 	// The following method is an adaptation of code found at https://github.com/SamDecrock/node-http-ntlm/blob/master/httpntlm.js
-	NtlmCredentialHandler.prototype.sendType3Message = function (
+	NtlmCredentialHandler.prototype.sendType3Message = (
 		httpClient,
 		protocol,
 		options,
 		objs,
 		keepaliveAgent,
 		res,
-		callback
-	) {
+		callback,
+	) => {
 		if (!res.headers["www-authenticate"]) {
 			return callback(
 				new Error(
-					"www-authenticate not found on response of second request"
-				)
+					"www-authenticate not found on response of second request",
+				),
 			);
 		}
 		// parse type2 message from server:

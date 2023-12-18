@@ -2,27 +2,25 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { TeamServerContext } from "../contexts/servercontext";
 import { Constants } from "../helpers/constants";
 import { Settings } from "../helpers/settings";
-import { TeamServerContext } from "../contexts/servercontext";
 
 import appInsights = require("applicationinsights");
 import uuid = require("uuid");
 
-import * as os from "os";
 import * as crypto from "crypto";
+import * as os from "os";
 
 export class Telemetry {
 	private static _appInsightsClient: Client;
 	private static _serverContext: TeamServerContext;
-	private static _telemetryEnabled: boolean = true;
+	private static _telemetryEnabled = true;
 	//Default to a new uuid in case the extension fails before being initialized
-	private static _userId: string = "UNKNOWN";
+	private static _userId = "UNKNOWN";
 	private static _sessionId: string = uuid.v4(); //The sessionId can be updated later
-	private static _productionKey: string =
-		"44267cbb-b9ba-4bce-a37a-338588aa4da3";
+	private static _productionKey = "44267cbb-b9ba-4bce-a37a-338588aa4da3";
 
 	//Initialize can be called multiple times.  Initially, we have no information about the user but
 	//still want to send telemetry.  Once we have user information, we want to update the Telemetry
@@ -30,7 +28,7 @@ export class Telemetry {
 	//to the Telemetry service so we can send telemetry from just about anywhere at anytime.
 	public static Initialize(
 		settings: Settings,
-		context?: TeamServerContext
+		context?: TeamServerContext,
 	): void {
 		Telemetry._serverContext = context;
 		Telemetry._telemetryEnabled = settings.AppInsightsEnabled;
@@ -86,15 +84,15 @@ export class Telemetry {
 	private static ensureInitialized(): void {
 		if (Telemetry._appInsightsClient === undefined) {
 			throw new Error(
-				"Telemetry service was called before being initialized."
+				"Telemetry service was called before being initialized.",
 			);
 		}
 	}
 
 	//Will generate a consistent ApplicationInsights userId
 	private static setUserId(): void {
-		let username: string = "UNKNOWN";
-		let hostname: string = "UNKNOWN";
+		let username = "UNKNOWN";
+		let hostname = "UNKNOWN";
 
 		if (os.userInfo().username) {
 			username = os.userInfo().username;

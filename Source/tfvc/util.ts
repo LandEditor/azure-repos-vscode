@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 /* tslint:disable:no-null-keyword */
 
 import { Event } from "vscode";
@@ -35,13 +34,13 @@ export function mapEvent<I, O>(event: Event<I>, map: (i: I) => O): Event<O> {
 
 export function filterEvent<T>(
 	event: Event<T>,
-	filter: (e: T) => boolean
+	filter: (e: T) => boolean,
 ): Event<T> {
 	return (listener, thisArgs = null, disposables?) =>
 		event(
 			(e) => filter(e) && listener.call(thisArgs, e),
 			null,
-			disposables
+			disposables,
 		);
 }
 
@@ -49,15 +48,15 @@ export function anyEvent<T>(...events: Event<T>[]): Event<T> {
 	return (listener, thisArgs = null, disposables?) =>
 		combinedDisposable(
 			events.map((event) =>
-				event((i) => listener.call(thisArgs, i), disposables)
-			)
+				event((i) => listener.call(thisArgs, i), disposables),
+			),
 		);
 }
 
 export function done<T>(promise: Promise<T>): Promise<void> {
 	return promise.then<void>(
 		() => void 0,
-		() => void 0
+		() => void 0,
 	);
 }
 
@@ -69,7 +68,7 @@ export function once<T>(event: Event<T>): Event<T> {
 				return listener.call(thisArgs, e);
 			},
 			null,
-			disposables
+			disposables,
 		);
 
 		return result;

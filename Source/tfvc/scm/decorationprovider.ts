@@ -2,11 +2,10 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import * as path from "path";
 import { SourceControlResourceDecorations, Uri } from "vscode";
 import { ConflictType, Status } from "./status";
-import * as path from "path";
 
 export class DecorationProvider {
 	private static _iconsRootPath: string = path.join(
@@ -14,12 +13,12 @@ export class DecorationProvider {
 		"..",
 		"..",
 		"resources",
-		"icons"
+		"icons",
 	);
 
 	public static getDecorations(
 		statuses: Status[],
-		conflictType?: ConflictType
+		conflictType?: ConflictType,
 	): SourceControlResourceDecorations {
 		const status: Status = this.getDominantStatus(statuses);
 		const light = {
@@ -32,7 +31,7 @@ export class DecorationProvider {
 		return {
 			strikeThrough: DecorationProvider.useStrikeThrough(
 				status,
-				conflictType
+				conflictType,
 			),
 			light,
 			dark,
@@ -51,7 +50,7 @@ export class DecorationProvider {
 
 		// The most dominant types are ADD, EDIT, and DELETE
 		let index: number = statuses.findIndex(
-			(s) => s === Status.ADD || s === Status.EDIT || s === Status.DELETE
+			(s) => s === Status.ADD || s === Status.EDIT || s === Status.DELETE,
 		);
 		if (index >= 0) {
 			return statuses[index];
@@ -72,8 +71,8 @@ export class DecorationProvider {
 			path.join(
 				DecorationProvider._iconsRootPath,
 				theme,
-				`${iconName}.svg`
-			)
+				`${iconName}.svg`,
+			),
 		);
 	}
 
@@ -102,7 +101,7 @@ export class DecorationProvider {
 
 	private static useStrikeThrough(
 		status: Status,
-		conflictType: ConflictType
+		conflictType: ConflictType,
 	): boolean {
 		return (
 			status === Status.DELETE ||

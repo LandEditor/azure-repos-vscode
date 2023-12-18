@@ -2,11 +2,10 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import * as Q from "q";
 import * as fs from "fs";
 import * as path from "path";
+import * as Q from "q";
 
 /*
     Provides storage of credentials in a file on the local file system.
@@ -23,7 +22,7 @@ export class FileTokenStorage {
 
 	public AddEntries(
 		newEntries: Array<any>,
-		existingEntries: Array<any>
+		existingEntries: Array<any>,
 	): Q.Promise<void> {
 		const entries: Array<any> = existingEntries.concat(newEntries);
 		return this.saveEntries(entries);
@@ -59,7 +58,7 @@ export class FileTokenStorage {
 	}
 
 	public RemoveEntries(
-		entriesToKeep: Array<any> /*, entriesToRemove?: Array<any>*/
+		entriesToKeep: Array<any> /*, entriesToRemove?: Array<any>*/,
 	): Q.Promise<void> {
 		return this.saveEntries(entriesToKeep);
 	}
@@ -88,7 +87,7 @@ export class FileTokenStorage {
 				} else {
 					defer.resolve(undefined);
 				}
-			}
+			},
 		);
 		return defer.promise;
 	}

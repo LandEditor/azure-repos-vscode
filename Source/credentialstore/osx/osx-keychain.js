@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //
 // Access to the OSX keychain - list, add, get password, remove
@@ -42,11 +41,7 @@ function list() {
 
 	return securityProcess.stdout
 		.pipe(es.split())
-		.pipe(
-			es.mapSync(function (line) {
-				return line.replace(/\\134/g, "\\");
-			})
-		)
+		.pipe(es.mapSync((line) => line.replace(/\\134/g, "\\")))
 		.pipe(new parser.ParsingStream());
 }
 
@@ -69,7 +64,7 @@ function get(userName, service, callback) {
 		"-g",
 	];
 
-	childProcess.execFile(securityPath, args, function (err, stdout, stderr) {
+	childProcess.execFile(securityPath, args, (err, stdout, stderr) => {
 		if (err) {
 			return callback(err);
 		}
@@ -106,10 +101,10 @@ function set(userName, service, description, password, callback) {
 		"-U",
 	];
 
-	childProcess.execFile(securityPath, args, function (err, stdout, stderr) {
+	childProcess.execFile(securityPath, args, (err, stdout, stderr) => {
 		if (err) {
 			return callback(
-				new Error("Could not add password to keychain: " + stderr)
+				new Error("Could not add password to keychain: " + stderr),
 			);
 		}
 		return callback();
@@ -136,7 +131,7 @@ function remove(userName, service, description, callback) {
 		args = args.concat(["-D", description]);
 	}
 
-	childProcess.execFile(securityPath, args, function (err, stdout, stderr) {
+	childProcess.execFile(securityPath, args, (err, stdout, stderr) => {
 		if (err) {
 			return callback(err);
 		}

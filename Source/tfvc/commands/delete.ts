@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { TeamServerContext } from "../../contexts/servercontext";
 import {
@@ -31,7 +30,7 @@ export class Delete implements ITfvcCommand<string[]> {
 
 	public GetArguments(): IArgumentProvider {
 		return new ArgumentBuilder("delete", this._serverContext).AddAll(
-			this._itemPaths
+			this._itemPaths,
 		);
 	}
 
@@ -66,19 +65,19 @@ export class Delete implements ITfvcCommand<string[]> {
     */
 
 	public async ParseOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			false,
-			true /*filterEmptyLines*/
+			true /*filterEmptyLines*/,
 		);
 
 		const filesUndone: string[] = [];
-		let path: string = "";
-		for (let index: number = 0; index < lines.length; index++) {
+		let path = "";
+		for (let index = 0; index < lines.length; index++) {
 			const line: string = lines[index];
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
@@ -94,7 +93,7 @@ export class Delete implements ITfvcCommand<string[]> {
 		return new ArgumentBuilder(
 			"delete",
 			this._serverContext,
-			true /* skipCollectionOption */
+			true /* skipCollectionOption */,
 		).AddAll(this._itemPaths);
 	}
 
@@ -103,7 +102,7 @@ export class Delete implements ITfvcCommand<string[]> {
 	}
 
 	public async ParseExeOutput(
-		executionResult: IExecutionResult
+		executionResult: IExecutionResult,
 	): Promise<string[]> {
 		return await this.ParseOutput(executionResult);
 	}

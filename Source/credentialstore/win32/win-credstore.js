@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 //
 // Wrapper module around Windows credential store.
@@ -53,10 +52,10 @@ function list() {
 		targetNamePrefix + "*",
 	]);
 	return credsProcess.stdout.pipe(parser()).pipe(
-		es.mapSync(function (cred) {
+		es.mapSync((cred) => {
 			cred.targetName = removePrefix(cred.targetName);
 			return cred;
-		})
+		}),
 	);
 }
 
@@ -74,16 +73,16 @@ function get(targetName, callback) {
 	var result = null;
 	var errors = [];
 
-	credsProcess.stdout.pipe(parser()).on("data", function (credential) {
+	credsProcess.stdout.pipe(parser()).on("data", (credential) => {
 		result = credential;
 		result.targetName = removePrefix(result.targetName);
 	});
 
-	credsProcess.stderr.pipe(es.split()).on("data", function (line) {
+	credsProcess.stderr.pipe(es.split()).on("data", (line) => {
 		errors.push(line);
 	});
 
-	credsProcess.on("exit", function (code) {
+	credsProcess.on("exit", (code) => {
 		if (code === 0) {
 			callback(null, result);
 		} else {
@@ -92,8 +91,8 @@ function get(targetName, callback) {
 					"Getting credential failed, exit code " +
 						code +
 						": " +
-						errors.join(", ")
-				)
+						errors.join(", "),
+				),
 			);
 		}
 	});
@@ -121,7 +120,7 @@ function set(targetName, credential, callback) {
 		credential.toString("hex"),
 	];
 
-	childProcess.execFile(credExePath, args, function (err) {
+	childProcess.execFile(credExePath, args, (err) => {
 		callback(err);
 	});
 }
@@ -142,7 +141,7 @@ function remove(targetName, callback) {
 		args.push("-g");
 	}
 
-	childProcess.execFile(credExePath, args, function (err) {
+	childProcess.execFile(credExePath, args, (err) => {
 		callback(err);
 	});
 }

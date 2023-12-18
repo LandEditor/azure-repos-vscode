@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
 import { ConflictType } from "./scm/status";
@@ -66,12 +65,12 @@ export interface IPendingChange {
 }
 
 export enum SyncType {
-	Updated,
-	New,
-	Deleted,
-	Conflict,
-	Warning,
-	Error,
+	Updated = 0,
+	New = 1,
+	Deleted = 2,
+	Conflict = 3,
+	Warning = 4,
+	Error = 5,
 }
 
 export interface ISyncItemResult {
@@ -93,12 +92,12 @@ export interface IConflict {
 }
 
 export enum AutoResolveType {
-	AutoMerge,
-	TakeTheirs,
-	KeepYours,
-	OverwriteLocal,
-	DeleteConflict,
-	KeepYoursRenameTheirs,
+	AutoMerge = 0,
+	TakeTheirs = 1,
+	KeepYours = 2,
+	OverwriteLocal = 3,
+	DeleteConflict = 4,
+	KeepYoursRenameTheirs = 5,
 }
 
 export interface IExecutionResult {

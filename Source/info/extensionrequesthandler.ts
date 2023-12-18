@@ -2,14 +2,13 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { getBasicHandler } from "vso-node-api/WebApi";
+import { getNtlmHandler } from "vso-node-api/WebApi";
 import {
 	IHttpResponse,
 	IRequestHandler,
 } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import { getBasicHandler } from "vso-node-api/WebApi";
-import { getNtlmHandler } from "vso-node-api/WebApi";
 import { Constants } from "../helpers/constants";
 import { UserAgentProvider } from "../helpers/useragentprovider";
 
@@ -26,14 +25,14 @@ export class ExtensionRequestHandler implements IRequestHandler {
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string
+		workstation?: string,
 	);
 
 	constructor(
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string
+		workstation?: string,
 	) {
 		if (username !== undefined && password !== undefined) {
 			// NTLM (we don't support Basic auth)
@@ -45,7 +44,7 @@ export class ExtensionRequestHandler implements IRequestHandler {
 				this._username,
 				this._password,
 				this._domain,
-				this._workstation
+				this._workstation,
 			);
 		} else {
 			// Personal Access Token
@@ -53,7 +52,7 @@ export class ExtensionRequestHandler implements IRequestHandler {
 			this._password = username; //use username since it is first argument to constructor
 			this._credentialHandler = getBasicHandler(
 				this._username,
-				this._password
+				this._password,
 			);
 		}
 	}
@@ -92,14 +91,14 @@ export class ExtensionRequestHandler implements IRequestHandler {
 		protocol: any,
 		options: any,
 		objs: any,
-		finalCallback: any
+		finalCallback: any,
 	): void {
 		return this._credentialHandler.handleAuthentication(
 			httpClient,
 			protocol,
 			options,
 			objs,
-			finalCallback
+			finalCallback,
 		);
 	}
 }

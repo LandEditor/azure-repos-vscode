@@ -2,16 +2,15 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { Utils } from "../helpers/utils";
 import { RepoUtils } from "../helpers/repoutils";
+import { Utils } from "../helpers/utils";
 import { IRepositoryContext, RepositoryType } from "./repositorycontext";
 
-import * as pgc from "parse-git-config";
-import * as gri from "git-repo-info";
 import * as path from "path";
 import * as url from "url";
+import * as gri from "git-repo-info";
+import * as pgc from "parse-git-config";
 
 //Gets as much information as it can regarding the Git repository without calling the server (vsts/info)
 export class GitContext implements IRepositoryContext {
@@ -23,9 +22,9 @@ export class GitContext implements IRepositoryContext {
 	private _gitRemoteUrl: string;
 	private _gitCurrentBranch: string;
 	private _gitCurrentRef: string;
-	private _isSsh: boolean = false;
-	private _isTeamServicesUrl: boolean = false;
-	private _isTeamFoundationServer: boolean = false;
+	private _isSsh = false;
+	private _isTeamServicesUrl = false;
+	private _isTeamFoundationServer = false;
 
 	//When gitDir is provided, rootPath is the path to the Git repo
 	constructor(rootPath: string, gitDir?: string) {
@@ -68,14 +67,14 @@ export class GitContext implements IRepositoryContext {
 				//Check if any heuristics for TFS/VSTS URLs match
 				if (
 					RepoUtils.IsTeamFoundationGitRepo(
-						this._gitOriginalRemoteUrl
+						this._gitOriginalRemoteUrl,
 					)
 				) {
 					const purl = url.parse(this._gitOriginalRemoteUrl);
 					if (purl) {
 						if (
 							RepoUtils.IsTeamFoundationServicesRepo(
-								this._gitOriginalRemoteUrl
+								this._gitOriginalRemoteUrl,
 							)
 						) {
 							this._isTeamServicesUrl = true;
@@ -92,7 +91,7 @@ export class GitContext implements IRepositoryContext {
 										purl.pathname;
 								} else if (
 									RepoUtils.IsTeamFoundationServicesV3SshRepo(
-										purl.href
+										purl.href,
 									)
 								) {
 									this._gitRemoteUrl =
@@ -109,7 +108,7 @@ export class GitContext implements IRepositoryContext {
 										purl.auth + ".visualstudio.com";
 									const path = purl.pathname.replace(
 										"_ssh",
-										"_git"
+										"_git",
 									);
 									this._gitRemoteUrl =
 										scheme + hostname + path;
@@ -119,7 +118,7 @@ export class GitContext implements IRepositoryContext {
 							}
 						} else if (
 							RepoUtils.IsTeamFoundationServerRepo(
-								this._gitOriginalRemoteUrl
+								this._gitOriginalRemoteUrl,
 							)
 						) {
 							this._isTeamFoundationServer = true;

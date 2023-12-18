@@ -2,23 +2,22 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { StatusBarItem, window } from "vscode";
 import {
 	GitPullRequest,
 	PullRequestStatus,
 } from "vso-node-api/interfaces/GitInterfaces";
-import { BaseQuickPickItem, VsCodeUtils } from "../helpers/vscodeutils";
-import { CommandNames, TelemetryEvents } from "../helpers/constants";
-import { Logger } from "../helpers/logger";
-import { Strings } from "../helpers/strings";
-import { Utils } from "../helpers/utils";
 import {
 	IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
 import { TeamServerContext } from "../contexts/servercontext";
+import { CommandNames, TelemetryEvents } from "../helpers/constants";
+import { Logger } from "../helpers/logger";
+import { Strings } from "../helpers/strings";
+import { Utils } from "../helpers/utils";
+import { BaseQuickPickItem, VsCodeUtils } from "../helpers/vscodeutils";
 import { GitVcService, PullRequestScore } from "../services/gitvc";
 import { Telemetry } from "../services/telemetry";
 import { BaseClient } from "./baseclient";
@@ -40,7 +39,7 @@ export class GitClient extends BaseClient {
 				{
 					matchOnDescription: true,
 					placeHolder: Strings.ChoosePullRequest,
-				}
+				},
 			);
 			if (request) {
 				Telemetry.SendEvent(TelemetryEvents.ViewPullRequest);
@@ -48,11 +47,11 @@ export class GitClient extends BaseClient {
 				if (request.id !== undefined) {
 					discUrl = GitVcService.GetPullRequestDiscussionUrl(
 						this._serverContext.RepoInfo.RepositoryUrl,
-						request.id
+						request.id,
 					);
 				} else {
 					discUrl = GitVcService.GetPullRequestsUrl(
-						this._serverContext.RepoInfo.RepositoryUrl
+						this._serverContext.RepoInfo.RepositoryUrl,
 					);
 				}
 				Logger.LogInfo("Pull Request Url: " + discUrl);
@@ -63,7 +62,7 @@ export class GitClient extends BaseClient {
 				err,
 				GitClient.GetOfflinePullRequestStatusText(),
 				false,
-				"Error selecting pull request from QuickPick"
+				"Error selecting pull request from QuickPick",
 			);
 		}
 	}
@@ -82,14 +81,14 @@ export class GitClient extends BaseClient {
 				"\\" +
 				path.relative(
 					context.RepositoryParentFolder,
-					editor.document.fileName
+					editor.document.fileName,
 				);
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			url = GitVcService.GetFileBlameUrl(
 				context.RemoteUrl,
 				relativePath,
-				context.CurrentBranch
+				context.CurrentBranch,
 			);
 			//Note: if file hasn't been pushed yet, blame link we generate won't point to anything valid (basically a 404)
 			Logger.LogInfo("OpenBlame: " + url);
@@ -97,7 +96,7 @@ export class GitClient extends BaseClient {
 		} else {
 			const msg: string = Utils.GetMessageForStatusCode(
 				0,
-				Strings.NoSourceFileForBlame
+				Strings.NoSourceFileForBlame,
 			);
 			Logger.LogError(msg);
 			VsCodeUtils.ShowErrorMessage(msg);
@@ -110,15 +109,7 @@ export class GitClient extends BaseClient {
 		let historyUrl: string = undefined;
 
 		const editor = window.activeTextEditor;
-		if (!editor) {
-			Telemetry.SendEvent(TelemetryEvents.OpenRepositoryHistory);
-
-			historyUrl = GitVcService.GetRepositoryHistoryUrl(
-				context.RemoteUrl,
-				context.CurrentBranch
-			);
-			Logger.LogInfo("OpenRepoHistory: " + historyUrl);
-		} else {
+		if (editor) {
 			Telemetry.SendEvent(TelemetryEvents.OpenFileHistory);
 
 			//Get the relative file path we can use to create the history url
@@ -126,17 +117,25 @@ export class GitClient extends BaseClient {
 				"\\" +
 				path.relative(
 					context.RepositoryParentFolder,
-					editor.document.fileName
+					editor.document.fileName,
 				);
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			historyUrl = GitVcService.GetFileHistoryUrl(
 				context.RemoteUrl,
 				relativePath,
-				context.CurrentBranch
+				context.CurrentBranch,
 			);
 			//Note: if file hasn't been pushed yet, history link we generate won't point to anything valid (basically a 404)
 			Logger.LogInfo("OpenFileHistory: " + historyUrl);
+		} else {
+			Telemetry.SendEvent(TelemetryEvents.OpenRepositoryHistory);
+
+			historyUrl = GitVcService.GetRepositoryHistoryUrl(
+				context.RemoteUrl,
+				context.CurrentBranch,
+			);
+			Logger.LogInfo("OpenRepoHistory: " + historyUrl);
 		}
 
 		Utils.OpenUrl(historyUrl);
@@ -147,7 +146,7 @@ export class GitClient extends BaseClient {
 
 		const url: string = GitVcService.GetCreatePullRequestUrl(
 			remoteUrl,
-			currentBranch
+			currentBranch,
 		);
 		Logger.LogInfo("CreatePullRequestPage: " + url);
 		Utils.OpenUrl(url);
@@ -160,14 +159,14 @@ export class GitClient extends BaseClient {
 			this._statusBarItem.tooltip = Strings.BrowseYourPullRequests;
 			//Remove the default Strings.BrowseYourPullRequests item from the calculation
 			this._statusBarItem.text = GitClient.GetPullRequestStatusText(
-				(requests.length - 1).toString()
+				(requests.length - 1).toString(),
 			);
 		} catch (err) {
 			this.handleError(
 				err,
 				GitClient.GetOfflinePullRequestStatusText(),
 				true,
-				"Attempting to poll my pull requests"
+				"Attempting to poll my pull requests",
 			);
 		}
 	}
@@ -182,7 +181,7 @@ export class GitClient extends BaseClient {
 			this._serverContext.RepoInfo.RepositoryId,
 			this._serverContext.UserInfo.Id,
 			undefined,
-			PullRequestStatus.Active
+			PullRequestStatus.Active,
 		);
 		const icon: string = "search";
 		const label: string = `$(${icon}) `;
@@ -201,15 +200,15 @@ export class GitClient extends BaseClient {
 					pr.title,
 					pr.description,
 					pr.pullRequestId.toString(),
-					score
-				)
+					score,
+				),
 			);
 			requestIds.push(pr.pullRequestId);
 		});
 		Logger.LogInfo(
 			"Retrieved " +
 				myPullRequests.length +
-				" pull requests that I requested"
+				" pull requests that I requested",
 		);
 
 		Logger.LogInfo("Getting pull requests for which I'm a reviewer...");
@@ -219,7 +218,7 @@ export class GitClient extends BaseClient {
 				this._serverContext.RepoInfo.RepositoryId,
 				undefined,
 				this._serverContext.UserInfo.Id,
-				PullRequestStatus.Active
+				PullRequestStatus.Active,
 			);
 		myReviewPullRequests.forEach((pr) => {
 			const score: PullRequestScore =
@@ -231,20 +230,20 @@ export class GitClient extends BaseClient {
 						pr.title,
 						pr.description,
 						pr.pullRequestId.toString(),
-						score
-					)
+						score,
+					),
 				);
 			}
 		});
 		Logger.LogInfo(
 			"Retrieved " +
 				myReviewPullRequests.length +
-				" pull requests that I'm the reviewer"
+				" pull requests that I'm the reviewer",
 		);
 
 		//Remove the default Strings.BrowseYourPullRequests item from the calculation
 		this._statusBarItem.text = GitClient.GetPullRequestStatusText(
-			(requestItems.length - 1).toString()
+			(requestItems.length - 1).toString(),
 		);
 		this._statusBarItem.tooltip = Strings.BrowseYourPullRequests;
 		this._statusBarItem.command = CommandNames.GetPullRequests;
@@ -257,9 +256,9 @@ export class GitClient extends BaseClient {
 		title: string,
 		description: string,
 		id: string,
-		score: PullRequestScore
+		score: PullRequestScore,
 	): BaseQuickPickItem {
-		let scoreIcon: string = "";
+		let scoreIcon = "";
 		if (score === PullRequestScore.Succeeded) {
 			scoreIcon = "check";
 		} else if (score === PullRequestScore.Failed) {
@@ -294,7 +293,7 @@ export class GitClient extends BaseClient {
 	private ensureGitContext(context: IRepositoryContext): void {
 		if (context.Type !== RepositoryType.GIT) {
 			throw new Error(
-				"context sent to GitClient is not a Git context object."
+				"context sent to GitClient is not a Git context object.",
 			);
 		}
 	}

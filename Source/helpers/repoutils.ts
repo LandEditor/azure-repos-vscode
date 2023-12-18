@@ -2,10 +2,9 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
-import { Logger } from "../helpers/logger";
 import * as url from "url";
+import { Logger } from "../helpers/logger";
 
 //This class is responsible for determining information about a string-based url (not a uri)
 //A Team Services Git repository is determined by:
@@ -25,7 +24,8 @@ import * as url from "url";
 //that a url is NOT either a TFS or Team Services repository.  So it is up to the caller to only
 //instantiate this class if we know we should have either a TFS or Team Services repository.
 export class RepoUtils {
-	private static sshV3 = new RegExp("git@(?:vs-)?ssh.(.+):v3/(.+)/(.+)/(.+)");
+	private static sshV3 = /git@(?:vs-)?ssh.(.+):v3/(.+)/(.+
+	)/(.+)/
 
 	//Checks a handful of heuristics to see if the url provided is a TFS or VSTS repo
 	public static IsTeamFoundationGitRepo(url: string): boolean {
@@ -72,7 +72,7 @@ export class RepoUtils {
 
 	//Checks to ensure it's a Team Foundation Git repo, then ensures it's hosted on azure.com
 	public static IsTeamFoundationServicesAzureRepo(
-		respositoryUrl: string
+		respositoryUrl: string,
 	): boolean {
 		try {
 			// check for ssh based url that will not parse as a standard url
@@ -85,14 +85,14 @@ export class RepoUtils {
 			}
 		} catch (err) {
 			Logger.LogDebug(
-				"Could not parse repository url: " + respositoryUrl
+				"Could not parse repository url: " + respositoryUrl,
 			);
 		}
 		return false;
 	}
 
 	public static IsTeamFoundationServicesV3SshRepo(
-		respositoryUrl: string
+		respositoryUrl: string,
 	): boolean {
 		return RepoUtils.sshV3.test(respositoryUrl.toLowerCase());
 	}
@@ -125,7 +125,7 @@ export class RepoUtils {
 			);
 		}
 		Logger.LogDebug(
-			"Could not parse as v3 repository url: " + respositoryUrl
+			"Could not parse as v3 repository url: " + respositoryUrl,
 		);
 		return undefined;
 	}

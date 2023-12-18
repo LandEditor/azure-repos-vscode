@@ -2,14 +2,13 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
+import { ICoreApi } from "vso-node-api/CoreApi";
+import { WebApi } from "vso-node-api/WebApi";
 import {
 	TeamProject,
 	TeamProjectCollection,
 } from "vso-node-api/interfaces/CoreInterfaces";
-import { WebApi } from "vso-node-api/WebApi";
-import { ICoreApi } from "vso-node-api/CoreApi";
 import { CredentialManager } from "../helpers/credentialmanager";
 
 export class CoreApiService {
@@ -18,13 +17,13 @@ export class CoreApiService {
 	constructor(remoteUrl: string) {
 		this._coreApi = new WebApi(
 			remoteUrl,
-			CredentialManager.GetCredentialHandler()
+			CredentialManager.GetCredentialHandler(),
 		).getCoreApi();
 	}
 
 	//Get the
 	public async GetProjectCollection(
-		collectionName: string
+		collectionName: string,
 	): Promise<TeamProjectCollection> {
 		return await this._coreApi.getProjectCollection(collectionName);
 	}

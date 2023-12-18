@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { Disposable, OutputChannel, window } from "vscode";
 
@@ -10,7 +9,7 @@ export class TfvcOutput {
 	private static _outputChannel: OutputChannel;
 
 	public static async CreateChannel(
-		disposables: Disposable[]
+		disposables: Disposable[],
 	): Promise<void> {
 		if (TfvcOutput._outputChannel !== undefined) {
 			return;

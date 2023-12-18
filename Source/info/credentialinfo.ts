@@ -2,7 +2,6 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
 import { ExtensionRequestHandler } from "./extensionrequesthandler";
@@ -16,14 +15,14 @@ export class CredentialInfo {
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string
+		workstation?: string,
 	);
 
 	constructor(
 		username: string,
 		password?: string,
 		domain?: string,
-		workstation?: string
+		workstation?: string,
 	) {
 		if (username !== undefined && password !== undefined) {
 			// NTLM (we don't support Basic auth)
@@ -31,7 +30,7 @@ export class CredentialInfo {
 				username,
 				password,
 				domain,
-				workstation
+				workstation,
 			);
 		} else {
 			// Personal Access Token

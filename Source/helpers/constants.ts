@@ -2,27 +2,26 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 /* tslint:disable:variable-name */
 export class Constants {
-	static ExtensionName: string = "team";
-	static ExtensionUserAgentName: string = "AzureReposVSCode";
-	static ExtensionVersion: string = "1.161.1";
-	static OAuth: string = "OAuth";
-	static TokenLearnMoreUrl: string = "https://aka.ms/gtgzt4";
-	static TokenShowMeUrl: string = "https://aka.ms/o2wkmo";
-	static ReadmeLearnMoreUrl: string = "https://aka.ms/jkapah";
-	static FarewellLearnMoreUrl: string = "https://aka.ms/AA9k2vv";
-	static TfvcLearnMoreUrl: string =
+	static ExtensionName = "team";
+	static ExtensionUserAgentName = "AzureReposVSCode";
+	static ExtensionVersion = "1.161.1";
+	static OAuth = "OAuth";
+	static TokenLearnMoreUrl = "https://aka.ms/gtgzt4";
+	static TokenShowMeUrl = "https://aka.ms/o2wkmo";
+	static ReadmeLearnMoreUrl = "https://aka.ms/jkapah";
+	static FarewellLearnMoreUrl = "https://aka.ms/AA9k2vv";
+	static TfvcLearnMoreUrl =
 		"https://github.com/Microsoft/azure-repos-vscode/blob/master/TFVC_README.md#quick-start";
-	static ServerWorkspaceUrl: string =
+	static ServerWorkspaceUrl =
 		"https://github.com/Microsoft/azure-repos-vscode/blob/master/TFVC_README.md#what-is-the-difference-between-a-local-and-server-workspace-how-can-i-tell-which-one-im-working-with";
-	static VS2015U3CSRUrl: string =
+	static VS2015U3CSRUrl =
 		"https://msdn.microsoft.com/en-us/library/mt752379.aspx";
-	static WorkspaceNotDetectedByClcUrl: string =
+	static WorkspaceNotDetectedByClcUrl =
 		"https://github.com/Microsoft/azure-repos-vscode/blob/master/TFVC_README.md#using-the-tee-clc-i-am-unable-to-access-an-existing-local-workspace-what-can-i-do";
-	static NonEnuTfExeConfiguredUrl: string =
+	static NonEnuTfExeConfiguredUrl =
 		"https://github.com/Microsoft/azure-repos-vscode/blob/master/TFVC_README.md#i-received-the-it-appears-you-have-configured-a-non-english-version-of-the-tf-executable-please-ensure-an-english-version-is-properly-configured-error-message-after-configuring-tfexe-how-can-i-get-the-extension-to-work-properly";
 }
 
@@ -58,14 +57,14 @@ export class CommandNames {
 }
 
 export class DeviceFlowConstants {
-	static ManualOption: string = "manual";
-	static DeviceFlowOption: string = "deviceflow";
-	static ClientId: string = "97877f11-0fc6-4aee-b1ff-febb0519dd00";
-	static RedirectUri: string = "https://java.visualstudio.com";
+	static ManualOption = "manual";
+	static DeviceFlowOption = "deviceflow";
+	static ClientId = "97877f11-0fc6-4aee-b1ff-febb0519dd00";
+	static RedirectUri = "https://java.visualstudio.com";
 }
 
 export class TfvcCommandNames {
-	static CommandPrefix: string = "tfvc.";
+	static CommandPrefix = "tfvc.";
 	static Checkin: string = TfvcCommandNames.CommandPrefix + "Checkin";
 	static Delete: string = TfvcCommandNames.CommandPrefix + "Delete";
 	static Exclude: string = TfvcCommandNames.CommandPrefix + "Exclude";
@@ -179,29 +178,29 @@ export class TelemetryEvents {
 
 //Don't export this class. TfvcTelemetryEvents is the only one which should be used when sending telemetry
 class TfvcBaseTelemetryEvents {
-	static TelemetryPrefix: string = "tfvc/";
+	static TelemetryPrefix = "tfvc/";
 	static Clc: string = TfvcBaseTelemetryEvents.TelemetryPrefix + "clc";
 	static Exe: string = TfvcBaseTelemetryEvents.TelemetryPrefix + "exe";
-	static Add: string = "add";
-	static Checkin: string = "checkin";
-	static Configured: string = "configured";
-	static Connected: string = "connected";
-	static Delete: string = "delete";
-	static GetFileContent: string = "getfilecontent";
-	static LearnMoreClick: string = "learnmoreclick";
-	static NameAndContentConflict: string = "nameandcontentconflict";
-	static NonEnuConfiguredMoreDetails: string = "nonenuconfiguredmoredetails";
-	static OpenFileHistory: string = "openfilehistory";
-	static OpenRepositoryHistory: string = "openrepohistory";
-	static RenameConflict: string = "renameconflict";
-	static Rename: string = "rename";
-	static ResolveConflicts: string = "resolveconflicts";
-	static RestrictWorkspace: string = "restrictworkspace";
-	static StartUp: string = "startup";
-	static Sync: string = "sync";
-	static Undo: string = "undo";
-	static UndoAll: string = "undoall";
-	static WorkspaceAccessError: string = "workspaceaccesserror";
+	static Add = "add";
+	static Checkin = "checkin";
+	static Configured = "configured";
+	static Connected = "connected";
+	static Delete = "delete";
+	static GetFileContent = "getfilecontent";
+	static LearnMoreClick = "learnmoreclick";
+	static NameAndContentConflict = "nameandcontentconflict";
+	static NonEnuConfiguredMoreDetails = "nonenuconfiguredmoredetails";
+	static OpenFileHistory = "openfilehistory";
+	static OpenRepositoryHistory = "openrepohistory";
+	static RenameConflict = "renameconflict";
+	static Rename = "rename";
+	static ResolveConflicts = "resolveconflicts";
+	static RestrictWorkspace = "restrictworkspace";
+	static StartUp = "startup";
+	static Sync = "sync";
+	static Undo = "undo";
+	static UndoAll = "undoall";
+	static WorkspaceAccessError = "workspaceaccesserror";
 }
 
 export class TfvcTelemetryEvents {
@@ -294,7 +293,7 @@ export class TfvcTelemetryEvents {
 }
 
 export class WellKnownRepositoryTypes {
-	static TfsGit: string = "TfsGit";
+	static TfsGit = "TfsGit";
 }
 
 export class WitQueries {
@@ -305,8 +304,8 @@ export class WitQueries {
 }
 
 export class WitTypes {
-	static Bug: string = "Bug";
-	static Task: string = "Task";
+	static Bug = "Bug";
+	static Task = "Task";
 }
 
 export enum MessageTypes {

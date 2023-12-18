@@ -2,13 +2,12 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 /**
  * This class represents the Version of the TF command line.
  */
 export class TfvcVersion {
-	private static separator: string = ".";
+	private static separator = ".";
 
 	private _major: number;
 	private _minor: number;
@@ -29,7 +28,7 @@ export class TfvcVersion {
 
 	public static Compare(
 		version1: TfvcVersion,
-		version2: TfvcVersion
+		version2: TfvcVersion,
 	): number {
 		if (version1._major !== version2._major) {
 			return version1._major - version2._major;
@@ -47,7 +46,7 @@ export class TfvcVersion {
 		major: number,
 		minor: number,
 		revision: number,
-		build: string
+		build: string,
 	) {
 		this._major = major;
 		this._minor = minor;

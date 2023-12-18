@@ -2,22 +2,21 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 import * as path from "path";
 
 import {
 	Command,
-	SourceControlResourceState,
 	SourceControlResourceDecorations,
+	SourceControlResourceState,
 	Uri,
 } from "vscode";
+import { TfvcCommandNames } from "../../helpers/constants";
+import { Strings } from "../../helpers/strings";
 import { IConflict, IPendingChange } from "../interfaces";
 import { TfvcSCMProvider } from "../tfvcscmprovider";
-import { ConflictType, GetStatuses, Status } from "./status";
 import { DecorationProvider } from "./decorationprovider";
-import { Strings } from "../../helpers/strings";
-import { TfvcCommandNames } from "../../helpers/constants";
+import { ConflictType, GetStatuses, Status } from "./status";
 
 export class Resource implements SourceControlResourceState {
 	private _uri: Uri;

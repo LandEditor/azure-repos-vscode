@@ -2,174 +2,166 @@
  *  Copyright (c) Microsoft Corporation. All rights reserved.
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
-"use strict";
 
 /* tslint:disable:variable-name */
 export class Strings {
-	static ViewYourPinnedQuery: string =
-		"View your pinned work item query results.";
+	static ViewYourPinnedQuery = "View your pinned work item query results.";
 
-	static BrowseYourPullRequests: string = "Browse your pull requests.";
-	static BrowseAdditionalWorkItems: string =
-		"Browse additional work items...";
-	static BrowseAdditionalWorkItemsDescription: string =
+	static BrowseYourPullRequests = "Browse your pull requests.";
+	static BrowseAdditionalWorkItems = "Browse additional work items...";
+	static BrowseAdditionalWorkItemsDescription =
 		"Choose this item to see all query results in your web browser";
-	static FolderNotOpened: string =
+	static FolderNotOpened =
 		"You must open a repository folder in order to use the Azure Repos extension.";
-	static NavigateToBuildSummary: string = "Click to view build";
-	static NavigateToTeamServicesWebSite: string =
+	static NavigateToBuildSummary = "Click to view build";
+	static NavigateToTeamServicesWebSite =
 		"Click to view your team project website.";
-	static NoAccessTokenFound: string =
+	static NoAccessTokenFound =
 		"A personal access token for this repository hosted on Azure DevOps Services was not found in your local user settings.";
-	static NoAccessTokenLearnMoreRunSignin: string =
+	static NoAccessTokenLearnMoreRunSignin =
 		"You are not connected to Azure DevOps Services (%s). Select 'Learn more...' and then run the 'team signin' command.";
-	static NoAccessTokenRunSignin: string =
+	static NoAccessTokenRunSignin =
 		"You are not connected to Azure DevOps Services (%s). Please run the 'team signin' command.";
-	static NoTeamServerCredentialsRunSignin: string =
+	static NoTeamServerCredentialsRunSignin =
 		"You are not connected to a Team Foundation Server. Please run the 'team signin' command.";
-	static NoBuildsFound: string =
+	static NoBuildsFound =
 		"No builds were found for this repository and branch. Click to view your team project's build definitions page.";
-	static NoTfvcBuildsFound: string =
+	static NoTfvcBuildsFound =
 		"No builds were found for this repository. Click to view your team project's build definitions page.";
-	static NoRepoInformation: string =
+	static NoRepoInformation =
 		"No Azure DevOps Services or Team Foundation Server repository configuration was found. Ensure you've opened a folder that contains a repository.";
-	static NoSourceFileForBlame: string =
+	static NoSourceFileForBlame =
 		"A source file must be opened to show blame information.";
-	static UserMustSignIn: string =
+	static UserMustSignIn =
 		"You are signed out. Please run the 'team signin' command.";
 
-	static DeviceFlowAuthenticatingToTeamServices: string =
+	static DeviceFlowAuthenticatingToTeamServices =
 		"Authenticating to Azure DevOps Services (%s)...";
-	static DeviceFlowCopyCode: string =
+	static DeviceFlowCopyCode =
 		"Copy this code and then press Enter to start the authentication process";
-	static DeviceFlowManualPrompt: string =
+	static DeviceFlowManualPrompt =
 		"Provide an access token manually (current experience)";
-	static DeviceFlowPrompt: string =
+	static DeviceFlowPrompt =
 		"Authenticate and get an access token automatically (new experience)";
-	static DeviceFlowPlaceholder: string =
+	static DeviceFlowPlaceholder =
 		"Choose your method of authenticating to Azure DevOps Services...";
-	static ErrorRequestingToken: string =
+	static ErrorRequestingToken =
 		"An error occurred requesting a personal access token for %s.";
 
-	static SendAFrown: string = "Send a Frown";
-	static SendASmile: string = "Send a Smile";
-	static SendFeedback: string =
-		"Send us feedback about the Azure Repos extension!";
-	static SendFeedbackPrompt: string =
-		"Enter your feedback here (1000 char limit)";
-	static NoFeedbackSent: string = "No feedback was sent.";
-	static ThanksForFeedback: string = "Thanks for sending feedback!";
-	static LearnMore: string = "Learn More...";
-	static LearnMoreAboutTfvc: string = "TFVC Support...";
-	static MoreDetails: string = "More Details...";
-	static SetupTfvcSupport: string = "Set Up TFVC Support...";
-	static ShowMe: string = "Show Me!";
-	static VS2015Update3CSR: string = "Get Latest VS 2015 Update";
-	static DontShowAgain: string = "Don't Show Again";
+	static SendAFrown = "Send a Frown";
+	static SendASmile = "Send a Smile";
+	static SendFeedback = "Send us feedback about the Azure Repos extension!";
+	static SendFeedbackPrompt = "Enter your feedback here (1000 char limit)";
+	static NoFeedbackSent = "No feedback was sent.";
+	static ThanksForFeedback = "Thanks for sending feedback!";
+	static LearnMore = "Learn More...";
+	static LearnMoreAboutTfvc = "TFVC Support...";
+	static MoreDetails = "More Details...";
+	static SetupTfvcSupport = "Set Up TFVC Support...";
+	static ShowMe = "Show Me!";
+	static VS2015Update3CSR = "Get Latest VS 2015 Update";
+	static DontShowAgain = "Don't Show Again";
 
-	static ChoosePullRequest: string = "Choose a pull request";
-	static ChooseWorkItem: string = "Choose a work item";
-	static ChooseWorkItemQuery: string = "Choose a work item query";
-	static ChooseWorkItemType: string = "Choose a work item type";
-	static ClickToRetryConnection: string = "Click to retry.";
+	static ChoosePullRequest = "Choose a pull request";
+	static ChooseWorkItem = "Choose a work item";
+	static ChooseWorkItemQuery = "Choose a work item query";
+	static ChooseWorkItemType = "Choose a work item type";
+	static ClickToRetryConnection = "Click to retry.";
 
-	static ProvideAccessToken: string =
+	static ProvideAccessToken =
 		"Provide the personal access token for your organization";
-	static ProvidePassword: string = "Provide the password for username";
-	static ProvideUsername: string = "Provide the username for server";
+	static ProvidePassword = "Provide the password for username";
+	static ProvideUsername = "Provide the username for server";
 
-	static UnsupportedWitServerVersion: string =
+	static UnsupportedWitServerVersion =
 		"Work Item Tracking (WIT) functionality is disabled. WIT functionality requires TFS version 2015 Update 2 or later.";
-	static UnsupportedServerVersion: string =
+	static UnsupportedServerVersion =
 		"The Azure Repos extension only supports TFS version 2015 Update 2 or later. Please verify your TFS server version.";
-	static UnableToRemoveCredentials: string =
+	static UnableToRemoveCredentials =
 		"Unable to remove credentials for this host. You may need to remove them manually. Host: ";
-	static UnableToStoreCredentials: string =
+	static UnableToStoreCredentials =
 		"Unable to store credentials for this host. Host: ";
 
-	static UnableToValidateTeamServicesCollection: string =
+	static UnableToValidateTeamServicesCollection =
 		"Unable to validate the Azure DevOps Services collection.";
-	static UnableToValidateCollectionAssumingDefaultCollection: string =
+	static UnableToValidateCollectionAssumingDefaultCollection =
 		"Unable to validate the collection assuming 'DefaultCollection'.";
 
 	//Status codes
-	static StatusCode401: string =
+	static StatusCode401 =
 		"Unauthorized. Check your authentication credentials and try again.";
-	static StatusCodeOffline: string =
+	static StatusCodeOffline =
 		"It appears Visual Studio Code is offline. Please connect and try again.";
-	static ProxyUnreachable: string =
+	static ProxyUnreachable =
 		"It appears the configured proxy is not reachable. Please check your connection and try again.";
 
 	// TFVC messages/errors
-	static ChooseItemQuickPickPlaceHolder: string = "Choose a file to open it.";
-	static NotAGitRepository: string =
+	static ChooseItemQuickPickPlaceHolder = "Choose a file to open it.";
+	static NotAGitRepository =
 		"The open folder is not a Git repository. Please check the folder location and try again.";
-	static NotATfvcRepository: string =
+	static NotATfvcRepository =
 		"The open folder is not a TFVC repository. Please check the folder location and try again.";
-	static NotAnEnuTfCommandLine: string =
+	static NotAnEnuTfCommandLine =
 		"It appears you have configured a non-English version of the TF executable. Please ensure an English version is properly configured.";
-	static TokenNotAllScopes: string =
+	static TokenNotAllScopes =
 		"The personal access token provided does not have All Scopes. All Scopes is required for TFVC support.";
-	static TfvcLocationMissingError: string =
+	static TfvcLocationMissingError =
 		"The path to the TFVC command line (including filename) was not found in the user settings. Please set this value (tfvc.location) and try again.";
-	static TfMissingError: string =
+	static TfMissingError =
 		"Unable to find the TF executable. Please ensure TF is installed and the path specified contains the filename.";
-	static TfInitializeFailureError: string =
+	static TfInitializeFailureError =
 		"Unable to initialize the TF executable. Please verify the installation of Java and ensure it is in the PATH.";
-	static TfExecFailedError: string =
+	static TfExecFailedError =
 		"Execution of the TFVC command line failed unexpectedly.";
-	static TfVersionWarning: string =
+	static TfVersionWarning =
 		"The configured version of TF does not meet the minimum version. You may run into errors or limitations with certain commands until you upgrade. Minimum version: ";
-	static TfNoPendingChanges: string =
-		"There are no matching pending changes.";
-	static TfServerWorkspace: string =
+	static TfNoPendingChanges = "There are no matching pending changes.";
+	static TfServerWorkspace =
 		"It appears you are using a Server workspace. Currently, TFVC support is limited to Local workspaces.";
-	static ClcCannotAccessWorkspace: string =
+	static ClcCannotAccessWorkspace =
 		"It appears you are using the TEE CLC and are unable to access an existing workspace. The TFVC SCM Provider cannot be initialized. Click 'More details...' to learn more.";
-	static UndoChanges: string = "Undo Changes";
-	static DeleteFile: string = "Delete File";
-	static NoChangesToCheckin: string =
+	static UndoChanges = "Undo Changes";
+	static DeleteFile = "Delete File";
+	static NoChangesToCheckin =
 		"There are no changes to check in. Changes must be added to the 'Included' section to be checked in.";
-	static NoChangesToUndo: string = "There are no changes to undo.";
-	static AllFilesUpToDate: string = "All files are up to date.";
-	static CommandRequiresFileContext: string =
+	static NoChangesToUndo = "There are no changes to undo.";
+	static AllFilesUpToDate = "All files are up to date.";
+	static CommandRequiresFileContext =
 		"This command requires a file context and can only be executed from the TFVC viewlet window.";
-	static CommandRequiresExplorerContext: string =
+	static CommandRequiresExplorerContext =
 		"This command requires a file context and can only be executed from the Explorer window.";
-	static RenamePrompt: string = "Provide the new name for the file.";
-	static NoMatchesFound: string =
-		"No items match any of the file paths provided.";
-	static NoTeamProjectFound: string =
+	static RenamePrompt = "Provide the new name for the file.";
+	static NoMatchesFound = "No items match any of the file paths provided.";
+	static NoTeamProjectFound =
 		"No team project found for this repository. Build and Work Item functionality has been disabled.";
-	static NoWorkspaceMappings: string =
+	static NoWorkspaceMappings =
 		"Could not find a workspace with mappings (e.g., not a TFVC repository, wrong version of TF is being used).";
-	static ShowTfvcOutput: string = "Show TFVC Output";
+	static ShowTfvcOutput = "Show TFVC Output";
 
 	// TFVC viewlet Strings
-	static ExcludedGroupName: string = "Excluded changes";
-	static IncludedGroupName: string = "Included changes";
-	static ConflictsGroupName: string = "Conflicting changes";
+	static ExcludedGroupName = "Excluded changes";
+	static IncludedGroupName = "Included changes";
+	static ConflictsGroupName = "Conflicting changes";
 
 	// TFVC Sync Types
-	static SyncTypeConflict: string = "Conflict";
-	static SyncTypeDeleted: string = "Deleted";
-	static SyncTypeError: string = "Error";
-	static SyncTypeNew: string = "New";
-	static SyncTypeUpdated: string = "Updated";
-	static SyncTypeWarning: string = "Warning";
+	static SyncTypeConflict = "Conflict";
+	static SyncTypeDeleted = "Deleted";
+	static SyncTypeError = "Error";
+	static SyncTypeNew = "New";
+	static SyncTypeUpdated = "Updated";
+	static SyncTypeWarning = "Warning";
 
 	// TFVC Conflict Titles
-	static ConflictAlreadyDeleted: string = "ALREADY DELETED";
-	static ConflictAlreadyExists: string = "ALREADY EXISTS";
-	static ConflictDeletedLocally: string = "DELETED LOCALLY";
+	static ConflictAlreadyDeleted = "ALREADY DELETED";
+	static ConflictAlreadyExists = "ALREADY EXISTS";
+	static ConflictDeletedLocally = "DELETED LOCALLY";
 
 	// TFVC AutoResolveType Strings
-	static AutoResolveTypeAutoMerge: string = "Auto Merge";
-	static AutoResolveTypeDeleteConflict: string = "Delete Conflict";
-	static AutoResolveTypeKeepYours: string = "Keep Yours";
-	static AutoResolveTypeKeepYoursRenameTheirs: string =
-		"Keep Yours Rename Theirs";
-	static AutoResolveTypeOverwriteLocal: string = "Overwrite Local";
-	static AutoResolveTypeTakeTheirs: string = "Take Theirs";
+	static AutoResolveTypeAutoMerge = "Auto Merge";
+	static AutoResolveTypeDeleteConflict = "Delete Conflict";
+	static AutoResolveTypeKeepYours = "Keep Yours";
+	static AutoResolveTypeKeepYoursRenameTheirs = "Keep Yours Rename Theirs";
+	static AutoResolveTypeOverwriteLocal = "Overwrite Local";
+	static AutoResolveTypeTakeTheirs = "Take Theirs";
 }
 /* tslint:enable:variable-name */
