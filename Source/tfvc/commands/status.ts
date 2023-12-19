@@ -80,7 +80,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		const xml: string = CommandHelper.TrimToXml(executionResult.stdout);
 		// Parse the xml using xml2js
 		const json: any = await CommandHelper.ParseXml(xml);
-		if (json && json.status) {
+		if (json?.status) {
 			// get all the pending changes first
 			const pending: any = json.status.pendingchanges[0].pendingchange;
 			if (pending) {

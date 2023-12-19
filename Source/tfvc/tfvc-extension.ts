@@ -385,7 +385,8 @@ export class TfvcExtension {
 	public async UndoAll(): Promise<void> {
 		this.displayErrors(async () => {
 			if (TfvcSCMProvider.HasItems()) {
-				const message: string = `Are you sure you want to undo all changes?`;
+				const message: string =
+					"Are you sure you want to undo all changes?";
 				if (
 					await UIHelper.PromptForConfirmation(
 						message,
@@ -444,7 +445,7 @@ export class TfvcExtension {
 				historyUrl = UrlBuilder.AddQueryParams(
 					historyUrl,
 					`path=${file}`,
-					`_a=history`,
+					"_a=history",
 				);
 				Utils.OpenUrl(historyUrl);
 				return;
@@ -523,7 +524,7 @@ export class TfvcExtension {
 			this._manager.RepoContext.RemoteUrl,
 			"_versionControl",
 		);
-		historyUrl = UrlBuilder.AddQueryParams(historyUrl, `_a=history`);
+		historyUrl = UrlBuilder.AddQueryParams(historyUrl, "_a=history");
 		Utils.OpenUrl(historyUrl);
 	}
 

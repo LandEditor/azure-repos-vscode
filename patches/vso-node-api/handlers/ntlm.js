@@ -1,10 +1,10 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-var http = require("http");
-var https = require("https");
-var _ = require("underscore");
-var ntlm = require("../opensource/node-http-ntlm/ntlm");
-var NtlmCredentialHandler = (() => {
+const http = require("http");
+const https = require("https");
+const _ = require("underscore");
+const ntlm = require("../opensource/node-http-ntlm/ntlm");
+const NtlmCredentialHandler = (() => {
 	function NtlmCredentialHandler(username, password, domain, workstation) {
 		this.username = username;
 		this.password = password;
@@ -19,21 +19,21 @@ var NtlmCredentialHandler = (() => {
 		// No headers or options need to be set.  We keep the credentials on the handler itself.
 		// If a (proxy) agent is set, remove it as we don't support proxy for NTLM at this time
 		if (options.agent) {
-			delete options.agent;
+			options.agent = undefined;
 		}
 	};
 	NtlmCredentialHandler.prototype.canHandleAuthentication = (res) => {
 		if (res && res.statusCode === 401) {
 			// Ensure that we're talking NTLM here
 			// Once we have the www-authenticate header, split it so we can ensure we can talk NTLM
-			var wwwAuthenticate = res.headers["www-authenticate"];
+			const wwwAuthenticate = res.headers["www-authenticate"];
 			if (wwwAuthenticate !== undefined) {
-				var mechanisms = wwwAuthenticate.split(", ");
-				var idx = mechanisms.indexOf("NTLM");
+				const mechanisms = wwwAuthenticate.split(", ");
+				const idx = mechanisms.indexOf("NTLM");
 				if (idx >= 0) {
 					// Check specifically for 'NTLM' since www-authenticate header can also contain
 					// the Authorization value to use in the form of 'NTLM TlRMTVNT....AAAADw=='
-					if (mechanisms[idx].length == 4) {
+					if (mechanisms[idx].length === 4) {
 						return true;
 					}
 				}
@@ -50,13 +50,13 @@ var NtlmCredentialHandler = (() => {
 		finalCallback,
 	) {
 		// Set up the headers for NTLM authentication
-		var ntlmOptions = _.extend(options, {
+		const ntlmOptions = _.extend(options, {
 			username: this.username,
 			password: this.password,
 			domain: this.domain || "",
 			workstation: this.workstation || "",
 		});
-		var keepaliveAgent;
+		let keepaliveAgent;
 		if (httpClient.isSsl === true) {
 			keepaliveAgent = new https.Agent({ keepAlive: true });
 		} else {
@@ -98,8 +98,8 @@ var NtlmCredentialHandler = (() => {
 		keepaliveAgent,
 		callback,
 	) => {
-		var type1msg = ntlm.createType1Message(options);
-		var type1options = {
+		const type1msg = ntlm.createType1Message(options);
+		let type1options = {
 			headers: {
 				Connection: "keep-alive",
 				Authorization: type1msg,
@@ -130,11 +130,13 @@ var NtlmCredentialHandler = (() => {
 			);
 		}
 		// parse type2 message from server:
-		var type2msg = ntlm.parseType2Message(res.headers["www-authenticate"]);
+		const type2msg = ntlm.parseType2Message(
+			res.headers["www-authenticate"],
+		);
 		// create type3 message:
-		var type3msg = ntlm.createType3Message(type2msg, options);
+		const type3msg = ntlm.createType3Message(type2msg, options);
 		// build type3 request:
-		var type3options = {
+		let type3options = {
 			headers: {
 				Authorization: type3msg,
 			},

@@ -41,7 +41,7 @@ export class WorkItemTrackingService {
 		const newWorkItem = [
 			{
 				op: "add",
-				path: "/fields/" + WorkItemFields.Title,
+				path: `/fields/${WorkItemFields.Title}`,
 				value: taskTitle,
 			},
 		];
@@ -250,12 +250,11 @@ export class WorkItemTrackingService {
 		let separator = "?";
 		if (title !== undefined) {
 			//title may need to be encoded (issues if first character is '#', for instance)
-			url += separator + "[" + WorkItemFields.Title + "]=" + title;
+			url += `${separator}[${WorkItemFields.Title}]=${title}`;
 			separator = "&";
 		}
 		if (assignedTo !== undefined) {
-			url +=
-				separator + "[" + WorkItemFields.AssignedTo + "]=" + assignedTo;
+			url += `${separator}[${WorkItemFields.AssignedTo}]=${assignedTo}`;
 			separator = "&";
 		}
 		return url;
@@ -269,8 +268,8 @@ export class WorkItemTrackingService {
 	): string {
 		return UrlBuilder.AddQueryParams(
 			WorkItemTrackingService.GetWorkItemsBaseUrl(teamProjectUrl),
-			`path=${encodeURIComponent(folderName + "/" + queryName)}`,
-			`_a=query`,
+			`path=${encodeURIComponent(`${folderName}/${queryName}`)}`,
+			"_a=query",
 		);
 	}
 

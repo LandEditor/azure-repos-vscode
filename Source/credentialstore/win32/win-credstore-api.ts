@@ -8,7 +8,7 @@ import { ICredentialStore } from "../interfaces/icredentialstore";
 
 import * as Q from "q";
 /* tslint:disable:no-var-keyword */
-var wincredstore = require("./win-credstore");
+const wincredstore = require("./win-credstore");
 /* tslint:enable:no-var-keyword */
 
 /*
@@ -148,7 +148,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 			"utf8",
 		);
 		// http://servername:port|\\domain\username
-		const segments: Array<string> = cred.targetName.split(
+		const segments: string[] = cred.targetName.split(
 			WindowsCredentialStoreApi.separator,
 		);
 		const username: string = segments[segments.length - 1];
@@ -160,9 +160,9 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		return service + WindowsCredentialStoreApi.separator + username;
 	}
 
-	private listCredentials(): Q.Promise<Array<any>> {
-		const deferred: Q.Deferred<Array<any>> = Q.defer<Array<any>>();
-		const credentials: Array<any> = [];
+	private listCredentials(): Q.Promise<any[]> {
+		const deferred: Q.Deferred<any[]> = Q.defer<any[]>();
+		const credentials: any[] = [];
 
 		const stream = wincredstore.list();
 		stream.on("data", (cred) => {

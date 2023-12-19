@@ -30,7 +30,7 @@ export abstract class BaseClient {
 		const offline: boolean = Utils.IsOffline(err);
 		const msg: string = Utils.GetMessageForStatusCode(err, err.message);
 		const logPrefix: string =
-			infoMessage === undefined ? "" : infoMessage + " ";
+			infoMessage === undefined ? "" : `${infoMessage} `;
 
 		//When polling, we never display an error, we only log it (no telemetry either)
 		if (polling === true) {
@@ -38,10 +38,7 @@ export abstract class BaseClient {
 			if (offline === true) {
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.text = offlineText;
-					this._statusBarItem.tooltip =
-						Strings.StatusCodeOffline +
-						" " +
-						Strings.ClickToRetryConnection;
+					this._statusBarItem.tooltip = `${Strings.StatusCodeOffline} ${Strings.ClickToRetryConnection}`;
 					this._statusBarItem.command =
 						CommandNames.RefreshPollingStatus;
 				}

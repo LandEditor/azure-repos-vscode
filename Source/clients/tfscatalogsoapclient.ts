@@ -635,7 +635,7 @@ export class TfsCatalogSoapClient {
 								id: id.val,
 								url: url.resolve(
 									this.serverUrl,
-									"_apis/projectCollections/" + id.val,
+									`_apis/projectCollections/${id.val}`,
 								),
 							});
 						} else {
@@ -671,23 +671,7 @@ export class TfsCatalogSoapClient {
 			}
 		};
 
-		const envelope: string =
-			"<?xml version='1.0' encoding='UTF-8'?>" +
-			'<soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" ' +
-			'xmlns:xsd="http://www.w3.org/2001/XMLSchema">' +
-			'<soap:Body xmlns="http://microsoft.com/webservices/">' +
-			"<QueryNodes>" +
-			"<pathSpecs>" +
-			"<string>" +
-			pathSpecs +
-			"</string>" +
-			"</pathSpecs>" +
-			"<queryOptions>" +
-			queryOptions +
-			"</queryOptions>" +
-			"</QueryNodes>" +
-			"</soap:Body>" +
-			"</soap:Envelope>";
+		const envelope: string = `<?xml version='1.0' encoding='UTF-8'?><soap:Envelope xmlns:soap="http://www.w3.org/2003/05/soap-envelope" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:xsd="http://www.w3.org/2001/XMLSchema"><soap:Body xmlns="http://microsoft.com/webservices/"><QueryNodes><pathSpecs><string>${pathSpecs}</string></pathSpecs><queryOptions>${queryOptions}</queryOptions></QueryNodes></soap:Body></soap:Envelope>`;
 
 		this.soapClient.post(this.endpointUrl, envelope, onResult);
 

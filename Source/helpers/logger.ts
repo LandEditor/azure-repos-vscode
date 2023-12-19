@@ -20,7 +20,7 @@ export class Logger {
 				json: false,
 				filename: path.join(
 					Logger.logPath,
-					Constants.ExtensionName + "-extension.log",
+					`${Constants.ExtensionName}-extension.log`,
 				),
 				level: LoggingLevel[Logger.loggingLevel].toLowerCase(),
 				maxsize: 4000000,
@@ -34,16 +34,16 @@ export class Logger {
 	}
 
 	private static addPid(message: string): string {
-		return " [" + Logger.addZero(process.pid, 10000) + "] " + message;
+		return ` [${Logger.addZero(process.pid, 10000)}] ${message}`;
 	}
 
 	public static LogDebug(message: string): void {
 		Logger.initalize();
 		if (
 			Logger.initialized === true &&
-			this.loggingLevel === LoggingLevel.Debug
+			Logger.loggingLevel === LoggingLevel.Debug
 		) {
-			winston.log("debug", this.addPid(message));
+			winston.log("debug", Logger.addPid(message));
 			console.log(Logger.getNow() + message);
 		}
 	}
@@ -53,10 +53,10 @@ export class Logger {
 		Logger.initalize();
 		if (
 			Logger.initialized === true &&
-			this.loggingLevel >= LoggingLevel.Error
+			Logger.loggingLevel >= LoggingLevel.Error
 		) {
-			winston.log("error", this.addPid(message));
-			console.log(Logger.getNow() + "ERROR: " + message);
+			winston.log("error", Logger.addPid(message));
+			console.log(`${Logger.getNow()}ERROR: ${message}`);
 		}
 		//When displaying messages, don't add timestamp or our severity level prefix
 	}
@@ -66,9 +66,9 @@ export class Logger {
 		Logger.initalize();
 		if (
 			Logger.initialized === true &&
-			this.loggingLevel >= LoggingLevel.Info
+			Logger.loggingLevel >= LoggingLevel.Info
 		) {
-			winston.log("info", " " + this.addPid(message)); //five-wide
+			winston.log("info", ` ${Logger.addPid(message)}`); //five-wide
 			console.log(Logger.getNow() + message);
 		}
 	}
@@ -77,7 +77,7 @@ export class Logger {
 		Logger.initalize();
 		if (
 			Logger.initialized === true &&
-			this.loggingLevel === LoggingLevel.Debug
+			Logger.loggingLevel === LoggingLevel.Debug
 		) {
 			winston.log("debug", object);
 			console.log(object);
@@ -89,10 +89,10 @@ export class Logger {
 		Logger.initalize();
 		if (
 			Logger.initialized === true &&
-			this.loggingLevel >= LoggingLevel.Warn
+			Logger.loggingLevel >= LoggingLevel.Warn
 		) {
-			winston.log("warn", " " + this.addPid(message)); //five-wide
-			console.log(Logger.getNow() + "WARNING: " + message);
+			winston.log("warn", ` ${Logger.addPid(message)}`); //five-wide
+			console.log(`${Logger.getNow()}WARNING: ${message}`);
 		}
 		//When displaying messages, don't add timestamp or our severity level prefix
 	}
@@ -118,24 +118,30 @@ export class Logger {
 		}
 
 		switch (level.toLowerCase()) {
-			case "error":
+			case "error": {
 				Logger.loggingLevel = LoggingLevel.Error;
 				break;
-			case "warn":
+			}
+			case "warn": {
 				Logger.loggingLevel = LoggingLevel.Warn;
 				break;
-			case "info":
+			}
+			case "info": {
 				Logger.loggingLevel = LoggingLevel.Info;
 				break;
-			case "verbose":
+			}
+			case "verbose": {
 				Logger.loggingLevel = LoggingLevel.Verbose;
 				break;
-			case "debug":
+			}
+			case "debug": {
 				Logger.loggingLevel = LoggingLevel.Debug;
 				break;
-			default:
+			}
+			default: {
 				Logger.loggingLevel = undefined;
 				break;
+			}
 		}
 	}
 
@@ -154,7 +160,7 @@ export class Logger {
 			Logger.addZero(now.getMilliseconds(), 100),
 		].join(".");
 
-		return strDateTime + " ";
+		return `${strDateTime} `;
 	}
 
 	//Adds a preceding zero if num is less than base (or the default of 10)
@@ -164,8 +170,8 @@ export class Logger {
 			val = 10;
 		}
 		return num >= 0 && num < val
-			? "0" + num.toString()
-			: num.toString() + "";
+			? `0${num.toString()}`
+			: `${num.toString()}`;
 	}
 }
 

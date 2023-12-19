@@ -115,7 +115,7 @@ export class CommitHoverProvider implements HoverProvider {
 			d.range.contains(position),
 		);
 
-		if (!decoration || !document) {
+		if (!(decoration && document)) {
 			return;
 		}
 

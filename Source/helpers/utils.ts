@@ -73,7 +73,7 @@ export class Utils {
 		if (prefix === undefined) {
 			msg = "";
 		} else {
-			msg = prefix + " ";
+			msg = `${prefix} `;
 		}
 
 		let statusCode = "0";
@@ -84,21 +84,24 @@ export class Utils {
 		}
 
 		switch (statusCode) {
-			case "401":
-				msg = msg + Strings.StatusCode401;
+			case "401": {
+				msg += Strings.StatusCode401;
 				break;
+			}
 			case "ENOENT":
 			case "ENOTFOUND":
-			case "EAI_AGAIN":
-				msg = msg + Strings.StatusCodeOffline;
+			case "EAI_AGAIN": {
+				msg += Strings.StatusCodeOffline;
 				break;
+			}
 			case "ECONNRESET":
-			case "ECONNREFUSED":
-				if (this.IsProxyEnabled()) {
-					msg = msg + Strings.ProxyUnreachable;
+			case "ECONNREFUSED": {
+				if (Utils.IsProxyEnabled()) {
+					msg += Strings.ProxyUnreachable;
 					break;
 				}
 				return message;
+			}
 			default:
 				return message;
 		}
@@ -116,7 +119,7 @@ export class Utils {
 
 	public static IsProxyIssue(reason: any): boolean {
 		// If the proxy isn't enabled/set, it can't be a proxy issue
-		if (!this.IsProxyEnabled()) {
+		if (!Utils.IsProxyEnabled()) {
 			return false;
 		}
 
@@ -181,12 +184,14 @@ export class Utils {
 		// Fallback to other node modules for old versions of VS Code
 		switch (process.platform) {
 			case "win32":
-			case "darwin":
+			case "darwin": {
 				open(url);
 				break;
-			default:
+			}
+			default: {
 				opener(url);
 				break;
+			}
 		}
 	}
 }

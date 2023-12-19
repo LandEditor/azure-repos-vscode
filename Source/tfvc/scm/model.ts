@@ -54,7 +54,7 @@ export class Model implements Disposable {
 		this._repository = repository;
 		//filterEvent should return false if an event is to be filtered
 		const onNonGitChange = filterEvent(onWorkspaceChange, (uri) => {
-			if (!uri || !uri.fsPath) {
+			if (!uri?.fsPath) {
 				return false;
 			}
 			// Ignore files that aren't under this._repositoryRoot (e.g., settings.json)
@@ -62,8 +62,9 @@ export class Model implements Disposable {
 				.normalize()
 				.startsWith(path.normalize(this._repositoryRoot));
 			// Ignore workspace changes that take place in the .tf or $tf folder (where path contains /.tf/ or \$tf\)
-			const isTfFolder: boolean =
-				!/\/\.tf\//.test(uri.fsPath) && !/\\\$tf\\/.test(uri.fsPath);
+			const isTfFolder: boolean = !(
+				/\/\.tf\//.test(uri.fsPath) || /\\\$tf\\/.test(uri.fsPath)
+			);
 			// Attempt to ignore the team-extension.log file directly
 			const isLogFile: boolean = !(
 				path.basename(uri.fsPath) === "team-extension.log"
@@ -243,7 +244,7 @@ export class Model implements Disposable {
 		conflict: IConflict,
 	): boolean {
 		let result = false;
-		if (change && change.localItem && conflict && conflict.localPath) {
+		if (change?.localItem && conflict && conflict.localPath) {
 			// TODO: If resource or conflict are renames we have a lot more work to do
 			//       We are postponing this work for now until we have evidence that it happens a lot
 			let path2: string = conflict.localPath;

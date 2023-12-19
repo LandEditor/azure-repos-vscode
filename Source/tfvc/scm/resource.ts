@@ -64,7 +64,7 @@ export class Resource implements SourceControlResourceState {
 		// For conflicts set the version to "T"ip so that we will compare against the latest version
 		const versionSpec: string = this.HasStatus(Status.CONFLICT)
 			? "T"
-			: "C" + this._change.version;
+			: `C${this._change.version}`;
 		return Uri.file(serverItem).with({
 			scheme: TfvcSCMProvider.scmScheme,
 			query: versionSpec,
@@ -82,12 +82,13 @@ export class Resource implements SourceControlResourceState {
 				case ConflictType.CONTENT:
 				case ConflictType.MERGE:
 				case ConflictType.RENAME:
-				case ConflictType.NAME_AND_CONTENT:
+				case ConflictType.NAME_AND_CONTENT: {
 					if (this.HasStatus(Status.ADD)) {
 						return `${basename} (${Strings.ConflictAlreadyExists})`;
 					}
 					// Use the default title for all other cases
 					break;
+				}
 				case ConflictType.DELETE:
 					return `${basename} (${Strings.ConflictAlreadyDeleted})`;
 				case ConflictType.DELETE_TARGET:

@@ -7,21 +7,21 @@
 // Parser for the output of the security(1) command line.
 //
 
-var _ = require("underscore");
-var es = require("event-stream");
-var stream = require("readable-stream");
-var util = require("util");
+const _ = require("underscore");
+const es = require("event-stream");
+const stream = require("readable-stream");
+const util = require("util");
 
 //
 // Regular expressions that match the various fields in the input
 //
 
 // Fields at the root - not attributes
-var rootFieldRe = /^([^:]+):(?: (?:"([^"]+)")|(.*))?$/;
+const rootFieldRe = /^([^:]+):(?: (?:"([^"]+)")|(.*))?$/;
 
 // Attribute values, this gets a little more complicated
-var attrRe =
-	/^    (?:(0x[0-9a-fA-F]+) |"([a-z]{4})")<[^>]+>=(?:(<NULL>)|"([^"]+)"|(0x[0-9a-fA-F]+)(?:  "([^"]+)")|(.*)?)/;
+const attrRe =
+	/^ {4}(?:(0x[0-9a-fA-F]+) |"([a-z]{4})")<[^>]+>=(?:(<NULL>)|"([^"]+)"|(0x[0-9a-fA-F]+)(?: {2}"([^"]+)")|(.*)?)/;
 
 //
 // Stream based parser for the OSX security(1) program output.
@@ -35,7 +35,7 @@ var attrRe =
 //       or end. At which point we emit.
 //
 
-var Transform = stream.Transform;
+const Transform = stream.Transform;
 
 function OsxSecurityParsingStream() {
 	Transform.call(this, {
@@ -50,25 +50,23 @@ util.inherits(OsxSecurityParsingStream, Transform);
 
 _.extend(OsxSecurityParsingStream.prototype, {
 	_transform: function (chunk, encoding, callback) {
-		var match;
-		var value;
-		var line = chunk.toString();
-		var count = 0;
+		let match;
+		let value;
+		let line = chunk.toString();
+		let count = 0;
 
 		while (line !== null && line !== "") {
 			++count;
 			if (count > 2) {
 				return callback(
 					new Error(
-						"Multiple passes attempting to parse line [" +
-							line +
-							"]. Possible bug in parser and infinite loop",
+						`Multiple passes attempting to parse line [${line}]. Possible bug in parser and infinite loop`,
 					),
 				);
 			}
 
 			switch (this.state) {
-				case 0:
+				case 0: {
 					match = rootFieldRe.exec(line);
 					if (match !== null) {
 						if (match[1] === "keychain") {
@@ -83,8 +81,9 @@ _.extend(OsxSecurityParsingStream.prototype, {
 					}
 
 					break;
+				}
 
-				case 1:
+				case 1: {
 					match = rootFieldRe.exec(line);
 					if (match !== null) {
 						if (match[1] !== "attributes") {
@@ -96,8 +95,9 @@ _.extend(OsxSecurityParsingStream.prototype, {
 						}
 					}
 					break;
+				}
 
-				case 2:
+				case 2: {
 					match = attrRe.exec(line);
 					if (match !== null) {
 						// Did we match a four-char named field? We don't care about hex fields
@@ -118,6 +118,7 @@ _.extend(OsxSecurityParsingStream.prototype, {
 						this.state = 0;
 					}
 					break;
+				}
 			}
 		}
 		callback();

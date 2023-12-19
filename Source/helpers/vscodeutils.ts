@@ -56,20 +56,28 @@ export class VsCodeUtils {
 		message: string,
 		...urlMessageItem: IButtonMessageItem[]
 	): Promise<IButtonMessageItem> {
-		return this.showMessage(message, MessageTypes.Error, ...urlMessageItem);
+		return VsCodeUtils.showMessage(
+			message,
+			MessageTypes.Error,
+			...urlMessageItem,
+		);
 	}
 
 	public static async ShowInfoMessage(
 		message: string,
 		...urlMessageItem: IButtonMessageItem[]
 	): Promise<IButtonMessageItem> {
-		return this.showMessage(message, MessageTypes.Info, ...urlMessageItem);
+		return VsCodeUtils.showMessage(
+			message,
+			MessageTypes.Info,
+			...urlMessageItem,
+		);
 	}
 
 	public static async ShowWarningMessage(
 		message: string,
 	): Promise<IButtonMessageItem> {
-		return this.showMessage(message, MessageTypes.Warn);
+		return VsCodeUtils.showMessage(message, MessageTypes.Warn);
 	}
 
 	//We have a single method to display either simple messages (with no options) or messages
@@ -88,24 +96,27 @@ export class VsCodeUtils {
 		//Use the typescript spread operator to pass the rest parameter to showErrorMessage
 		let chosenItem: IButtonMessageItem;
 		switch (type) {
-			case MessageTypes.Error:
+			case MessageTypes.Error: {
 				chosenItem = await window.showErrorMessage(
 					messageToDisplay,
 					...messageItems,
 				);
 				break;
-			case MessageTypes.Info:
+			}
+			case MessageTypes.Info: {
 				chosenItem = await window.showInformationMessage(
 					messageToDisplay,
 					...messageItems,
 				);
 				break;
-			case MessageTypes.Warn:
+			}
+			case MessageTypes.Warn: {
 				chosenItem = await window.showWarningMessage(
 					messageToDisplay,
 					...messageItems,
 				);
 				break;
+			}
 			default:
 				break;
 		}

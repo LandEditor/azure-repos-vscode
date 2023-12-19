@@ -50,7 +50,7 @@ export class RepositoryInfoClient {
 				[this._handler],
 			);
 			repoInfo = await repositoryClient.getVstsInfo();
-			Logger.LogDebug(`Repository information blob:`);
+			Logger.LogDebug("Repository information blob:");
 			Logger.LogObject(repoInfo);
 			this.verifyRepoInfo(
 				repoInfo,
@@ -170,7 +170,7 @@ export class RepositoryInfoClient {
 			if (isTeamServices) {
 				//The following call works for VSTS, TFS 2017 and TFS 2015U3 (multiple collections, spaces in the name), just not for non-admins on-prem (!)
 				Logger.LogDebug(
-					`Using REST to get the project collection information`,
+					"Using REST to get the project collection information",
 				);
 				collection = await coreApiClient.GetProjectCollection(
 					serverUrl,
@@ -178,7 +178,7 @@ export class RepositoryInfoClient {
 				);
 			} else {
 				Logger.LogDebug(
-					`Using SOAP to get the project collection information`,
+					"Using SOAP to get the project collection information",
 				);
 				// When called on-prem without admin privileges: Error: Failed Request: Forbidden(403) - Access Denied: Jeff Young (TFS) needs the following permission(s) to perform this action: Edit instance-level information
 				const tfsClient: TfsCatalogSoapClient =
@@ -226,7 +226,7 @@ export class RepositoryInfoClient {
 				project.description,
 				project.url,
 			);
-			Logger.LogDebug(`Repository information blob:`);
+			Logger.LogDebug("Repository information blob:");
 			Logger.LogObject(repoInfo);
 			this.verifyRepoInfo(
 				repoInfo,
@@ -251,7 +251,7 @@ export class RepositoryInfoClient {
 	}
 
 	private splitTfvcCollectionUrl(collectionUrl: string): string[] {
-		const result: string[] = [,];
+		const result: string[] = [undefined];
 		if (!collectionUrl) {
 			return result;
 		}

@@ -9,7 +9,7 @@ import { ICredentialStore } from "../interfaces/icredentialstore";
 import * as Q from "q";
 
 /* tslint:disable:no-var-keyword */
-var osxkeychain = require("./osx-keychain");
+const osxkeychain = require("./osx-keychain");
 /* tslint:enable:no-var-keyword */
 
 /*
@@ -218,10 +218,9 @@ export class OsxKeychainApi implements ICredentialStore {
 		return deferred.promise;
 	}
 
-	private listCredentials(service?: string): Q.Promise<Array<Credential>> {
-		const deferred: Q.Deferred<Array<Credential>> =
-			Q.defer<Array<Credential>>();
-		const credentials: Array<Credential> = [];
+	private listCredentials(service?: string): Q.Promise<Credential[]> {
+		const deferred: Q.Deferred<Credential[]> = Q.defer<Credential[]>();
+		const credentials: Credential[] = [];
 
 		const stream = osxkeychain.list();
 		stream.on("data", (cred) => {

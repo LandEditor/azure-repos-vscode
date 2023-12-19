@@ -9,7 +9,7 @@ import { env } from "vscode";
 import ifm = require("vso-node-api/interfaces/common/VsoBaseInterfaces");
 import { HttpClient } from "./httpclient";
 
-var httpCodes = {
+const httpCodes = {
 	300: "Multiple Choices",
 	301: "Moved Permanantly",
 	302: "Resource Moved",
@@ -39,15 +39,15 @@ var httpCodes = {
 export function processResponse(url, res, contents, onResult) {
 	if (res.statusCode > 299) {
 		// not success
-		var msg = httpCodes[res.statusCode]
-			? "Failed Request: " + httpCodes[res.statusCode]
+		let msg = httpCodes[res.statusCode]
+			? `Failed Request: ${httpCodes[res.statusCode]}`
 			: "Failed Request";
-		msg += "(" + res.statusCode + ") - ";
+		msg += `(${res.statusCode}) - `;
 
 		if (contents && contents.length > 0) {
-			var soapObj = contents;
+			const soapObj = contents;
 
-			if (soapObj && soapObj.message) {
+			if (soapObj?.message) {
 				msg += soapObj.message;
 			} else {
 				msg += url;
@@ -57,7 +57,7 @@ export function processResponse(url, res, contents, onResult) {
 		onResult(new Error(msg), res.statusCode, null);
 	} else {
 		try {
-			var soapObj = null;
+			let soapObj = null;
 			if (contents && contents.length > 0) {
 				soapObj = contents;
 			}

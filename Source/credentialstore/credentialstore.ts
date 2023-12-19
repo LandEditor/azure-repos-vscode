@@ -39,7 +39,7 @@ export class CredentialStore implements ICredentialStore {
 
 		// In the case of win32 or darwin, this._folder will contain the prefix.
 		switch (os.platform()) {
-			case "win32":
+			case "win32": {
 				if (prefix === undefined) {
 					this._prefix = this._defaultPrefix;
 				}
@@ -47,15 +47,15 @@ export class CredentialStore implements ICredentialStore {
 					this._prefix,
 				);
 				break;
-			case "darwin":
+			}
+			case "darwin": {
 				if (prefix === undefined) {
 					this._prefix = this._defaultPrefix;
 				}
 				this._credentialStore = new OsxKeychainApi(this._prefix);
 				break;
-			/* tslint:disable:no-switch-case-fall-through */
-			case "linux":
-			default:
+			}
+			default: {
 				/* tslint:enable:no-switch-case-fall-through */
 				if (folder === undefined) {
 					this._folder = this._defaultFolder;
@@ -68,6 +68,7 @@ export class CredentialStore implements ICredentialStore {
 					this._filename,
 				);
 				break;
+			}
 		}
 	}
 

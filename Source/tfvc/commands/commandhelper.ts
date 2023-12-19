@@ -43,7 +43,7 @@ export class CommandHelper {
 		result: IExecutionResult,
 		errorPattern: string,
 	): boolean {
-		if (result && result.stderr && errorPattern) {
+		if (result?.stderr && errorPattern) {
 			return new RegExp(errorPattern, "i").test(result.stderr);
 		}
 		return false;

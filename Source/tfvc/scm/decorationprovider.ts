@@ -20,7 +20,7 @@ export class DecorationProvider {
 		statuses: Status[],
 		conflictType?: ConflictType,
 	): SourceControlResourceDecorations {
-		const status: Status = this.getDominantStatus(statuses);
+		const status: Status = DecorationProvider.getDominantStatus(statuses);
 		const light = {
 			iconPath: DecorationProvider.getIconPath(status, "light"),
 		};

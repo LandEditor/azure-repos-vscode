@@ -10,8 +10,6 @@ import {
 import { CoreApiService } from "../services/coreapi";
 
 export class CoreApiClient {
-	/* tslint:disable:no-empty */
-	constructor() {}
 	/* tslint:enable:no-empty */
 
 	public async GetTeamProject(

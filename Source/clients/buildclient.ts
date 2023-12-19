@@ -3,7 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { StatusBarItem } from "vscode";
 import {
 	Build,
 	BuildBadge,
@@ -14,7 +13,6 @@ import {
 	IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
-import { TeamServerContext } from "../contexts/servercontext";
 import {
 	CommandNames,
 	TelemetryEvents,
@@ -29,10 +27,6 @@ import { BaseClient } from "./baseclient";
 
 export class BuildClient extends BaseClient {
 	private _buildSummaryUrl: string;
-
-	constructor(context: TeamServerContext, statusBarItem: StatusBarItem) {
-		super(context, statusBarItem);
-	}
 
 	//Gets any available build status information and adds it to the status bar
 	public async DisplayCurrentBuildStatus(
@@ -76,9 +70,7 @@ export class BuildClient extends BaseClient {
 			}
 			if (buildBadge && buildBadge.buildId !== undefined) {
 				Logger.LogInfo(
-					"Found build id " +
-						buildBadge.buildId.toString() +
-						". Getting build details...",
+					`Found build id ${buildBadge.buildId.toString()}. Getting build details...`,
 				);
 				const build: Build = await svc.GetBuildById(buildBadge.buildId);
 				this._buildSummaryUrl = BuildService.GetBuildSummaryUrl(
@@ -86,44 +78,32 @@ export class BuildClient extends BaseClient {
 					build.id.toString(),
 				);
 				Logger.LogInfo(
-					"Build summary info: " +
-						build.id.toString() +
-						" " +
-						BuildStatus[build.status] +
-						" " +
-						BuildResult[build.result] +
-						" " +
-						this._buildSummaryUrl,
+					`Build summary info: ${build.id.toString()} ${
+						BuildStatus[build.status]
+					} ${BuildResult[build.result]} ${this._buildSummaryUrl}`,
 				);
 
 				if (this._statusBarItem !== undefined) {
 					const icon: string = Utils.GetBuildResultIcon(build.result);
 					this._statusBarItem.command =
 						CommandNames.OpenBuildSummaryPage;
-					this._statusBarItem.text = `$(package) ` + `$(${icon})`;
-					this._statusBarItem.tooltip =
-						"(" +
-						BuildResult[build.result] +
-						") " +
-						Strings.NavigateToBuildSummary +
-						" " +
-						build.buildNumber;
+					this._statusBarItem.text = `$(package) $(${icon})`;
+					this._statusBarItem.tooltip = `(${
+						BuildResult[build.result]
+					}) ${Strings.NavigateToBuildSummary} ${build.buildNumber}`;
 				}
 			} else {
 				Logger.LogInfo(
-					"No builds were found for team " +
-						this._serverContext.RepoInfo.TeamProject.toString() +
-						", repo id " +
-						this._serverContext.RepoInfo.RepositoryId.toString() +
-						", + branch " +
-						(context.CurrentBranch
+					`No builds were found for team ${this._serverContext.RepoInfo.TeamProject.toString()}, repo id ${this._serverContext.RepoInfo.RepositoryId.toString()}, + branch ${
+						context.CurrentBranch
 							? context.CurrentBranch.toString()
-							: "UNKNOWN"),
+							: "UNKNOWN"
+					}`,
 				);
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.command =
 						CommandNames.OpenBuildSummaryPage;
-					this._statusBarItem.text = `$(package) ` + `$(dash)`;
+					this._statusBarItem.text = "$(package) " + "$(dash)";
 					this._statusBarItem.tooltip =
 						context.Type === RepositoryType.GIT
 							? Strings.NoBuildsFound
@@ -189,11 +169,11 @@ export class BuildClient extends BaseClient {
 				this._serverContext.RepoInfo.TeamProjectUrl,
 			);
 		}
-		Logger.LogInfo("OpenBuildSummaryPage: " + url);
+		Logger.LogInfo(`OpenBuildSummaryPage: ${url}`);
 		Utils.OpenUrl(url);
 	}
 
 	public static GetOfflineBuildStatusText(): string {
-		return `$(package) ` + `???`;
+		return "$(package) " + "???";
 	}
 }

@@ -78,11 +78,11 @@ export class UIHelper {
 				if (onlyShowErrors && !UIHelper.isSyncError(item.syncType)) {
 					continue;
 				}
-				const type: string = this.GetDisplayTextForSyncType(
+				const type: string = UIHelper.GetDisplayTextForSyncType(
 					item.syncType,
 				);
 				TfvcOutput.AppendLine(
-					type + ": " + item.itemPath + " : " + item.message,
+					`${type}: ${item.itemPath} : ${item.message}`,
 				);
 				items.push({
 					label: type,
@@ -152,7 +152,7 @@ export class UIHelper {
 	}
 
 	public static GetFileName(change: IPendingChange): string {
-		if (change && change.localItem) {
+		if (change?.localItem) {
 			const filename: string = path.parse(change.localItem).base;
 			return filename;
 		}
@@ -161,7 +161,7 @@ export class UIHelper {
 	}
 
 	public static GetRelativePath(change: IPendingChange): string {
-		if (change && change.localItem && workspace) {
+		if (change?.localItem && workspace) {
 			return workspace.asRelativePath(change.localItem);
 		}
 

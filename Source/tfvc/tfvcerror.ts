@@ -67,16 +67,9 @@ export class TfvcError {
 	}
 
 	public toString(): string {
-		let result =
-			this.message +
-			" Details: " +
-			`exitCode: ${this.exitCode}, ` +
-			`errorCode: ${this.tfvcErrorCode}, ` +
-			`command: ${this.tfvcCommand}, ` +
-			`stdout: ${this.stdout}, ` +
-			`stderr: ${this.stderr}`;
+		let result = `${this.message} Details: exitCode: ${this.exitCode}, errorCode: ${this.tfvcErrorCode}, command: ${this.tfvcCommand}, stdout: ${this.stdout}, stderr: ${this.stderr}`;
 		if (this.error) {
-			result += " Stack: " + (<any>this.error).stack;
+			result += ` Stack: ${(<any>this.error).stack}`;
 		}
 
 		return result;

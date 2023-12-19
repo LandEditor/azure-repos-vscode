@@ -70,7 +70,7 @@ export class GitVcService {
 			remoteUrl,
 			`path=${file}`,
 			`version=GB${branch}`,
-			`annotate=true`,
+			"annotate=true",
 		);
 	}
 
@@ -87,7 +87,7 @@ export class GitVcService {
 			remoteUrl,
 			`path=${file}`,
 			`version=GB${branch}`,
-			`_a=history`,
+			"_a=history",
 		);
 	}
 
@@ -102,7 +102,7 @@ export class GitVcService {
 		return UrlBuilder.AddQueryParams(
 			repoHistoryUrl,
 			`itemVersion=GB${branch}`,
-			`_a=history`,
+			"_a=history",
 		);
 	}
 
@@ -115,7 +115,7 @@ export class GitVcService {
 		const branch: string = encodeURIComponent(currentBranch);
 		return UrlBuilder.AddHashes(
 			GitVcService.GetPullRequestsUrl(remoteUrl),
-			`_a=createnew`,
+			"_a=createnew",
 			`sourceRef=${branch}`,
 		);
 	}

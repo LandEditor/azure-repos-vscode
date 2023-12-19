@@ -120,9 +120,11 @@ export class ExtensionManager implements Disposable {
 	//Ensure we have a TFS or Team Services-based repository. Otherwise, return false.
 	private ensureMinimalInitialization(): boolean {
 		if (
-			!this._repoContext ||
-			!this._serverContext ||
-			!this._serverContext.RepoInfo.IsTeamFoundation
+			!(
+				this._repoContext &&
+				this._serverContext &&
+				this._serverContext.RepoInfo.IsTeamFoundation
+			)
 		) {
 			//If the user previously signed out (in this session of VS Code), show a message to that effect
 			if (this._teamExtension.IsSignedOut) {
@@ -203,11 +205,11 @@ export class ExtensionManager implements Disposable {
 
 	//Logs an error to the logger and sends an exception to telemetry service
 	public ReportError(err: Error, message: string, showToUser = false): void {
-		const fullMessage = err ? message + " " + err : message;
+		const fullMessage = err ? `${message} ${err}` : message;
 
 		// Log the message
 		Logger.LogError(fullMessage);
-		if (err && err.message) {
+		if (err?.message) {
 			// Log additional information for debugging purposes
 			Logger.LogDebug(err.message);
 		}
@@ -233,7 +235,7 @@ export class ExtensionManager implements Disposable {
 	//Ensures a folder is open before attempting to run any command already shown in
 	//the Command Palette (and defined in package.json).
 	public RunCommand(funcToTry: (args) => void, ...args: string[]): void {
-		if (!workspace || !workspace.rootPath) {
+		if (!workspace?.rootPath) {
 			this.DisplayErrorMessage(Strings.FolderNotOpened);
 			return;
 		}
@@ -293,7 +295,7 @@ export class ExtensionManager implements Disposable {
 		}
 
 		//Don't initialize if we don't have a workspace
-		if (!workspace || !workspace.rootPath) {
+		if (!workspace?.rootPath) {
 			return;
 		}
 
@@ -339,10 +341,7 @@ export class ExtensionManager implements Disposable {
 				this._credentialManager
 					.GetCredentials(this._serverContext)
 					.then(async (creds: CredentialInfo) => {
-						if (!creds || !creds.CredentialHandler) {
-							this.displayNoCredentialsMessage();
-							return;
-						} else {
+						if (creds?.CredentialHandler) {
 							this._serverContext.CredentialInfo = creds;
 							Telemetry.Initialize(
 								this._settings,
@@ -363,7 +362,7 @@ export class ExtensionManager implements Disposable {
 								"Getting repository information with repositoryInfoClient",
 							);
 							Logger.LogDebug(
-								"RemoteUrl = " + this._repoContext.RemoteUrl,
+								`RemoteUrl = ${this._repoContext.RemoteUrl}`,
 							);
 							try {
 								//At this point, we have either successfully called git.exe or tf.cmd (we just need to verify the remote urls)
@@ -388,7 +387,7 @@ export class ExtensionManager implements Disposable {
 									"Getting connectionData with accountClient",
 								);
 								Logger.LogDebug(
-									"connectionUrl = " + connectionUrl,
+									`connectionUrl = ${connectionUrl}`,
 								);
 								try {
 									const settings: any =
@@ -413,7 +412,7 @@ export class ExtensionManager implements Disposable {
 
 									this.sendStartupTelemetry();
 									Logger.LogInfo(
-										`Sent extension start up telemetry`,
+										"Sent extension start up telemetry",
 									);
 
 									Logger.LogObject(settings);
@@ -480,6 +479,9 @@ export class ExtensionManager implements Disposable {
 									);
 								}
 							}
+						} else {
+							this.displayNoCredentialsMessage();
+							return;
 						}
 
 						// Now that everything else is ready, create the SCM provider
@@ -493,25 +495,25 @@ export class ExtensionManager implements Disposable {
 								this.sendTfvcConfiguredTelemetry(
 									tfvcContext.TfvcRepository,
 								);
-								Logger.LogInfo(`Sent TFVC tooling telemetry`);
+								Logger.LogInfo("Sent TFVC tooling telemetry");
 								if (this._scmProvider) {
 									Logger.LogDebug(
-										`Re-initializing the TfvcSCMProvider`,
+										"Re-initializing the TfvcSCMProvider",
 									);
 									await this._scmProvider.Reinitialize();
 									Logger.LogDebug(
-										`Re-initialized the TfvcSCMProvider`,
+										"Re-initialized the TfvcSCMProvider",
 									);
 								} else {
 									Logger.LogDebug(
-										`Initializing the TfvcSCMProvider`,
+										"Initializing the TfvcSCMProvider",
 									);
 									this._scmProvider = new TfvcSCMProvider(
 										this,
 									);
 									await this._scmProvider.Initialize();
 									Logger.LogDebug(
-										`Initialized the TfvcSCMProvider`,
+										"Initialized the TfvcSCMProvider",
 									);
 								}
 								this.sendTfvcConnectedTelemetry(
@@ -520,7 +522,7 @@ export class ExtensionManager implements Disposable {
 							}
 						} catch (err) {
 							Logger.LogError(
-								`Caught an exception during Tfvc SCM Provider initialization`,
+								"Caught an exception during Tfvc SCM Provider initialization",
 							);
 							const logMsg: string =
 								this.formatErrorLogMessage(err);
@@ -657,7 +659,8 @@ export class ExtensionManager implements Disposable {
 
 	private async showFarewellMessage(): Promise<void> {
 		if (this._settings.ShowFarewellMessage) {
-			const farewellMessage: string = `The Azure Repos extension has been sunsetted.`;
+			const farewellMessage: string =
+				"The Azure Repos extension has been sunsetted.";
 			const messageItems: IButtonMessageItem[] = [];
 			messageItems.push({
 				title: Strings.LearnMore,
@@ -704,46 +707,24 @@ export class ExtensionManager implements Disposable {
 
 	private logDebugInformation(): void {
 		Logger.LogDebug(
-			"Account: " +
-				this._serverContext.RepoInfo.Account +
-				" " +
-				"Team Project: " +
-				this._serverContext.RepoInfo.TeamProject +
-				" " +
-				"Collection: " +
-				this._serverContext.RepoInfo.CollectionName +
-				" " +
-				"Repository: " +
-				this._serverContext.RepoInfo.RepositoryName +
-				" " +
-				"UserCustomDisplayName: " +
-				this._serverContext.UserInfo.CustomDisplayName +
-				" " +
-				"UserProviderDisplayName: " +
-				this._serverContext.UserInfo.ProviderDisplayName +
-				" " +
-				"UserId: " +
-				this._serverContext.UserInfo.Id +
-				" ",
+			`Account: ${this._serverContext.RepoInfo.Account} Team Project: ${this._serverContext.RepoInfo.TeamProject} Collection: ${this._serverContext.RepoInfo.CollectionName} Repository: ${this._serverContext.RepoInfo.RepositoryName} UserCustomDisplayName: ${this._serverContext.UserInfo.CustomDisplayName} UserProviderDisplayName: ${this._serverContext.UserInfo.ProviderDisplayName} UserId: ${this._serverContext.UserInfo.Id} `,
 		);
-		Logger.LogDebug("repositoryFolder: " + this._repoContext.RepoFolder);
-		Logger.LogDebug("repositoryRemoteUrl: " + this._repoContext.RemoteUrl);
+		Logger.LogDebug(`repositoryFolder: ${this._repoContext.RepoFolder}`);
+		Logger.LogDebug(`repositoryRemoteUrl: ${this._repoContext.RemoteUrl}`);
 		if (this._repoContext.Type === RepositoryType.GIT) {
 			Logger.LogDebug(
-				"gitRepositoryParentFolder: " +
-					this._repoContext.RepositoryParentFolder,
+				`gitRepositoryParentFolder: ${this._repoContext.RepositoryParentFolder}`,
 			);
 			Logger.LogDebug(
-				"gitCurrentBranch: " + this._repoContext.CurrentBranch,
+				`gitCurrentBranch: ${this._repoContext.CurrentBranch}`,
 			);
-			Logger.LogDebug("gitCurrentRef: " + this._repoContext.CurrentRef);
+			Logger.LogDebug(`gitCurrentRef: ${this._repoContext.CurrentRef}`);
 		}
-		Logger.LogDebug("IsSsh: " + this._repoContext.IsSsh);
+		Logger.LogDebug(`IsSsh: ${this._repoContext.IsSsh}`);
 		Logger.LogDebug(
-			"proxy: " +
-				(Utils.IsProxyEnabled() ? "enabled" : "not enabled") +
-				", azure devops services: " +
-				this._serverContext.RepoInfo.IsTeamServices.toString(),
+			`proxy: ${
+				Utils.IsProxyEnabled() ? "enabled" : "not enabled"
+			}, azure devops services: ${this._serverContext.RepoInfo.IsTeamServices.toString()}`,
 		);
 	}
 
@@ -757,7 +738,7 @@ export class ExtensionManager implements Disposable {
 			Logger.LogInfo(`*** FOLDER: ${rootPath} ***`);
 			Logger.LogInfo(`${UserAgentProvider.UserAgent}`);
 		} else {
-			Logger.LogInfo(`*** Folder not opened ***`);
+			Logger.LogInfo("*** Folder not opened ***");
 		}
 	}
 
@@ -770,7 +751,7 @@ export class ExtensionManager implements Disposable {
 		if (this._teamServicesStatusBarItem !== undefined) {
 			//TODO: Should the default command be to display the message?
 			this._teamServicesStatusBarItem.command = commandOnClick; // undefined clears the command
-			this._teamServicesStatusBarItem.text = `Team $(stop)`;
+			this._teamServicesStatusBarItem.text = "Team $(stop)";
 			this._teamServicesStatusBarItem.tooltip = message;
 			this._teamServicesStatusBarItem.show();
 		}
@@ -782,7 +763,7 @@ export class ExtensionManager implements Disposable {
 			this._repoContext &&
 			this._repoContext.Type === RepositoryType.GIT
 		) {
-			const pattern: string = this._repoContext.RepoFolder + "/HEAD";
+			const pattern: string = `${this._repoContext.RepoFolder}/HEAD`;
 			const fsw: FileSystemWatcher = workspace.createFileSystemWatcher(
 				pattern,
 				true,
@@ -799,7 +780,7 @@ export class ExtensionManager implements Disposable {
 						this._settings,
 					);
 				Logger.LogInfo(
-					"CurrentBranch is: " + this._repoContext.CurrentBranch,
+					`CurrentBranch is: ${this._repoContext.CurrentBranch}`,
 				);
 				this.notifyBranchChanged(/*this._repoContext.CurrentBranch*/);
 			});
@@ -814,7 +795,7 @@ export class ExtensionManager implements Disposable {
 	//Sets up a file system watcher on config so we can know when the remote origin has changed
 	private async setupFileSystemWatcherOnConfig(): Promise<void> {
 		//If we don't have a workspace, don't set up the file watcher
-		if (!workspace || !workspace.rootPath) {
+		if (!workspace?.rootPath) {
 			return;
 		}
 
@@ -899,7 +880,7 @@ export class ExtensionManager implements Disposable {
 
 	private showFeedbackItem(): void {
 		this._feedbackStatusBarItem.command = CommandNames.SendFeedback;
-		this._feedbackStatusBarItem.text = `$(megaphone)`;
+		this._feedbackStatusBarItem.text = "$(megaphone)";
 		this._feedbackStatusBarItem.tooltip = Strings.SendFeedback;
 		this._feedbackStatusBarItem.show();
 	}

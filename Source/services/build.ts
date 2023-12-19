@@ -115,7 +115,7 @@ export class BuildService {
 	): string {
 		return UrlBuilder.AddHashes(
 			BuildService.GetBuildsUrl(remoteUrl),
-			`_a=completed`,
+			"_a=completed",
 			`definitionId=${definitionId}`,
 		);
 	}
@@ -133,7 +133,7 @@ export class BuildService {
 		summaryUrl = UrlBuilder.AddQueryParams(
 			summaryUrl,
 			`buildId=${buildId}`,
-			`_a=summary`,
+			"_a=summary",
 		);
 		return summaryUrl;
 	}

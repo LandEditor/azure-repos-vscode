@@ -12,36 +12,46 @@ export function GetStatuses(statusText: string): Status[] {
 	const statusStrings: string[] = statusText.split(",");
 	for (let i = 0; i < statusStrings.length; i++) {
 		switch (statusStrings[i].trim().toLowerCase()) {
-			case "add":
+			case "add": {
 				result.push(Status.ADD);
 				break;
-			case "branch":
+			}
+			case "branch": {
 				result.push(Status.BRANCH);
 				break;
-			case "delete":
+			}
+			case "delete": {
 				result.push(Status.DELETE);
 				break;
-			case "edit":
+			}
+			case "edit": {
 				result.push(Status.EDIT);
 				break;
-			case "lock":
+			}
+			case "lock": {
 				result.push(Status.LOCK);
 				break;
-			case "merge":
+			}
+			case "merge": {
 				result.push(Status.MERGE);
 				break;
-			case "rename":
+			}
+			case "rename": {
 				result.push(Status.RENAME);
 				break;
-			case "source rename":
+			}
+			case "source rename": {
 				result.push(Status.RENAME);
 				break;
-			case "undelete":
+			}
+			case "undelete": {
 				result.push(Status.UNDELETE);
 				break;
-			default:
+			}
+			default: {
 				result.push(Status.UNKNOWN);
 				break;
+			}
 		}
 	}
 

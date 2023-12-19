@@ -41,7 +41,7 @@ export class RepositoryInfo {
 
 	constructor(repositoryInfo: any) {
 		if (!repositoryInfo) {
-			throw new Error(`repositoryInfo is undefined`);
+			throw new Error("repositoryInfo is undefined");
 		}
 
 		let repositoryUrl: string = undefined;
@@ -98,15 +98,15 @@ export class RepositoryInfo {
 				//The following properties are returned from the vsts/info api
 				//If you add additional properties to the server context, they need to be set here
 				this._collection = repositoryInfo.collection.name;
-				Logger.LogDebug("_collection: " + this._collection);
+				Logger.LogDebug(`_collection: ${this._collection}`);
 				this._collectionId = repositoryInfo.collection.id;
-				Logger.LogDebug("_collectionId: " + this._collectionId);
+				Logger.LogDebug(`_collectionId: ${this._collectionId}`);
 				this._repositoryId = repositoryInfo.repository.id;
-				Logger.LogDebug("_repositoryId: " + this._repositoryId);
+				Logger.LogDebug(`_repositoryId: ${this._repositoryId}`);
 				this._repositoryName = repositoryInfo.repository.name;
-				Logger.LogDebug("_repositoryName: " + this._repositoryName);
+				Logger.LogDebug(`_repositoryName: ${this._repositoryName}`);
 				this._teamProject = repositoryInfo.repository.project.name;
-				Logger.LogDebug("_teamProject: " + this._teamProject);
+				Logger.LogDebug(`_teamProject: ${this._teamProject}`);
 				if (this._isTeamFoundationServer === true) {
 					Logger.LogDebug("_isTeamFoundationServer: true");
 					//_serverUrl is only set for TeamFoundationServer repositories
@@ -128,9 +128,9 @@ export class RepositoryInfo {
 			if (
 				RepoUtils.IsTeamFoundationServicesAzureRepo(this._repositoryUrl)
 			) {
-				return this._protocol + "//" + this._host + "/" + this._account;
+				return `${this._protocol}//${this._host}/${this._account}`;
 			}
-			return this._protocol + "//" + this._host;
+			return `${this._protocol}//${this._host}`;
 		} else if (this._isTeamFoundationServer) {
 			return this._serverUrl;
 		}

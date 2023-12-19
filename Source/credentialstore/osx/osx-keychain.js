@@ -6,14 +6,14 @@
 //
 // Access to the OSX keychain - list, add, get password, remove
 //
-var _ = require("underscore");
-var childProcess = require("child_process");
-var es = require("event-stream");
-var parser = require("./osx-keychain-parser");
+const _ = require("underscore");
+const childProcess = require("child_process");
+const es = require("event-stream");
+const parser = require("./osx-keychain-parser");
 
-var securityPath = "/usr/bin/security";
+const securityPath = "/usr/bin/security";
 
-var targetNamePrefix = "";
+let targetNamePrefix = "";
 
 //Allow callers to set their own prefix
 function setPrefix(prefix) {
@@ -37,7 +37,7 @@ function removePrefix(targetName) {
  * @return {Stream} object mode stream of parsed results.
  */
 function list() {
-	var securityProcess = childProcess.spawn(securityPath, ["dump-keychain"]);
+	const securityProcess = childProcess.spawn(securityPath, ["dump-keychain"]);
 
 	return securityProcess.stdout
 		.pipe(es.split())
@@ -55,7 +55,7 @@ function list() {
  *                                returned result.
  */
 function get(userName, service, callback) {
-	var args = [
+	const args = [
 		"find-generic-password",
 		"-a",
 		userName,
@@ -68,9 +68,9 @@ function get(userName, service, callback) {
 		if (err) {
 			return callback(err);
 		}
-		var match = /^password: (?:0x[0-9A-F]+  )?"(.*)"$/m.exec(stderr);
+		const match = /^password: (?:0x[0-9A-F]+ {2})?"(.*)"$/m.exec(stderr);
 		if (match) {
-			var password = match[1].replace(/\\134/g, "\\");
+			const password = match[1].replace(/\\134/g, "\\");
 			return callback(null, password);
 		}
 		return callback(new Error("Password in invalid format"));
@@ -88,7 +88,7 @@ function get(userName, service, callback) {
  * @param {function(err)} callback called on completion.
  */
 function set(userName, service, description, password, callback) {
-	var args = [
+	const args = [
 		"add-generic-password",
 		"-a",
 		userName,
@@ -104,7 +104,7 @@ function set(userName, service, description, password, callback) {
 	childProcess.execFile(securityPath, args, (err, stdout, stderr) => {
 		if (err) {
 			return callback(
-				new Error("Could not add password to keychain: " + stderr),
+				new Error(`Could not add password to keychain: ${stderr}`),
 			);
 		}
 		return callback();
@@ -120,7 +120,7 @@ function set(userName, service, description, password, callback) {
  * @param {function (err)} callback called on completion
  */
 function remove(userName, service, description, callback) {
-	var args = ["delete-generic-password"];
+	let args = ["delete-generic-password"];
 	if (userName) {
 		args = args.concat(["-a", userName]);
 	}

@@ -6,7 +6,7 @@
 export class UrlBuilder {
 	//Joins multiple paths with '/'. Not intended to use with query params or hashes
 	public static Join(baseUrl: string, ...args: string[]): string {
-		if (!baseUrl || !args || !args[0]) {
+		if (!(baseUrl && args && args[0])) {
 			return baseUrl;
 		}
 
@@ -28,7 +28,7 @@ export class UrlBuilder {
 	}
 
 	public static AddQueryParams(baseUrl: string, ...args: string[]): string {
-		if (!baseUrl || !args || !args[0]) {
+		if (!(baseUrl && args && args[0])) {
 			return baseUrl;
 		}
 
@@ -52,7 +52,7 @@ export class UrlBuilder {
 	}
 
 	public static AddHashes(baseUrl: string, ...args: string[]): string {
-		if (!baseUrl || !args || !args[0]) {
+		if (!(baseUrl && args && args[0])) {
 			return baseUrl;
 		}
 

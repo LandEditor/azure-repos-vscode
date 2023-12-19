@@ -130,7 +130,7 @@ export class CredentialManager {
 				context.RepoInfo.AccountUrl,
 			)
 		) {
-			return context.RepoInfo.Host + "/" + context.RepoInfo.Account;
+			return `${context.RepoInfo.Host}/${context.RepoInfo.Account}`;
 		}
 		return context.RepoInfo.Host;
 	}

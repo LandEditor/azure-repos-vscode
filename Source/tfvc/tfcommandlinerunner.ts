@@ -80,7 +80,7 @@ export class TfCommandLineRunner {
 		if (exists) {
 			// if it exists, check to ensure that it's a file and not a folder
 			const stats: fs.Stats = fs.lstatSync(tfvcPath);
-			if (!stats || (!stats.isFile() && !stats.isSymbolicLink())) {
+			if (!(stats && (stats.isFile() || stats.isSymbolicLink()))) {
 				Logger.LogWarning(
 					`TFVC ${tfvcPath} exists but isn't a file or symlink.`,
 				);
@@ -119,7 +119,7 @@ export class TfCommandLineRunner {
 	public static CheckVersion(tfvc: ITfCommandLine, version: string): void {
 		if (!version) {
 			// If the version isn't set just return
-			Logger.LogDebug(`TFVC CheckVersion called without a version.`);
+			Logger.LogDebug("TFVC CheckVersion called without a version.");
 			return;
 		}
 
@@ -268,7 +268,7 @@ export class TfCommandLineRunner {
 	}
 
 	private static optionsMatch(options1: any, options2: any): boolean {
-		return (!options1 && !options2) || options1.cwd === options2.cwd;
+		return !(options1 || options2) || options1.cwd === options2.cwd;
 	}
 
 	private static async spawn(

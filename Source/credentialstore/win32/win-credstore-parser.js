@@ -7,18 +7,18 @@
 // Parser for the output of the creds.exe helper program.
 //
 
-var _ = require("underscore");
-var es = require("event-stream");
-var stream = require("readable-stream");
-var util = require("util");
+const _ = require("underscore");
+const es = require("event-stream");
+const stream = require("readable-stream");
+const util = require("util");
 
-var Transform = stream.Transform;
+const Transform = stream.Transform;
 
 //
 // Regular expression to match the various fields in the input.
 //
 
-var fieldRe = /^([^:]+):\s(.*)$/;
+const fieldRe = /^([^:]+):\s(.*)$/;
 
 //
 // Convert space separated pascal caps ("Target Type")
@@ -26,7 +26,7 @@ var fieldRe = /^([^:]+):\s(.*)$/;
 // field names to property names.
 //
 function fieldNameToPropertyName(fieldName) {
-	var parts = fieldName.split(" ");
+	const parts = fieldName.split(" ");
 	parts[0] = parts[0].toLowerCase();
 	return parts.join("");
 }
@@ -52,9 +52,9 @@ util.inherits(WinCredStoreParsingStream, Transform);
 
 _.extend(WinCredStoreParsingStream.prototype, {
 	_transform: function (chunk, encoding, callback) {
-		var match;
-		var line = chunk.toString();
-		var count = 0;
+		let match;
+		let line = chunk.toString();
+		let count = 0;
 
 		while (line !== null) {
 			++count;
@@ -82,8 +82,8 @@ _.extend(WinCredStoreParsingStream.prototype, {
 			if (this.currentEntry) {
 				if (line !== "") {
 					match = fieldRe.exec(line);
-					var key = fieldNameToPropertyName(match[1]);
-					var value = match[2];
+					const key = fieldNameToPropertyName(match[1]);
+					const value = match[2];
 					this.currentEntry[key] = value;
 					line = null;
 				} else {

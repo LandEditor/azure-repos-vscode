@@ -28,7 +28,7 @@ export class ExternalContext implements IRepositoryContext {
 	//Need to call tf.cmd to get TFVC information (and constructors can't be async)
 	public async Initialize(settings: ISettings): Promise<boolean> {
 		Logger.LogDebug(`Looking for an External Context at ${this._folder}`);
-		if (!settings.RemoteUrl || !settings.TeamProject) {
+		if (!(settings.RemoteUrl && settings.TeamProject)) {
 			Logger.LogDebug(`No External Context at ${this._folder}`);
 			return false;
 		}

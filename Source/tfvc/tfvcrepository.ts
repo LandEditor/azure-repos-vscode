@@ -51,7 +51,7 @@ export class TfvcRepository {
 		serverContext: TeamServerContext,
 		tfCommandLine: ITfCommandLine,
 		repositoryRootFolder: string,
-		env: any = {},
+		env: any,
 		isExe: boolean,
 	) {
 		Logger.LogDebug(
@@ -96,7 +96,7 @@ export class TfvcRepository {
 	}
 
 	public async Add(itemPaths: string[]): Promise<string[]> {
-		Logger.LogDebug(`TFVC Repository.Add`);
+		Logger.LogDebug("TFVC Repository.Add");
 		return this.RunCommand<string[]>(
 			new Add(this._serverContext, itemPaths),
 		);
@@ -107,21 +107,21 @@ export class TfvcRepository {
 		comment: string,
 		workItemIds: number[],
 	): Promise<string> {
-		Logger.LogDebug(`TFVC Repository.Checkin`);
+		Logger.LogDebug("TFVC Repository.Checkin");
 		return this.RunCommand<string>(
 			new Checkin(this._serverContext, files, comment, workItemIds),
 		);
 	}
 
 	public async Delete(itemPaths: string[]): Promise<string[]> {
-		Logger.LogDebug(`TFVC Repository.Delete`);
+		Logger.LogDebug("TFVC Repository.Delete");
 		return this.RunCommand<string[]>(
 			new Delete(this._serverContext, itemPaths),
 		);
 	}
 
 	public async FindConflicts(itemPath?: string): Promise<IConflict[]> {
-		Logger.LogDebug(`TFVC Repository.FindConflicts`);
+		Logger.LogDebug("TFVC Repository.FindConflicts");
 		return this.RunCommand<IConflict[]>(
 			new FindConflicts(
 				this._serverContext,
@@ -140,7 +140,7 @@ export class TfvcRepository {
 	}
 
 	public async GetInfo(itemPaths: string[]): Promise<IItemInfo[]> {
-		Logger.LogDebug(`TFVC Repository.GetInfo`);
+		Logger.LogDebug("TFVC Repository.GetInfo");
 		return this.RunCommand<IItemInfo[]>(
 			new GetInfo(this._serverContext, itemPaths),
 		);
@@ -150,7 +150,7 @@ export class TfvcRepository {
 		itemPath: string,
 		versionSpec?: string,
 	): Promise<string> {
-		Logger.LogDebug(`TFVC Repository.GetFileContent`);
+		Logger.LogDebug("TFVC Repository.GetFileContent");
 		return this.RunCommand<string>(
 			new GetFileContent(
 				this._serverContext,
@@ -162,7 +162,7 @@ export class TfvcRepository {
 	}
 
 	public async GetStatus(ignoreFiles?: boolean): Promise<IPendingChange[]> {
-		Logger.LogDebug(`TFVC Repository.GetStatus`);
+		Logger.LogDebug("TFVC Repository.GetStatus");
 		let statusCommand: Status = new Status(
 			this._serverContext,
 			ignoreFiles === undefined ? true : ignoreFiles,
@@ -182,7 +182,7 @@ export class TfvcRepository {
 		sourcePath: string,
 		destinationPath: string,
 	): Promise<string> {
-		Logger.LogDebug(`TFVC Repository.Rename`);
+		Logger.LogDebug("TFVC Repository.Rename");
 		return this.RunCommand<string>(
 			new Rename(this._serverContext, sourcePath, destinationPath),
 		);
@@ -192,7 +192,7 @@ export class TfvcRepository {
 		itemPaths: string[],
 		autoResolveType: AutoResolveType,
 	): Promise<IConflict[]> {
-		Logger.LogDebug(`TFVC Repository.ResolveConflicts`);
+		Logger.LogDebug("TFVC Repository.ResolveConflicts");
 		return this.RunCommand<IConflict[]>(
 			new ResolveConflicts(
 				this._serverContext,
@@ -206,14 +206,14 @@ export class TfvcRepository {
 		itemPaths: string[],
 		recursive: boolean,
 	): Promise<ISyncResults> {
-		Logger.LogDebug(`TFVC Repository.Sync`);
+		Logger.LogDebug("TFVC Repository.Sync");
 		return this.RunCommand<ISyncResults>(
 			new Sync(this._serverContext, itemPaths, recursive),
 		);
 	}
 
 	public async Undo(itemPaths: string[]): Promise<string[]> {
-		Logger.LogDebug(`TFVC Repository.Undo`);
+		Logger.LogDebug("TFVC Repository.Undo");
 		return this.RunCommand<string[]>(
 			new Undo(this._serverContext, itemPaths),
 		);
@@ -221,7 +221,7 @@ export class TfvcRepository {
 
 	public async CheckVersion(): Promise<string> {
 		if (!this._versionAlreadyChecked) {
-			Logger.LogDebug(`TFVC Repository.CheckVersion`);
+			Logger.LogDebug("TFVC Repository.CheckVersion");
 			// Set the versionAlreadyChecked flag first in case one of the other lines throws
 			this._versionAlreadyChecked = true;
 			const version: string = await this.RunCommand<string>(

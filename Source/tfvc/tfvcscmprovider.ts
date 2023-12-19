@@ -80,7 +80,7 @@ export class TfvcSCMProvider {
 			};
 		} catch (err) {
 			Logger.LogDebug(
-				"Failed to GetCheckinInfo. Details: " + err.message,
+				`Failed to GetCheckinInfo. Details: ${err.message}`,
 			);
 			throw TfvcError.CreateUnknownError(err);
 		}
@@ -95,14 +95,14 @@ export class TfvcSCMProvider {
 			if (matches) {
 				for (let i = 0; i < matches.length; i++) {
 					const id: number = parseInt(matches[i].slice(1));
-					if (!isNaN(id)) {
+					if (!Number.isNaN(id)) {
 						ids.push(id);
 					}
 				}
 			}
 		} catch (err) {
 			Logger.LogDebug(
-				"Failed to get all workitems from message: " + message,
+				`Failed to get all workitems from message: ${message}`,
 			);
 		}
 		return ids;
@@ -235,11 +235,7 @@ export class TfvcSCMProvider {
 			this._extensionManager.DisplayWarningMessage(err.message);
 		}
 		TfvcOutput.AppendLine(
-			"Using TFVC command line: " +
-				repoContext.TfvcRepository.TfvcLocation +
-				" (" +
-				version +
-				")",
+			`Using TFVC command line: ${repoContext.TfvcRepository.TfvcLocation} (${version})`,
 		);
 
 		const commitHoverProvider: CommitHoverProvider =

@@ -62,7 +62,7 @@ export class GitContext implements IRepositoryContext {
 				}
 
 				this._gitCurrentBranch = this._gitRepoInfo.branch;
-				this._gitCurrentRef = "refs/heads/" + this._gitCurrentBranch;
+				this._gitCurrentRef = `refs/heads/${this._gitCurrentBranch}`;
 
 				//Check if any heuristics for TFS/VSTS URLs match
 				if (
@@ -85,10 +85,7 @@ export class GitContext implements IRepositoryContext {
 								//  VSTS now has three URL modes v3, _git, and _ssh.
 								if (purl.pathname.indexOf("/_git/") >= 0) {
 									//  For Team Services, default to https:// as the protocol
-									this._gitRemoteUrl =
-										"https://" +
-										purl.hostname +
-										purl.pathname;
+									this._gitRemoteUrl = `https://${purl.hostname}${purl.pathname}`;
 								} else if (
 									RepoUtils.IsTeamFoundationServicesV3SshRepo(
 										purl.href,
@@ -104,8 +101,7 @@ export class GitContext implements IRepositoryContext {
 									// so ssh://account@vsts-ssh.visualstudio.com/DefaultCollection/_ssh/foo
 									// becomes https://account.visualstudio.com/DefaultCollection/_git/foo
 									const scheme = "https://";
-									const hostname =
-										purl.auth + ".visualstudio.com";
+									const hostname = `${purl.auth}.visualstudio.com`;
 									const path = purl.pathname.replace(
 										"_ssh",
 										"_git",

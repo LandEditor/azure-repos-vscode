@@ -115,7 +115,7 @@ export class TeamExtension {
 		});
 		if (choice) {
 			if (choice.id === DeviceFlowConstants.ManualOption) {
-				Logger.LogDebug(`Manual personal access token option chosen.`);
+				Logger.LogDebug("Manual personal access token option chosen.");
 				const token: string = await window.showInputBox({
 					value: "",
 					prompt: `${Strings.ProvideAccessToken} (${this._manager.ServerContext.RepoInfo.Account})`,
@@ -128,7 +128,7 @@ export class TeamExtension {
 				return token;
 			} else if (choice.id === DeviceFlowConstants.DeviceFlowOption) {
 				Logger.LogDebug(
-					`Device flow personal access token option chosen.`,
+					"Device flow personal access token option chosen.",
 				);
 				const authOptions: IDeviceFlowAuthenticationOptions = {
 					clientId: DeviceFlowConstants.ClientId,
@@ -203,7 +203,7 @@ export class TeamExtension {
 					return token;
 				} else {
 					Logger.LogDebug(
-						`User has canceled the device flow authentication mechanism.`,
+						"User has canceled the device flow authentication mechanism.",
 					);
 				}
 			}
@@ -219,7 +219,7 @@ export class TeamExtension {
 			this._manager.ServerContext.RepoInfo.IsTeamFoundation === true
 		) {
 			this._signedOut = false;
-			Logger.LogDebug(`Starting sign in process`);
+			Logger.LogDebug("Starting sign in process");
 			if (
 				this._manager.ServerContext.RepoInfo.IsTeamFoundationServer ===
 				true
@@ -227,18 +227,14 @@ export class TeamExtension {
 				const defaultUsername: string = this.getDefaultUsername();
 				const username: string = await window.showInputBox({
 					value: defaultUsername || "",
-					prompt:
-						Strings.ProvideUsername +
-						" (" +
-						this._manager.ServerContext.RepoInfo.Account +
-						")",
+					prompt: `${Strings.ProvideUsername} (${this._manager.ServerContext.RepoInfo.Account})`,
 					placeHolder: "",
 					password: false,
 				});
 				if (username !== undefined && username.length > 0) {
 					const password: string = await window.showInputBox({
 						value: "",
-						prompt: Strings.ProvidePassword + " (" + username + ")",
+						prompt: `${Strings.ProvidePassword} (${username})`,
 						placeHolder: "",
 						password: true,
 					});
@@ -254,7 +250,7 @@ export class TeamExtension {
 							.then(() => {
 								// We don't test the credentials to make sure they're good here.  Do so on the next command that's run.
 								Logger.LogDebug(
-									`Reinitializing after successfully storing credentials for Team Foundation Server.`,
+									"Reinitializing after successfully storing credentials for Team Foundation Server.",
 								);
 								this._manager.Reinitialize();
 							})
@@ -277,7 +273,7 @@ export class TeamExtension {
 						await this.requestPersonalAccessToken();
 					if (token !== undefined) {
 						Logger.LogInfo(
-							`Signin: Personal Access Token provided as authentication.`,
+							"Signin: Personal Access Token provided as authentication.",
 						);
 						this._manager.CredentialManager.StoreCredentials(
 							this._manager.ServerContext,
@@ -286,7 +282,7 @@ export class TeamExtension {
 						)
 							.then(() => {
 								Logger.LogDebug(
-									`Reinitializing after successfully storing credentials for Azure DevOps Services.`,
+									"Reinitializing after successfully storing credentials for Azure DevOps Services.",
 								);
 								this._manager.Reinitialize();
 							})
@@ -348,7 +344,7 @@ export class TeamExtension {
 			this._manager.ServerContext.RepoInfo !== undefined &&
 			this._manager.ServerContext.RepoInfo.IsTeamFoundation === true
 		) {
-			Logger.LogDebug(`Starting sign out process`);
+			Logger.LogDebug("Starting sign out process");
 			this._manager.CredentialManager.RemoveCredentials(
 				this._manager.ServerContext,
 			)
@@ -463,8 +459,7 @@ export class TeamExtension {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Telemetry.SendEvent(TelemetryEvents.OpenTeamSite);
 			Logger.LogInfo(
-				"OpenTeamProjectWebSite: " +
-					this._manager.ServerContext.RepoInfo.TeamProjectUrl,
+				`OpenTeamProjectWebSite: ${this._manager.ServerContext.RepoInfo.TeamProjectUrl}`,
 			);
 			Utils.OpenUrl(this._manager.ServerContext.RepoInfo.TeamProjectUrl);
 		} else {
@@ -518,7 +513,7 @@ export class TeamExtension {
 				// Append the string to end of the message
 				// Note: we are prefixing the message with a space so that the # char is not in the first column
 				//       This helps in case the user ends up editing the comment from the Git command line
-				this.appendToCheckinMessage(" " + workitems[i]);
+				this.appendToCheckinMessage(` ${workitems[i]}`);
 			}
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -529,7 +524,7 @@ export class TeamExtension {
 		this.withSourceControlInputBox((inputBox: SourceControlInputBox) => {
 			const previousMessage = inputBox.value;
 			if (previousMessage) {
-				inputBox.value = previousMessage + "\n" + line;
+				inputBox.value = `${previousMessage}\n${line}`;
 			} else {
 				inputBox.value = line;
 			}
@@ -548,7 +543,7 @@ export class TeamExtension {
 				if (defaultUsername === undefined) {
 					return username;
 				}
-				return defaultUsername + "\\" + username;
+				return `${defaultUsername}\\${username}`;
 			}
 		}
 		return undefined;
@@ -580,7 +575,7 @@ export class TeamExtension {
 			);
 			this._buildStatusBarItem.command =
 				CommandNames.OpenBuildSummaryPage;
-			this._buildStatusBarItem.text = `$(package) $(dash)`;
+			this._buildStatusBarItem.text = "$(package) $(dash)";
 			this._buildStatusBarItem.tooltip = Strings.NoBuildsFound;
 			this._buildStatusBarItem.show();
 		}

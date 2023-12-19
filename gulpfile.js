@@ -1,20 +1,20 @@
-var gulp = require("gulp"),
-	mocha = require("gulp-mocha"),
-	gutil = require("gulp-util");
-var exec = require("child_process").exec;
-var tslint = require("gulp-tslint");
-var typescript = require("gulp-typescript");
-var sourcemaps = require("gulp-sourcemaps");
-var del = require("del");
-var argv = require("yargs").argv;
-var istanbul = require("gulp-istanbul");
-var tl = require("vsts-task-lib");
-var path = require("path");
+const gulp = require("gulp");
+const mocha = require("gulp-mocha");
+const gutil = require("gulp-util");
+const exec = require("child_process").exec;
+const tslint = require("gulp-tslint");
+const typescript = require("gulp-typescript");
+const sourcemaps = require("gulp-sourcemaps");
+const del = require("del");
+const argv = require("yargs").argv;
+const istanbul = require("gulp-istanbul");
+const tl = require("vsts-task-lib");
+const path = require("path");
 
 // Default to list reporter when run directly.
 // CI build can pass 'reporter=junit' to create JUnit results files
-var reporterUnitTest = { reporter: "list" };
-var reporterIntegrationTest = { reporter: "list" };
+let reporterUnitTest = { reporter: "list" };
+let reporterIntegrationTest = { reporter: "list" };
 if (argv.reporter === "junit") {
 	reporterUnitTest = {
 		reporter: "mocha-junit-reporter",
@@ -182,7 +182,7 @@ gulp.task("test-coverage", () => {
 //Added due to race condition between writeReports and ccPublisher.publish
 //It's OK for this to fail if the coverage file doesn't exist
 gulp.task("upload-coverage-file", () => {
-	var ccPublisher = new tl.CodeCoveragePublisher();
+	const ccPublisher = new tl.CodeCoveragePublisher();
 	ccPublisher.publish(
 		"cobertura",
 		path.join(__dirname, "out/results/coverage/cobertura-coverage.xml"),

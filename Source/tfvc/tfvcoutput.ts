@@ -23,7 +23,7 @@ export class TfvcOutput {
 
 	public static AppendLine(line: string) {
 		if (TfvcOutput._outputChannel) {
-			TfvcOutput._outputChannel.append(line + "\n");
+			TfvcOutput._outputChannel.append(`${line}\n`);
 		}
 	}
 

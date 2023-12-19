@@ -25,11 +25,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 		this.Add(command);
 		this.AddSwitch("noprompt");
 
-		if (
-			serverContext &&
-			serverContext.RepoInfo &&
-			serverContext.RepoInfo.CollectionUrl
-		) {
+		if (serverContext?.RepoInfo?.CollectionUrl) {
 			if (!skipCollectionOption) {
 				//TODO decode URI since CLC does not expect encoded collection urls
 				this.AddSwitchWithValue(
@@ -41,12 +37,11 @@ export class ArgumentBuilder implements IArgumentProvider {
 			if (serverContext.CredentialInfo) {
 				this.AddSwitchWithValue(
 					"login",
-					(serverContext.CredentialInfo.Domain
-						? serverContext.CredentialInfo.Domain + "\\"
-						: "") +
-						serverContext.CredentialInfo.Username +
-						"," +
-						serverContext.CredentialInfo.Password,
+					`${
+						(serverContext.CredentialInfo.Domain
+							? `${serverContext.CredentialInfo.Domain}\\`
+							: "") + serverContext.CredentialInfo.Username
+					},${serverContext.CredentialInfo.Password}`,
 					true,
 				);
 			}
@@ -84,9 +79,9 @@ export class ArgumentBuilder implements IArgumentProvider {
 	): ArgumentBuilder {
 		let arg: string;
 		if (switchValue) {
-			arg = "-" + switchName + ":" + switchValue;
+			arg = `-${switchName}:${switchValue}`;
 		} else {
-			arg = "-" + switchName;
+			arg = `-${switchName}`;
 		}
 
 		if (isSecret) {
@@ -110,7 +105,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 		let result = "";
 		this._arguments.forEach((arg) => {
 			const escapedArg = this.escapeArgument(arg);
-			result += escapedArg + " ";
+			result += `${escapedArg} `;
 		});
 		result += "\n";
 		return result;
@@ -127,7 +122,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 
 		let escaped = arg.replace(/\"/g, '""');
 		if (/\s/.test(escaped)) {
-			escaped = '"' + escaped + '"';
+			escaped = `"${escaped}"`;
 		}
 		return escaped;
 	}
@@ -140,7 +135,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 				// This arg is a secret so hide the value
 				arg = "********";
 			}
-			output += arg + " ";
+			output += `${arg} `;
 		}
 		return output.trim();
 	}

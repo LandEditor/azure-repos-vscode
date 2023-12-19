@@ -188,7 +188,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		const workspace: IWorkspace = await this.ParseOutput(executionResult);
-		if (workspace && workspace.name) {
+		if (workspace?.name) {
 			// The workspace name includes the user name, so let's fix that
 			const lastOpenParenIndex: number = workspace.name.lastIndexOf(" (");
 			if (lastOpenParenIndex >= 0) {
@@ -255,11 +255,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	 * If no team project name is found an empty string is returned.
 	 */
 	private getTeamProject(serverPath: string): string {
-		if (
-			serverPath &&
-			serverPath.startsWith("$/") &&
-			serverPath.length > 2
-		) {
+		if (serverPath?.startsWith("$/") && serverPath.length > 2) {
 			const index: number = serverPath.indexOf("/", 2);
 			if (index > 0) {
 				return serverPath.slice(2, index);

@@ -55,7 +55,7 @@ export class PinnedQuerySettings extends BaseSettings {
 				const element = pinnedQueries[index];
 				if (
 					element.account === account ||
-					element.account === account + ".visualstudio.com"
+					element.account === `${account}.visualstudio.com`
 				) {
 					return element;
 				} else if (element.account === "global") {
@@ -117,8 +117,7 @@ export class Settings extends BaseSettings implements ISettings {
 		const pollingInterval = SettingNames.PollingInterval;
 		this._pollingInterval = this.readSetting<number>(pollingInterval, 10);
 		Logger.LogDebug(
-			"Polling interval value (minutes): " +
-				this._pollingInterval.toString(),
+			`Polling interval value (minutes): ${this._pollingInterval.toString()}`,
 		);
 		// Ensure a minimum value when an invalid value is set
 		if (this._pollingInterval < 10) {

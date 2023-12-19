@@ -23,8 +23,7 @@ export class TfvcSettings extends BaseSettings {
 		);
 		// Support replacing leading ~/ on macOS and linux
 		if (
-			this._location &&
-			this._location.startsWith("~/") &&
+			this._location?.startsWith("~/") &&
 			(os.platform() === "darwin" || os.platform() === "linux")
 		) {
 			this._location = this._location.replace(

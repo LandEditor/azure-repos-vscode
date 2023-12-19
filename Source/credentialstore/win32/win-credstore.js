@@ -8,16 +8,16 @@
 // Uses the creds.exe program.
 //
 
-var _ = require("underscore");
-var childProcess = require("child_process");
-var es = require("event-stream");
-var path = require("path");
+const _ = require("underscore");
+const childProcess = require("child_process");
+const es = require("event-stream");
+const path = require("path");
 
-var parser = require("./win-credstore-parser");
+const parser = require("./win-credstore-parser");
 
-var credExePath = path.join(__dirname, "../bin/win32/creds.exe");
+const credExePath = path.join(__dirname, "../bin/win32/creds.exe");
 
-var targetNamePrefix = "";
+let targetNamePrefix = "";
 
 // Allow callers to set their own prefix
 function setPrefix(prefix) {
@@ -45,11 +45,11 @@ function removePrefix(targetName) {
  * @return {Stream} object mode stream of credentials.
  */
 function list() {
-	var credsProcess = childProcess.spawn(credExePath, [
+	const credsProcess = childProcess.spawn(credExePath, [
 		"-s",
 		"-g",
 		"-t",
-		targetNamePrefix + "*",
+		`${targetNamePrefix}*`,
 	]);
 	return credsProcess.stdout.pipe(parser()).pipe(
 		es.mapSync((cred) => {
@@ -67,11 +67,11 @@ function list() {
  *                                              returned credential.
  */
 function get(targetName, callback) {
-	var args = ["-s", "-t", ensurePrefix(targetName)];
+	const args = ["-s", "-t", ensurePrefix(targetName)];
 
-	var credsProcess = childProcess.spawn(credExePath, args);
-	var result = null;
-	var errors = [];
+	const credsProcess = childProcess.spawn(credExePath, args);
+	let result = null;
+	const errors = [];
 
 	credsProcess.stdout.pipe(parser()).on("data", (credential) => {
 		result = credential;
@@ -88,10 +88,9 @@ function get(targetName, callback) {
 		} else {
 			callback(
 				new Error(
-					"Getting credential failed, exit code " +
-						code +
-						": " +
-						errors.join(", "),
+					`Getting credential failed, exit code ${code}: ${errors.join(
+						", ",
+					)}`,
 				),
 			);
 		}
@@ -112,7 +111,7 @@ function set(targetName, credential, callback) {
 	if (_.isString(credential)) {
 		credential = new Buffer(credential, "utf8");
 	}
-	var args = [
+	const args = [
 		"-a",
 		"-t",
 		ensurePrefix(targetName),
@@ -135,7 +134,7 @@ function set(targetName, credential, callback) {
  * @param {Function(err)} callback completion callback
  */
 function remove(targetName, callback) {
-	var args = ["-d", "-t", ensurePrefix(targetName)];
+	const args = ["-d", "-t", ensurePrefix(targetName)];
 
 	if (targetName.slice(-1) === "*") {
 		args.push("-g");

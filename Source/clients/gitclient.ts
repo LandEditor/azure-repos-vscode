@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { StatusBarItem, window } from "vscode";
+import { window } from "vscode";
 import {
 	GitPullRequest,
 	PullRequestStatus,
@@ -12,7 +12,6 @@ import {
 	IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
-import { TeamServerContext } from "../contexts/servercontext";
 import { CommandNames, TelemetryEvents } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
@@ -25,10 +24,6 @@ import { BaseClient } from "./baseclient";
 import * as path from "path";
 
 export class GitClient extends BaseClient {
-	constructor(context: TeamServerContext, statusBarItem: StatusBarItem) {
-		super(context, statusBarItem);
-	}
-
 	//Initial method to display, select and navigate to my pull requests
 	public async GetMyPullRequests(): Promise<void> {
 		Telemetry.SendEvent(TelemetryEvents.ViewPullRequests);
@@ -54,7 +49,7 @@ export class GitClient extends BaseClient {
 						this._serverContext.RepoInfo.RepositoryUrl,
 					);
 				}
-				Logger.LogInfo("Pull Request Url: " + discUrl);
+				Logger.LogInfo(`Pull Request Url: ${discUrl}`);
 				Utils.OpenUrl(discUrl);
 			}
 		} catch (err) {
@@ -77,12 +72,10 @@ export class GitClient extends BaseClient {
 			Telemetry.SendEvent(TelemetryEvents.OpenBlamePage);
 
 			//Get the relative file path we can use to create the url
-			let relativePath: string =
-				"\\" +
-				path.relative(
-					context.RepositoryParentFolder,
-					editor.document.fileName,
-				);
+			let relativePath = `\\${path.relative(
+				context.RepositoryParentFolder,
+				editor.document.fileName,
+			)}`;
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			url = GitVcService.GetFileBlameUrl(
@@ -91,7 +84,7 @@ export class GitClient extends BaseClient {
 				context.CurrentBranch,
 			);
 			//Note: if file hasn't been pushed yet, blame link we generate won't point to anything valid (basically a 404)
-			Logger.LogInfo("OpenBlame: " + url);
+			Logger.LogInfo(`OpenBlame: ${url}`);
 			Utils.OpenUrl(url);
 		} else {
 			const msg: string = Utils.GetMessageForStatusCode(
@@ -113,12 +106,10 @@ export class GitClient extends BaseClient {
 			Telemetry.SendEvent(TelemetryEvents.OpenFileHistory);
 
 			//Get the relative file path we can use to create the history url
-			let relativePath: string =
-				"\\" +
-				path.relative(
-					context.RepositoryParentFolder,
-					editor.document.fileName,
-				);
+			let relativePath = `\\${path.relative(
+				context.RepositoryParentFolder,
+				editor.document.fileName,
+			)}`;
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			historyUrl = GitVcService.GetFileHistoryUrl(
@@ -127,7 +118,7 @@ export class GitClient extends BaseClient {
 				context.CurrentBranch,
 			);
 			//Note: if file hasn't been pushed yet, history link we generate won't point to anything valid (basically a 404)
-			Logger.LogInfo("OpenFileHistory: " + historyUrl);
+			Logger.LogInfo(`OpenFileHistory: ${historyUrl}`);
 		} else {
 			Telemetry.SendEvent(TelemetryEvents.OpenRepositoryHistory);
 
@@ -135,7 +126,7 @@ export class GitClient extends BaseClient {
 				context.RemoteUrl,
 				context.CurrentBranch,
 			);
-			Logger.LogInfo("OpenRepoHistory: " + historyUrl);
+			Logger.LogInfo(`OpenRepoHistory: ${historyUrl}`);
 		}
 
 		Utils.OpenUrl(historyUrl);
@@ -148,7 +139,7 @@ export class GitClient extends BaseClient {
 			remoteUrl,
 			currentBranch,
 		);
-		Logger.LogInfo("CreatePullRequestPage: " + url);
+		Logger.LogInfo(`CreatePullRequestPage: ${url}`);
 		Utils.OpenUrl(url);
 	}
 
@@ -206,9 +197,7 @@ export class GitClient extends BaseClient {
 			requestIds.push(pr.pullRequestId);
 		});
 		Logger.LogInfo(
-			"Retrieved " +
-				myPullRequests.length +
-				" pull requests that I requested",
+			`Retrieved ${myPullRequests.length} pull requests that I requested`,
 		);
 
 		Logger.LogInfo("Getting pull requests for which I'm a reviewer...");
@@ -236,9 +225,7 @@ export class GitClient extends BaseClient {
 			}
 		});
 		Logger.LogInfo(
-			"Retrieved " +
-				myReviewPullRequests.length +
-				" pull requests that I'm the reviewer",
+			`Retrieved ${myReviewPullRequests.length} pull requests that I'm the reviewer`,
 		);
 
 		//Remove the default Strings.BrowseYourPullRequests item from the calculation
@@ -271,20 +258,20 @@ export class GitClient extends BaseClient {
 		const scoreLabel: string = `$(${scoreIcon}) `;
 
 		return {
-			label: scoreLabel + " (" + displayName + ") " + title,
+			label: `${scoreLabel} (${displayName}) ${title}`,
 			description: description,
 			id: id,
 		};
 	}
 
 	public static GetOfflinePullRequestStatusText(): string {
-		return `$(git-pull-request) ???`;
+		return "$(git-pull-request) ???";
 	}
 
 	//Sets the text on the pull request status bar
 	public static GetPullRequestStatusText(total?: string): string {
 		if (!total) {
-			return `$(git-pull-request) $(dash)`;
+			return "$(git-pull-request) $(dash)";
 		}
 		return `$(git-pull-request) ${total.toString()}`;
 	}

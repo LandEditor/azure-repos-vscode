@@ -38,7 +38,7 @@ export class LinuxFileApi implements ICredentialStore {
 		this.loadCredentials()
 			.then((entries) => {
 				// Find the entry I want based on service
-				const entryArray: Array<any> = _.where(entries, {
+				const entryArray: any[] = _.where(entries, {
 					service: service,
 				});
 				if (entryArray !== undefined && entryArray.length > 0) {
@@ -127,7 +127,7 @@ export class LinuxFileApi implements ICredentialStore {
 		this.loadCredentials()
 			.then((entries) => {
 				// Find the entry I want based on service and username
-				const entryArray: Array<any> = _.where(entries, {
+				const entryArray: any[] = _.where(entries, {
 					service: service,
 					username: username,
 				});

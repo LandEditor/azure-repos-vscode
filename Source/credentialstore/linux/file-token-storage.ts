@@ -21,10 +21,10 @@ export class FileTokenStorage {
 	}
 
 	public AddEntries(
-		newEntries: Array<any>,
-		existingEntries: Array<any>,
+		newEntries: any[],
+		existingEntries: any[],
 	): Q.Promise<void> {
-		const entries: Array<any> = existingEntries.concat(newEntries);
+		const entries: any[] = existingEntries.concat(newEntries);
 		return this.saveEntries(entries);
 	}
 
@@ -34,7 +34,7 @@ export class FileTokenStorage {
 
 	public LoadEntries(): Q.Promise<any> {
 		const deferred: Q.Deferred<any> = Q.defer();
-		let entries: Array<any> = [];
+		let entries: any[] = [];
 		let err: any;
 
 		try {
@@ -58,12 +58,12 @@ export class FileTokenStorage {
 	}
 
 	public RemoveEntries(
-		entriesToKeep: Array<any> /*, entriesToRemove?: Array<any>*/,
+		entriesToKeep: any[] /*, entriesToRemove?: Array<any>*/,
 	): Q.Promise<void> {
 		return this.saveEntries(entriesToKeep);
 	}
 
-	private saveEntries(entries: Array<any>): Q.Promise<void> {
+	private saveEntries(entries: any[]): Q.Promise<void> {
 		const defer: Q.Deferred<void> = Q.defer<void>();
 
 		const writeOptions = {

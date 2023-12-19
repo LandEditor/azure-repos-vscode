@@ -48,25 +48,25 @@ export class HttpClient {
 			contents: string,
 		) => void,
 	): void {
-		var options = this._getOptions(verb, requestUrl, headers);
+		const options = this._getOptions(verb, requestUrl, headers);
 		this.request(options.protocol, options.options, objs, onResult);
 	}
 
 	_getOptions(method: string, requestUrl: string, headers: any): any {
-		var parsedUrl: url.Url = url.parse(requestUrl);
-		var usingSsl = parsedUrl.protocol === "https:";
-		var prot: any = usingSsl ? https : http;
-		var defaultPort = usingSsl ? 443 : 80;
+		const parsedUrl: url.Url = url.parse(requestUrl);
+		const usingSsl = parsedUrl.protocol === "https:";
+		const prot: any = usingSsl ? https : http;
+		const defaultPort = usingSsl ? 443 : 80;
 		this.isSsl = usingSsl;
 
-		var proxyUrl: url.Url;
+		let proxyUrl: url.Url;
 		if (process.env.HTTPS_PROXY && usingSsl) {
 			proxyUrl = url.parse(process.env.HTTPS_PROXY);
 		} else if (process.env.HTTP_PROXY) {
 			proxyUrl = url.parse(process.env.HTTP_PROXY);
 		}
 
-		var options: any = {
+		const options: any = {
 			host: parsedUrl.hostname,
 			port: parsedUrl.port || defaultPort,
 			path: (parsedUrl.pathname || "") + (parsedUrl.search || ""),
@@ -77,9 +77,9 @@ export class HttpClient {
 		//options.headers["Accept"] = contentType;
 		options.headers["User-Agent"] = this.userAgent;
 
-		var useProxy = proxyUrl && proxyUrl.hostname;
+		const useProxy = proxyUrl?.hostname;
 		if (useProxy) {
-			var agentOptions: tunnel.TunnelOptions = {
+			const agentOptions: tunnel.TunnelOptions = {
 				maxSockets: http.globalAgent.maxSockets,
 				proxy: {
 					// TODO: support proxy-authorization
@@ -89,8 +89,8 @@ export class HttpClient {
 				},
 			};
 
-			var tunnelAgent: Function;
-			var overHttps = proxyUrl.protocol === "https:";
+			let tunnelAgent: Function;
+			const overHttps = proxyUrl.protocol === "https:";
 			if (usingSsl) {
 				tunnelAgent = overHttps
 					? tunnel.httpsOverHttps
@@ -127,12 +127,12 @@ export class HttpClient {
 		) => void,
 	): void {
 		// Set up a callback to pass off 401s to an authentication handler that can deal with it
-		var callback = (
+		const callback = (
 			err: any,
 			res: http.ClientResponse,
 			contents: string,
 		) => {
-			var authHandler;
+			let authHandler;
 			if (this.handlers) {
 				this.handlers.some((handler /*, index, handlers*/) => {
 					// Find the first one that can handle the auth based on the response
@@ -170,15 +170,15 @@ export class HttpClient {
 			contents: string,
 		) => void,
 	): void {
-		var reqData;
-		var socket;
+		let reqData;
+		let socket;
 
 		if (objs) {
 			reqData = objs;
 		}
 
-		var callbackCalled = false;
-		var handleResult = (
+		let callbackCalled = false;
+		const handleResult = (
 			err: any,
 			res: http.ClientResponse,
 			contents: string,
@@ -189,16 +189,16 @@ export class HttpClient {
 			}
 		};
 
-		var req = protocol.request(options, (res) => {
-			var buffer = [];
-			var output = "";
+		const req = protocol.request(options, (res) => {
+			const buffer = [];
+			let output = "";
 
 			// If we're handling gzip compression, don't set the encoding to utf8
 			if (
 				res.headers["content-encoding"] &&
 				res.headers["content-encoding"] === "gzip"
 			) {
-				var gunzip = zlib.createGunzip();
+				const gunzip = zlib.createGunzip();
 				res.pipe(gunzip);
 
 				gunzip
@@ -233,7 +233,7 @@ export class HttpClient {
 				socket.end();
 			}
 			handleResult(
-				new Error("Request timeout: " + options.path),
+				new Error(`Request timeout: ${options.path}`),
 				null,
 				null,
 			);

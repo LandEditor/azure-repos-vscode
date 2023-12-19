@@ -85,7 +85,7 @@ export class RepoUtils {
 			}
 		} catch (err) {
 			Logger.LogDebug(
-				"Could not parse repository url: " + respositoryUrl,
+				`Could not parse repository url: ${respositoryUrl}`,
 			);
 		}
 		return false;
@@ -102,30 +102,16 @@ export class RepoUtils {
 		const match = RepoUtils.sshV3.exec(respositoryUrl.toLowerCase());
 		if (match.length === 5) {
 			if (match[1] === "visualstudio.com") {
-				return (
-					scheme +
-					match[2] +
-					"." +
-					match[1] +
-					"/" +
-					match[3] +
-					"/_git/" +
+				return `${scheme + match[2]}.${match[1]}/${match[3]}/_git/${
 					match[4]
-				);
+				}`;
 			}
-			return (
-				scheme +
-				match[1] +
-				"/" +
-				match[2] +
-				"/" +
-				match[3] +
-				"/_git/" +
+			return `${scheme + match[1]}/${match[2]}/${match[3]}/_git/${
 				match[4]
-			);
+			}`;
 		}
 		Logger.LogDebug(
-			"Could not parse as v3 repository url: " + respositoryUrl,
+			`Could not parse as v3 repository url: ${respositoryUrl}`,
 		);
 		return undefined;
 	}
