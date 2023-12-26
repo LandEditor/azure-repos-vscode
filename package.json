@@ -478,7 +478,7 @@
 		"fs": "0.0.2",
 		"git-repo-info": "2.1.1",
 		"gulp": "4.0.2",
-		"open": "10.0.0",
+		"open": "10.0.1",
 		"opener": "1.5.2",
 		"parse-git-config": "3.0.0",
 		"path": "0.12.7",
