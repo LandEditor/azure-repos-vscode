@@ -497,7 +497,7 @@
 		"@types/applicationinsights": "0.15.33",
 		"@types/chai": "4.3.11",
 		"@types/mocha": "10.0.6",
-		"@types/node": "20.10.5",
+		"@types/node": "20.10.6",
 		"@types/q": "1.5.8",
 		"@types/uuid": "9.0.7",
 		"@types/winston": "2.3.1",
