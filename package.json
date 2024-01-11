@@ -473,12 +473,12 @@
 		"*"
 	],
 	"dependencies": {
-		"applicationinsights": "2.9.1",
+		"applicationinsights": "2.9.2",
 		"event-stream": "4.0.1",
 		"fs": "0.0.2",
 		"git-repo-info": "2.1.1",
 		"gulp": "4.0.2",
-		"open": "10.0.2",
+		"open": "10.0.3",
 		"opener": "1.5.2",
 		"parse-git-config": "3.0.0",
 		"path": "0.12.7",
@@ -497,7 +497,7 @@
 		"@types/applicationinsights": "0.15.33",
 		"@types/chai": "4.3.11",
 		"@types/mocha": "10.0.6",
-		"@types/node": "20.10.6",
+		"@types/node": "20.10.8",
 		"@types/q": "1.5.8",
 		"@types/uuid": "9.0.7",
 		"@types/winston": "2.3.1",
@@ -514,7 +514,7 @@
 		"mocha-junit-reporter": "2.2.1",
 		"should": "13.2.3",
 		"typescript": "5.3.3",
-		"typescript-esbuild": "0.3.4",
+		"typescript-esbuild": "0.3.5",
 		"vscode": "1.0.0",
 		"vsts-task-lib": "0.9.18",
 		"yargs": "17.7.2"
