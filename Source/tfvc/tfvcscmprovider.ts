@@ -4,24 +4,24 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	Disposable,
-	Event,
-	SourceControl,
-	SourceControlResourceGroup,
-	Uri,
+	type Disposable,
+	type Event,
+	type SourceControl,
+	type SourceControlResourceGroup,
+	type Uri,
 	commands,
 	scm,
 	workspace,
 } from "vscode";
 import { RepositoryType } from "../contexts/repositorycontext";
-import { TfvcContext } from "../contexts/tfvccontext";
-import { ExtensionManager } from "../extensionmanager";
+import type { TfvcContext } from "../contexts/tfvccontext";
+import type { ExtensionManager } from "../extensionmanager";
 import { TfvcCommandNames } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
-import { ICheckinInfo } from "./interfaces";
+import type { ICheckinInfo } from "./interfaces";
 import { CommitHoverProvider } from "./scm/commithoverprovider";
 import { Model } from "./scm/model";
-import { Resource } from "./scm/resource";
+import type { Resource } from "./scm/resource";
 import { Status } from "./scm/status";
 import { TfvcContentProvider } from "./scm/tfvccontentprovider";
 import { TfvcError } from "./tfvcerror";
@@ -94,7 +94,7 @@ export class TfvcSCMProvider {
 			const matches: string[] = message ? message.match(/#(\d+)/gm) : [];
 			if (matches) {
 				for (let i = 0; i < matches.length; i++) {
-					const id: number = parseInt(matches[i].slice(1));
+					const id: number = Number.parseInt(matches[i].slice(1));
 					if (!Number.isNaN(id)) {
 						ids.push(id);
 					}

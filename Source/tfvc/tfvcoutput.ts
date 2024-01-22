@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Disposable, OutputChannel, window } from "vscode";
+import { type Disposable, type OutputChannel, window } from "vscode";
 
 export class TfvcOutput {
 	private static _outputChannel: OutputChannel;

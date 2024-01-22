@@ -5,23 +5,23 @@
 
 import { window } from "vscode";
 import {
-	GitPullRequest,
+	type GitPullRequest,
 	PullRequestStatus,
 } from "vso-node-api/interfaces/GitInterfaces";
 import {
-	IRepositoryContext,
+	type IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
 import { CommandNames, TelemetryEvents } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
-import { BaseQuickPickItem, VsCodeUtils } from "../helpers/vscodeutils";
+import { type BaseQuickPickItem, VsCodeUtils } from "../helpers/vscodeutils";
 import { GitVcService, PullRequestScore } from "../services/gitvc";
 import { Telemetry } from "../services/telemetry";
 import { BaseClient } from "./baseclient";
 
-import * as path from "path";
+import * as path from "node:path";
 
 export class GitClient extends BaseClient {
 	//Initial method to display, select and navigate to my pull requests

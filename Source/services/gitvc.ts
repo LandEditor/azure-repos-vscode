@@ -3,16 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IGitApi } from "vso-node-api/GitApi";
+import type { IGitApi } from "vso-node-api/GitApi";
 import { WebApi } from "vso-node-api/WebApi";
 import {
-	GitPullRequest,
-	GitPullRequestSearchCriteria,
-	GitRepository,
+	type GitPullRequest,
+	type GitPullRequestSearchCriteria,
+	type GitRepository,
 	PullRequestAsyncStatus,
-	PullRequestStatus,
+	type PullRequestStatus,
 } from "vso-node-api/interfaces/GitInterfaces";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { CredentialManager } from "../helpers/credentialmanager";
 import { UrlBuilder } from "../helpers/urlbuilder";
 

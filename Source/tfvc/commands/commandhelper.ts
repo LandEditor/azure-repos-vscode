@@ -3,15 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 
 import { parseString } from "xml2js";
 import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
 import { Logger } from "../../helpers/logger";
 import { Strings } from "../../helpers/strings";
 import { Utils } from "../../helpers/utils";
-import { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
-import { IExecutionResult } from "../interfaces";
+import type { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
+import type { IExecutionResult } from "../interfaces";
 import { TfvcError, TfvcErrorCodes } from "../tfvcerror";
 
 export class CommandHelper {

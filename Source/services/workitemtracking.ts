@@ -4,21 +4,21 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { WebApi } from "vso-node-api/WebApi";
-import { IWorkItemTrackingApi } from "vso-node-api/WorkItemTrackingApi";
-import { TeamContext } from "vso-node-api/interfaces/CoreInterfaces";
+import type { IWorkItemTrackingApi } from "vso-node-api/WorkItemTrackingApi";
+import type { TeamContext } from "vso-node-api/interfaces/CoreInterfaces";
 import {
 	QueryExpand,
-	QueryHierarchyItem,
+	type QueryHierarchyItem,
 	QueryResultType,
-	Wiql,
-	WorkItem,
+	type Wiql,
+	type WorkItem,
 	WorkItemExpand,
-	WorkItemQueryResult,
-	WorkItemType,
-	WorkItemTypeCategory,
-	WorkItemTypeReference,
+	type WorkItemQueryResult,
+	type WorkItemType,
+	type WorkItemTypeCategory,
+	type WorkItemTypeReference,
 } from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { CredentialManager } from "../helpers/credentialmanager";
 import { UrlBuilder } from "../helpers/urlbuilder";
 
@@ -124,7 +124,7 @@ export class WorkItemTrackingService {
 	//Returns a Promise containing a SimpleWorkItem representing the work item specified by id
 	public async GetWorkItemById(id: string): Promise<SimpleWorkItem> {
 		const workItem: WorkItem = await this._witApi.getWorkItem(
-			parseInt(id),
+			Number.parseInt(id),
 			[WorkItemFields.Id, WorkItemFields.Title],
 		);
 		const result: SimpleWorkItem = new SimpleWorkItem();

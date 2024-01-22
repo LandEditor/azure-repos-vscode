@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as os from "os";
+import * as os from "node:os";
 import { BaseSettings } from "../helpers/settings";
 
 //TODO: Consider making this class 'static' so we can get values wherever we need them. Be aware

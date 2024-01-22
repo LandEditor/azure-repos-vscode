@@ -3,29 +3,29 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
-import { Uri, commands, window } from "vscode";
+import * as path from "node:path";
+import { type Uri, commands, window } from "vscode";
 import { RepositoryType } from "../contexts/repositorycontext";
-import { TfvcContext } from "../contexts/tfvccontext";
-import { ExtensionManager } from "../extensionmanager";
+import type { TfvcContext } from "../contexts/tfvccontext";
+import type { ExtensionManager } from "../extensionmanager";
 import { TfvcCommandNames, TfvcTelemetryEvents } from "../helpers/constants";
 import { Strings } from "../helpers/strings";
 import { UrlBuilder } from "../helpers/urlbuilder";
 import { Utils } from "../helpers/utils";
 import { VsCodeUtils } from "../helpers/vscodeutils";
-import { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
+import type { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
 import { Telemetry } from "../services/telemetry";
-import {
+import type {
 	AutoResolveType,
 	ICheckinInfo,
 	IItemInfo,
 	ISyncResults,
 } from "./interfaces";
-import { Resource } from "./scm/resource";
+import type { Resource } from "./scm/resource";
 import { Status } from "./scm/status";
 import { TfvcErrorCodes } from "./tfvcerror";
 import { TfvcOutput } from "./tfvcoutput";
-import { TfvcRepository } from "./tfvcrepository";
+import type { TfvcRepository } from "./tfvcrepository";
 import { TfvcSCMProvider } from "./tfvcscmprovider";
 import { UIHelper } from "./uihelper";
 

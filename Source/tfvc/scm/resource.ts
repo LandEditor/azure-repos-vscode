@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as path from "path";
+import * as path from "node:path";
 
 import {
-	Command,
-	SourceControlResourceDecorations,
-	SourceControlResourceState,
+	type Command,
+	type SourceControlResourceDecorations,
+	type SourceControlResourceState,
 	Uri,
 } from "vscode";
 import { TfvcCommandNames } from "../../helpers/constants";
 import { Strings } from "../../helpers/strings";
-import { IConflict, IPendingChange } from "../interfaces";
+import type { IConflict, IPendingChange } from "../interfaces";
 import { TfvcSCMProvider } from "../tfvcscmprovider";
 import { DecorationProvider } from "./decorationprovider";
 import { ConflictType, GetStatuses, Status } from "./status";

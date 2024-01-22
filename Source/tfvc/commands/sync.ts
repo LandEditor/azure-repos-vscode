@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../../contexts/servercontext";
+import type { TeamServerContext } from "../../contexts/servercontext";
 import {
-	IArgumentProvider,
-	IExecutionResult,
-	ISyncItemResult,
-	ISyncResults,
-	ITfvcCommand,
+	type IArgumentProvider,
+	type IExecutionResult,
+	type ISyncItemResult,
+	type ISyncResults,
+	type ITfvcCommand,
 	SyncType,
 } from "../interfaces";
 import { ArgumentBuilder } from "./argumentbuilder";

@@ -27,24 +27,30 @@ export class Constants {
 
 export class CommandNames {
 	static CommandPrefix = `${Constants.ExtensionName}.`;
-	static AssociateWorkItems = `${CommandNames.CommandPrefix}AssociateWorkItems`;
+	static AssociateWorkItems =
+		`${CommandNames.CommandPrefix}AssociateWorkItems`;
 	static GetPullRequests = `${CommandNames.CommandPrefix}GetPullRequests`;
 	static OpenBlamePage = `${CommandNames.CommandPrefix}OpenBlamePage`;
-	static OpenBuildSummaryPage = `${CommandNames.CommandPrefix}OpenBuildSummaryPage`;
+	static OpenBuildSummaryPage =
+		`${CommandNames.CommandPrefix}OpenBuildSummaryPage`;
 	static OpenFileHistory = `${CommandNames.CommandPrefix}OpenFileHistory`;
 	static OpenNewBug = `${CommandNames.CommandPrefix}OpenNewBug`;
 	static OpenNewTask = `${CommandNames.CommandPrefix}OpenNewTask`;
-	static OpenNewPullRequest = `${CommandNames.CommandPrefix}OpenNewPullRequest`;
+	static OpenNewPullRequest =
+		`${CommandNames.CommandPrefix}OpenNewPullRequest`;
 	static OpenNewWorkItem = `${CommandNames.CommandPrefix}OpenNewWorkItem`;
 	static OpenTeamSite = `${CommandNames.CommandPrefix}OpenTeamSite`;
-	static RefreshPollingStatus = `${CommandNames.CommandPrefix}RefreshPollingStatus`;
+	static RefreshPollingStatus =
+		`${CommandNames.CommandPrefix}RefreshPollingStatus`;
 	static Reinitialize = `${CommandNames.CommandPrefix}Reinitialize`;
 	static SendFeedback = `${CommandNames.CommandPrefix}SendFeedback`;
 	static Signin = `${CommandNames.CommandPrefix}Signin`;
 	static Signout = `${CommandNames.CommandPrefix}Signout`;
-	static ViewWorkItemQueries = `${CommandNames.CommandPrefix}ViewWorkItemQueries`;
+	static ViewWorkItemQueries =
+		`${CommandNames.CommandPrefix}ViewWorkItemQueries`;
 	static ViewWorkItems = `${CommandNames.CommandPrefix}ViewWorkItems`;
-	static ViewPinnedQueryWorkItems = `${CommandNames.CommandPrefix}ViewPinnedQueryWorkItems`;
+	static ViewPinnedQueryWorkItems =
+		`${CommandNames.CommandPrefix}ViewPinnedQueryWorkItems`;
 }
 
 export class DeviceFlowConstants {
@@ -67,8 +73,10 @@ export class TfvcCommandNames {
 	static OpenFile = `${TfvcCommandNames.CommandPrefix}OpenFile`;
 	static Refresh = `${TfvcCommandNames.CommandPrefix}Refresh`;
 	static Rename = `${TfvcCommandNames.CommandPrefix}Rename`;
-	static ResolveKeepYours = `${TfvcCommandNames.CommandPrefix}ResolveKeepYours`;
-	static ResolveTakeTheirs = `${TfvcCommandNames.CommandPrefix}ResolveTakeTheirs`;
+	static ResolveKeepYours =
+		`${TfvcCommandNames.CommandPrefix}ResolveKeepYours`;
+	static ResolveTakeTheirs =
+		`${TfvcCommandNames.CommandPrefix}ResolveTakeTheirs`;
 	static ShowOutput = `${TfvcCommandNames.CommandPrefix}ShowOutput`;
 	static Sync = `${TfvcCommandNames.CommandPrefix}Sync`;
 	static Undo = `${TfvcCommandNames.CommandPrefix}Undo`;
@@ -87,48 +95,74 @@ export class SettingNames {
 	static AppInsightsKey = `${SettingNames.AppInsights}key`;
 	static RemoteUrl = `${SettingNames.SettingsPrefix}remoteUrl`;
 	static TeamProject = `${SettingNames.SettingsPrefix}teamProject`;
-	static BuildDefinitionId = `${SettingNames.SettingsPrefix}buildDefinitionId`;
-	static ShowWelcomeMessage = `${SettingNames.SettingsPrefix}showWelcomeMessage`;
-	static ShowFarewellMessage = `${SettingNames.SettingsPrefix}showFarewellMessage`;
+	static BuildDefinitionId =
+		`${SettingNames.SettingsPrefix}buildDefinitionId`;
+	static ShowWelcomeMessage =
+		`${SettingNames.SettingsPrefix}showWelcomeMessage`;
+	static ShowFarewellMessage =
+		`${SettingNames.SettingsPrefix}showFarewellMessage`;
 }
 
 export class TelemetryEvents {
 	static TelemetryPrefix = `${Constants.ExtensionName}/`;
-	static AssociateWorkItems = `${TelemetryEvents.TelemetryPrefix}associateworkitems`;
-	static DeviceFlowCanceled = `${TelemetryEvents.TelemetryPrefix}deviceflowcanceled`;
-	static DeviceFlowFailed = `${TelemetryEvents.TelemetryPrefix}deviceflowfailed`;
+	static AssociateWorkItems =
+		`${TelemetryEvents.TelemetryPrefix}associateworkitems`;
+	static DeviceFlowCanceled =
+		`${TelemetryEvents.TelemetryPrefix}deviceflowcanceled`;
+	static DeviceFlowFailed =
+		`${TelemetryEvents.TelemetryPrefix}deviceflowfailed`;
 	static DeviceFlowPat = `${TelemetryEvents.TelemetryPrefix}deviceflowpat`;
-	static ExternalRepository = `${TelemetryEvents.TelemetryPrefix}externalrepo`;
-	static FarewellLearnMoreClick = `${TelemetryEvents.TelemetryPrefix}farewelllearnmoreclick`;
+	static ExternalRepository =
+		`${TelemetryEvents.TelemetryPrefix}externalrepo`;
+	static FarewellLearnMoreClick =
+		`${TelemetryEvents.TelemetryPrefix}farewelllearnmoreclick`;
 	static Installed = `${TelemetryEvents.TelemetryPrefix}installed`;
 	static ManualPat = `${TelemetryEvents.TelemetryPrefix}manualpat`;
-	static OpenAdditionalQueryResults = `${TelemetryEvents.TelemetryPrefix}openaddlqueryresults`;
+	static OpenAdditionalQueryResults =
+		`${TelemetryEvents.TelemetryPrefix}openaddlqueryresults`;
 	static OpenBlamePage = `${TelemetryEvents.TelemetryPrefix}openblame`;
-	static OpenBuildSummaryPage = `${TelemetryEvents.TelemetryPrefix}openbuildsummary`;
-	static OpenFileHistory = `${TelemetryEvents.TelemetryPrefix}openfilehistory`;
+	static OpenBuildSummaryPage =
+		`${TelemetryEvents.TelemetryPrefix}openbuildsummary`;
+	static OpenFileHistory =
+		`${TelemetryEvents.TelemetryPrefix}openfilehistory`;
 	static OpenNewTask = `${TelemetryEvents.TelemetryPrefix}opennewtask`;
 	static OpenNewBug = `${TelemetryEvents.TelemetryPrefix}opennewbug`;
-	static OpenNewPullRequest = `${TelemetryEvents.TelemetryPrefix}opennewpullrequest`;
-	static OpenNewWorkItem = `${TelemetryEvents.TelemetryPrefix}opennewworkitem`;
-	static OpenRepositoryHistory = `${TelemetryEvents.TelemetryPrefix}openrepohistory`;
-	static OpenTeamSite = `${TelemetryEvents.TelemetryPrefix}openteamprojectweb`;
-	static ReadmeLearnMoreClick = `${TelemetryEvents.TelemetryPrefix}readmelearnmoreclick`;
+	static OpenNewPullRequest =
+		`${TelemetryEvents.TelemetryPrefix}opennewpullrequest`;
+	static OpenNewWorkItem =
+		`${TelemetryEvents.TelemetryPrefix}opennewworkitem`;
+	static OpenRepositoryHistory =
+		`${TelemetryEvents.TelemetryPrefix}openrepohistory`;
+	static OpenTeamSite =
+		`${TelemetryEvents.TelemetryPrefix}openteamprojectweb`;
+	static ReadmeLearnMoreClick =
+		`${TelemetryEvents.TelemetryPrefix}readmelearnmoreclick`;
 	static SendAFrown = `${TelemetryEvents.TelemetryPrefix}sendafrown`;
 	static SendASmile = `${TelemetryEvents.TelemetryPrefix}sendasmile`;
-	static ShowMyWorkItemQueries = `${TelemetryEvents.TelemetryPrefix}showmyworkitemqueries`;
+	static ShowMyWorkItemQueries =
+		`${TelemetryEvents.TelemetryPrefix}showmyworkitemqueries`;
 	static StartUp = `${TelemetryEvents.TelemetryPrefix}startup`;
-	static TokenLearnMoreClick = `${TelemetryEvents.TelemetryPrefix}tokenlearnmoreclick`;
-	static TokenShowMeClick = `${TelemetryEvents.TelemetryPrefix}tokenshowmeclick`;
-	static UnsupportedServerVersion = `${TelemetryEvents.TelemetryPrefix}unsupportedversion`;
-	static UnsupportedWitServerVersion = `${TelemetryEvents.TelemetryPrefix}unsupportedwitversion`;
-	static ViewPullRequest = `${TelemetryEvents.TelemetryPrefix}viewpullrequest`;
-	static ViewPullRequests = `${TelemetryEvents.TelemetryPrefix}viewpullrequests`;
-	static ViewMyWorkItems = `${TelemetryEvents.TelemetryPrefix}viewmyworkitems`;
-	static ViewPinnedQueryWorkItems = `${TelemetryEvents.TelemetryPrefix}viewpinnedqueryworkitems`;
+	static TokenLearnMoreClick =
+		`${TelemetryEvents.TelemetryPrefix}tokenlearnmoreclick`;
+	static TokenShowMeClick =
+		`${TelemetryEvents.TelemetryPrefix}tokenshowmeclick`;
+	static UnsupportedServerVersion =
+		`${TelemetryEvents.TelemetryPrefix}unsupportedversion`;
+	static UnsupportedWitServerVersion =
+		`${TelemetryEvents.TelemetryPrefix}unsupportedwitversion`;
+	static ViewPullRequest =
+		`${TelemetryEvents.TelemetryPrefix}viewpullrequest`;
+	static ViewPullRequests =
+		`${TelemetryEvents.TelemetryPrefix}viewpullrequests`;
+	static ViewMyWorkItems =
+		`${TelemetryEvents.TelemetryPrefix}viewmyworkitems`;
+	static ViewPinnedQueryWorkItems =
+		`${TelemetryEvents.TelemetryPrefix}viewpinnedqueryworkitems`;
 	static ViewWorkItem = `${TelemetryEvents.TelemetryPrefix}viewworkitem`;
 	static ViewWorkItems = `${TelemetryEvents.TelemetryPrefix}viewworkitems`;
 	static VS2015U3CSR = `${TelemetryEvents.TelemetryPrefix}vs2015u3csr`;
-	static WelcomeLearnMoreClick = `${TelemetryEvents.TelemetryPrefix}welcomelearnmoreclick`;
+	static WelcomeLearnMoreClick =
+		`${TelemetryEvents.TelemetryPrefix}welcomelearnmoreclick`;
 }
 
 //Don't export this class. TfvcTelemetryEvents is the only one which should be used when sending telemetry
@@ -182,32 +216,57 @@ export class TfvcTelemetryEvents {
 	static StartUp: string =
 		TfvcBaseTelemetryEvents.TelemetryPrefix +
 		TfvcBaseTelemetryEvents.StartUp;
-	static SetupTfvcSupportClick = `${TfvcBaseTelemetryEvents.TelemetryPrefix}setuptfvcsupportclick`;
+	static SetupTfvcSupportClick =
+		`${TfvcBaseTelemetryEvents.TelemetryPrefix}setuptfvcsupportclick`;
 	//Begin tooling-specific telemetry (tf.exe or CLC)
-	static ClcConfigured = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Configured}`;
-	static ExeConfigured = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Configured}`;
-	static ClcConnected = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Connected}`;
-	static ExeConnected = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Connected}`;
-	static AddExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Add}`;
-	static AddClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Add}`;
-	static CheckinExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Checkin}`;
-	static CheckinClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Checkin}`;
-	static DeleteExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Delete}`;
-	static DeleteClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Delete}`;
-	static GetFileContentExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.GetFileContent}`;
-	static GetFileContentClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.GetFileContent}`;
-	static RenameExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Rename}`;
-	static RenameClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Rename}`;
-	static ResolveConflictsExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.ResolveConflicts}`;
-	static ResolveConflictsClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.ResolveConflicts}`;
-	static SyncExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Sync}`;
-	static SyncClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Sync}`;
-	static UndoExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Undo}`;
-	static UndoClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Undo}`;
-	static UndoAllExe = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.UndoAll}`;
-	static UndoAllClc = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.UndoAll}`;
-	static ClcCannotAccessWorkspace = `${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.WorkspaceAccessError}`;
-	static ExeNonEnuConfiguredMoreDetails = `${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.NonEnuConfiguredMoreDetails}`;
+	static ClcConfigured =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Configured}`;
+	static ExeConfigured =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Configured}`;
+	static ClcConnected =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Connected}`;
+	static ExeConnected =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Connected}`;
+	static AddExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Add}`;
+	static AddClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Add}`;
+	static CheckinExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Checkin}`;
+	static CheckinClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Checkin}`;
+	static DeleteExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Delete}`;
+	static DeleteClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Delete}`;
+	static GetFileContentExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.GetFileContent}`;
+	static GetFileContentClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.GetFileContent}`;
+	static RenameExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Rename}`;
+	static RenameClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Rename}`;
+	static ResolveConflictsExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.ResolveConflicts}`;
+	static ResolveConflictsClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.ResolveConflicts}`;
+	static SyncExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Sync}`;
+	static SyncClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Sync}`;
+	static UndoExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.Undo}`;
+	static UndoClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.Undo}`;
+	static UndoAllExe =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.UndoAll}`;
+	static UndoAllClc =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.UndoAll}`;
+	static ClcCannotAccessWorkspace =
+		`${TfvcTelemetryEvents.UsingClc}-${TfvcBaseTelemetryEvents.WorkspaceAccessError}`;
+	static ExeNonEnuConfiguredMoreDetails =
+		`${TfvcTelemetryEvents.UsingExe}-${TfvcBaseTelemetryEvents.NonEnuConfiguredMoreDetails}`;
 }
 
 export class WellKnownRepositoryTypes {

@@ -4,29 +4,29 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	Disposable,
-	Event,
+	type Disposable,
+	type Event,
 	EventEmitter,
 	ProgressLocation,
-	Uri,
+	type Uri,
 	window,
 } from "vscode";
 import { TfvcTelemetryEvents } from "../../helpers/constants";
 import { Telemetry } from "../../services/telemetry";
-import { IConflict, IPendingChange } from "../interfaces";
+import type { IConflict, IPendingChange } from "../interfaces";
 import { TfvcOutput } from "../tfvcoutput";
-import { TfvcRepository } from "../tfvcrepository";
+import type { TfvcRepository } from "../tfvcrepository";
 import { filterEvent } from "../util";
 import { Resource } from "./resource";
 import {
 	ConflictsGroup,
 	ExcludedGroup,
 	IncludedGroup,
-	ResourceGroup,
+	type ResourceGroup,
 } from "./resourcegroups";
 import { ConflictType, Status } from "./status";
 
-import * as path from "path";
+import * as path from "node:path";
 import * as _ from "underscore";
 
 export class Model implements Disposable {

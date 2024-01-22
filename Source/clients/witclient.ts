@@ -3,25 +3,25 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { StatusBarItem, window } from "vscode";
-import {
+import { type StatusBarItem, window } from "vscode";
+import type {
 	QueryHierarchyItem,
 	WorkItemType,
 } from "vso-node-api/interfaces/WorkItemTrackingInterfaces";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { TelemetryEvents, WitQueries, WitTypes } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
-import { IPinnedQuery } from "../helpers/settings";
+import type { IPinnedQuery } from "../helpers/settings";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
 import {
-	BaseQuickPickItem,
+	type BaseQuickPickItem,
 	VsCodeUtils,
-	WorkItemQueryQuickPickItem,
+	type WorkItemQueryQuickPickItem,
 } from "../helpers/vscodeutils";
 import { Telemetry } from "../services/telemetry";
 import {
-	SimpleWorkItem,
+	type SimpleWorkItem,
 	WorkItemTrackingService,
 } from "../services/workitemtracking";
 import { BaseClient } from "./baseclient";

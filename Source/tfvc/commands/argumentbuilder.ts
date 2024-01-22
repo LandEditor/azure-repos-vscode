@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../../contexts/servercontext";
-import { IArgumentProvider } from "../interfaces";
+import type { TeamServerContext } from "../../contexts/servercontext";
+import type { IArgumentProvider } from "../interfaces";
 import { TfvcError } from "../tfvcerror";
 
 /**

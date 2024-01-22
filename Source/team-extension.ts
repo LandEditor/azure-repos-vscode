@@ -5,22 +5,22 @@
 
 import {
 	ProgressLocation,
-	SourceControlInputBox,
+	type SourceControlInputBox,
 	StatusBarAlignment,
-	StatusBarItem,
+	type StatusBarItem,
 	window,
 } from "vscode";
 import {
 	DeviceFlowAuthenticator,
-	DeviceFlowDetails,
-	IDeviceFlowAuthenticationOptions,
-	IDeviceFlowTokenOptions,
+	type DeviceFlowDetails,
+	type IDeviceFlowAuthenticationOptions,
+	type IDeviceFlowTokenOptions,
 } from "vsts-device-flow-auth";
 import { BuildClient } from "./clients/buildclient";
 import { GitClient } from "./clients/gitclient";
 import { WitClient } from "./clients/witclient";
 import { RepositoryType } from "./contexts/repositorycontext";
-import { ExtensionManager } from "./extensionmanager";
+import type { ExtensionManager } from "./extensionmanager";
 import {
 	CommandNames,
 	Constants,
@@ -35,14 +35,14 @@ import { Strings } from "./helpers/strings";
 import { UserAgentProvider } from "./helpers/useragentprovider";
 import { Utils } from "./helpers/utils";
 import {
-	BaseQuickPickItem,
-	ButtonMessageItem,
+	type BaseQuickPickItem,
+	type ButtonMessageItem,
 	VsCodeUtils,
 } from "./helpers/vscodeutils";
 import { Telemetry } from "./services/telemetry";
 
-import * as os from "os";
-import * as util from "util";
+import * as os from "node:os";
+import * as util from "node:util";
 import * as vscode from "vscode";
 
 export class TeamExtension {

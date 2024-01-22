@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as url from "url";
+import * as url from "node:url";
 import { Logger } from "../helpers/logger";
 
 //This class is responsible for determining information about a string-based url (not a uri)

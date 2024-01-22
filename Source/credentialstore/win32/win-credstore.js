@@ -9,9 +9,9 @@
 //
 
 const _ = require("underscore");
-const childProcess = require("child_process");
+const childProcess = require("node:child_process");
 const es = require("event-stream");
-const path = require("path");
+const path = require("node:path");
 
 const parser = require("./win-credstore-parser");
 

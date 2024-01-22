@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import { CredentialInfo } from "../info/credentialinfo";
+import type { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
+import type { CredentialInfo } from "../info/credentialinfo";
 import { RepositoryInfo } from "../info/repositoryinfo";
-import { UserInfo } from "../info/userinfo";
+import type { UserInfo } from "../info/userinfo";
 
 export class TeamServerContext {
 	private _userInfo: UserInfo;

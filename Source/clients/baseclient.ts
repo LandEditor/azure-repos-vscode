@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { StatusBarItem } from "vscode";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { StatusBarItem } from "vscode";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { CommandNames } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";

@@ -5,8 +5,8 @@
 
 import { Constants, TfvcTelemetryEvents } from "../../helpers/constants";
 import { Strings } from "../../helpers/strings";
-import { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
-import {
+import type { IButtonMessageItem } from "../../helpers/vscodeutils.interfaces";
+import type {
 	IArgumentProvider,
 	IExecutionResult,
 	ITfvcCommand,

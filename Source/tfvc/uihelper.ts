@@ -3,18 +3,18 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { QuickPickItem, window, workspace } from "vscode";
+import { type QuickPickItem, window, workspace } from "vscode";
 import { Strings } from "../helpers/strings";
 import {
 	AutoResolveType,
-	IPendingChange,
-	ISyncItemResult,
-	ISyncResults,
+	type IPendingChange,
+	type ISyncItemResult,
+	type ISyncResults,
 	SyncType,
 } from "./interfaces";
 import { TfvcOutput } from "./tfvcoutput";
 
-import * as path from "path";
+import * as path from "node:path";
 
 export class UIHelper {
 	public static async ChoosePendingChange(

@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../../contexts/servercontext";
-import {
+import type { TeamServerContext } from "../../contexts/servercontext";
+import type {
 	IArgumentProvider,
 	IConflict,
 	IExecutionResult,

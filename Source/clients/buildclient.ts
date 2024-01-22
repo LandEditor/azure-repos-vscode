@@ -4,13 +4,13 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	Build,
-	BuildBadge,
+	type Build,
+	type BuildBadge,
 	BuildResult,
 	BuildStatus,
 } from "vso-node-api/interfaces/BuildInterfaces";
 import {
-	IRepositoryContext,
+	type IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
 import {

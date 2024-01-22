@@ -3,15 +3,15 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { Constants } from "../helpers/constants";
-import { Settings } from "../helpers/settings";
+import type { Settings } from "../helpers/settings";
 
 import appInsights = require("applicationinsights");
 import uuid = require("uuid");
 
-import * as crypto from "crypto";
-import * as os from "os";
+import * as crypto from "node:crypto";
+import * as os from "node:os";
 
 export class Telemetry {
 	private static _appInsightsClient: Client;

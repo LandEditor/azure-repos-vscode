@@ -5,11 +5,11 @@
 
 //jeyou: Brought over from vso-node-api (v5.1.2), added support for sending SOAP and handling gzip compression
 /* tslint:disable */
-import url = require("url");
+import url = require("node:url");
 
-import http = require("http");
-import zlib = require("zlib");
-import https = require("https");
+import http = require("node:http");
+import zlib = require("node:zlib");
+import https = require("node:https");
 import tunnel = require("tunnel");
 import ifm = require("vso-node-api/interfaces/common/VsoBaseInterfaces");
 

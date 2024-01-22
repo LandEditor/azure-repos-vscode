@@ -4,10 +4,10 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	Disposable,
-	FileSystemWatcher,
+	type Disposable,
+	type FileSystemWatcher,
 	StatusBarAlignment,
-	StatusBarItem,
+	type StatusBarItem,
 	version,
 	window,
 	workspace,
@@ -17,11 +17,11 @@ import { RepositoryInfoClient } from "./clients/repositoryinfoclient";
 import { TeamServicesApi } from "./clients/teamservicesclient";
 import { RepositoryContextFactory } from "./contexts/repocontextfactory";
 import {
-	IRepositoryContext,
+	type IRepositoryContext,
 	RepositoryType,
 } from "./contexts/repositorycontext";
 import { TeamServerContext } from "./contexts/servercontext";
-import { TfvcContext } from "./contexts/tfvccontext";
+import type { TfvcContext } from "./contexts/tfvccontext";
 import {
 	CommandNames,
 	Constants,
@@ -35,19 +35,19 @@ import { Strings } from "./helpers/strings";
 import { UserAgentProvider } from "./helpers/useragentprovider";
 import { Utils } from "./helpers/utils";
 import { VsCodeUtils } from "./helpers/vscodeutils";
-import { IButtonMessageItem } from "./helpers/vscodeutils.interfaces";
-import { CredentialInfo } from "./info/credentialinfo";
+import type { IButtonMessageItem } from "./helpers/vscodeutils.interfaces";
+import type { CredentialInfo } from "./info/credentialinfo";
 import { UserInfo } from "./info/userinfo";
 import { Telemetry } from "./services/telemetry";
 import { TeamExtension } from "./team-extension";
 import { TfCommandLineRunner } from "./tfvc/tfcommandlinerunner";
 import { TfvcExtension } from "./tfvc/tfvc-extension";
 import { TfvcErrorCodes } from "./tfvc/tfvcerror";
-import { TfvcRepository } from "./tfvc/tfvcrepository";
+import type { TfvcRepository } from "./tfvc/tfvcrepository";
 import { TfvcSCMProvider } from "./tfvc/tfvcscmprovider";
 
-import * as path from "path";
-import * as util from "util";
+import * as path from "node:path";
+import * as util from "node:util";
 
 export class ExtensionManager implements Disposable {
 	private _teamServicesStatusBarItem: StatusBarItem;

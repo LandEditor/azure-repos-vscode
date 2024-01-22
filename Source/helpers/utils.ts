@@ -7,8 +7,8 @@ import * as vscode from "vscode";
 import { BuildResult } from "vso-node-api/interfaces/BuildInterfaces";
 import { Strings } from "./strings";
 
-import * as fs from "fs";
-import * as path from "path";
+import * as fs from "node:fs";
+import * as path from "node:path";
 import * as open from "open";
 import * as opener from "opener";
 

@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Credential } from "../credential";
+import type { Credential } from "../credential";
 
 /* tslint:disable:no-unused-variable */
 import Q = require("q");

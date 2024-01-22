@@ -3,11 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MessageItem, QuickPickItem, Range, commands, window } from "vscode";
+import {
+	type MessageItem,
+	type QuickPickItem,
+	Range,
+	commands,
+	window,
+} from "vscode";
 import { Telemetry } from "../services/telemetry";
 import { MessageTypes } from "./constants";
 import { Utils } from "./utils";
-import { IButtonMessageItem } from "./vscodeutils.interfaces";
+import type { IButtonMessageItem } from "./vscodeutils.interfaces";
 
 export class BaseQuickPickItem implements QuickPickItem {
 	label: string;

@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
-import { ConflictType } from "./scm/status";
+import type { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
+import type { ConflictType } from "./scm/status";
 
 export interface ITfCommandLine {
 	path: string;

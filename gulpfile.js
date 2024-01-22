@@ -1,7 +1,7 @@
 const gulp = require("gulp");
 const mocha = require("gulp-mocha");
 const gutil = require("gulp-util");
-const exec = require("child_process").exec;
+const exec = require("node:child_process").exec;
 const tslint = require("gulp-tslint");
 const typescript = require("gulp-typescript");
 const sourcemaps = require("gulp-sourcemaps");
@@ -9,7 +9,7 @@ const del = require("del");
 const argv = require("yargs").argv;
 const istanbul = require("gulp-istanbul");
 const tl = require("vsts-task-lib");
-const path = require("path");
+const path = require("node:path");
 
 // Default to list reporter when run directly.
 // CI build can pass 'reporter=junit' to create JUnit results files

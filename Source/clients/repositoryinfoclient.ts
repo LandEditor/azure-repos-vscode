@@ -4,15 +4,15 @@
  *--------------------------------------------------------------------------------------------*/
 
 import VsoBaseInterfaces = require("vso-node-api/interfaces/common/VsoBaseInterfaces");
-import {
+import type {
 	TeamProject,
 	TeamProjectCollection,
 } from "vso-node-api/interfaces/CoreInterfaces";
 import {
-	IRepositoryContext,
+	type IRepositoryContext,
 	RepositoryType,
 } from "../contexts/repositorycontext";
-import { TfvcContext } from "../contexts/tfvccontext";
+import type { TfvcContext } from "../contexts/tfvccontext";
 import { Logger } from "../helpers/logger";
 import { RepoUtils } from "../helpers/repoutils";
 import { Strings } from "../helpers/strings";
@@ -22,7 +22,7 @@ import { CoreApiClient } from "./coreapiclient";
 import { TeamServicesApi } from "./teamservicesclient";
 import { TfsCatalogSoapClient } from "./tfscatalogsoapclient";
 
-import * as url from "url";
+import * as url from "node:url";
 
 export class RepositoryInfoClient {
 	private _handler: VsoBaseInterfaces.IRequestHandler;

@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { Logger } from "../helpers/logger";
 import { Add } from "./commands/add";
 import { Checkin } from "./commands/checkin";
@@ -18,8 +18,8 @@ import { ResolveConflicts } from "./commands/resolveconflicts";
 import { Status } from "./commands/status";
 import { Sync } from "./commands/sync";
 import { Undo } from "./commands/undo";
-import { IExecutionResult, ITfvcCommand } from "./interfaces";
-import {
+import type { IExecutionResult, ITfvcCommand } from "./interfaces";
+import type {
 	AutoResolveType,
 	IArgumentProvider,
 	IConflict,

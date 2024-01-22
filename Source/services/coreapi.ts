@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ICoreApi } from "vso-node-api/CoreApi";
+import type { ICoreApi } from "vso-node-api/CoreApi";
 import { WebApi } from "vso-node-api/WebApi";
-import {
+import type {
 	TeamProject,
 	TeamProjectCollection,
 } from "vso-node-api/interfaces/CoreInterfaces";

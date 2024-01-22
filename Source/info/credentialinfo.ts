@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
+import type { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
 import { ExtensionRequestHandler } from "./extensionrequesthandler";
 
 export class CredentialInfo {

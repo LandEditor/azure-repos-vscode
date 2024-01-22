@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Strings } from "../../helpers/strings";
-import { Resource } from "./resource";
+import type { Resource } from "./resource";
 
 export abstract class ResourceGroup {
 	get id(): string {

@@ -7,7 +7,7 @@
 // Access to the OSX keychain - list, add, get password, remove
 //
 const _ = require("underscore");
-const childProcess = require("child_process");
+const childProcess = require("node:child_process");
 const es = require("event-stream");
 const parser = require("./osx-keychain-parser");
 

@@ -5,8 +5,8 @@
 
 import { Logger } from "../helpers/logger";
 import { RepoUtils } from "../helpers/repoutils";
-import { ISettings } from "../helpers/settings";
-import { IRepositoryContext, RepositoryType } from "./repositorycontext";
+import type { ISettings } from "../helpers/settings";
+import { type IRepositoryContext, RepositoryType } from "./repositorycontext";
 
 export class ExternalContext implements IRepositoryContext {
 	private _folder: string;

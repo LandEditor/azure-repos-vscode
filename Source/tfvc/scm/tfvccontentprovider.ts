@@ -3,10 +3,16 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Disposable, Event, EventEmitter, Uri, workspace } from "vscode";
+import {
+	type Disposable,
+	type Event,
+	EventEmitter,
+	type Uri,
+	workspace,
+} from "vscode";
 import { TfvcTelemetryEvents } from "../../helpers/constants";
 import { Telemetry } from "../../services/telemetry";
-import { TfvcRepository } from "../tfvcrepository";
+import type { TfvcRepository } from "../tfvcrepository";
 import { TfvcSCMProvider } from "../tfvcscmprovider";
 
 export class TfvcContentProvider {

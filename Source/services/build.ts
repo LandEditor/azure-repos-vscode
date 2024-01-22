@@ -3,17 +3,17 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IBuildApi } from "vso-node-api/BuildApi";
+import type { IBuildApi } from "vso-node-api/BuildApi";
 import { WebApi } from "vso-node-api/WebApi";
 import {
-	Build,
-	BuildBadge,
+	type Build,
+	type BuildBadge,
 	BuildQueryOrder,
 	BuildStatus,
-	DefinitionReference,
+	type DefinitionReference,
 	QueryDeletedOption,
 } from "vso-node-api/interfaces/BuildInterfaces";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { CredentialManager } from "../helpers/credentialmanager";
 import { UrlBuilder } from "../helpers/urlbuilder";
 

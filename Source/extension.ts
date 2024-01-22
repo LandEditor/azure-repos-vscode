@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ExtensionContext, commands } from "vscode";
+import { type ExtensionContext, commands } from "vscode";
 import { ExtensionManager } from "./extensionmanager";
 import { CommandNames, TfvcCommandNames } from "./helpers/constants";
 import { AutoResolveType } from "./tfvc/interfaces";

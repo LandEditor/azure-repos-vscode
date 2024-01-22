@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft. All rights reserved.
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
-const http = require("http");
-const https = require("https");
+const http = require("node:http");
+const https = require("node:https");
 const _ = require("underscore");
 const ntlm = require("../opensource/node-http-ntlm/ntlm");
 const NtlmCredentialHandler = (() => {

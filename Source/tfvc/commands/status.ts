@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../../contexts/servercontext";
-import {
+import type { TeamServerContext } from "../../contexts/servercontext";
+import type {
 	IArgumentProvider,
 	IExecutionResult,
 	IPendingChange,
@@ -13,7 +13,7 @@ import {
 import { ArgumentBuilder } from "./argumentbuilder";
 import { CommandHelper } from "./commandhelper";
 
-import * as fs from "fs";
+import * as fs from "node:fs";
 
 /**
  * This command returns the status of the workspace as a list of pending changes.

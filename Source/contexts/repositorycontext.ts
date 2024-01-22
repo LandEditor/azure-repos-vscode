@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ISettings } from "../helpers/settings";
+import type { ISettings } from "../helpers/settings";
 
 export enum RepositoryType {
 	GIT = 0,

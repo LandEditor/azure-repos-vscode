@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInterfaces";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { CredentialStore } from "../credentialstore/credentialstore";
 import { CredentialInfo } from "../info/credentialinfo";
 import { RepoUtils } from "./repoutils";

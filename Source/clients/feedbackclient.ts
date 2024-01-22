@@ -3,12 +3,12 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { Disposable, window } from "vscode";
+import { type Disposable, window } from "vscode";
 import { TelemetryEvents } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
 import { Strings } from "../helpers/strings";
 import { Utils } from "../helpers/utils";
-import { BaseQuickPickItem } from "../helpers/vscodeutils";
+import type { BaseQuickPickItem } from "../helpers/vscodeutils";
 import { Telemetry } from "../services/telemetry";
 
 export class FeedbackClient {

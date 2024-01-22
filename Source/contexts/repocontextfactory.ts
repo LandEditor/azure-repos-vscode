@@ -5,10 +5,10 @@
 
 import { ExternalContext } from "../contexts/externalcontext";
 import { GitContext } from "../contexts/gitcontext";
-import { IRepositoryContext } from "../contexts/repositorycontext";
-import { TeamServerContext } from "../contexts/servercontext";
+import type { IRepositoryContext } from "../contexts/repositorycontext";
+import type { TeamServerContext } from "../contexts/servercontext";
 import { TfvcContext } from "../contexts/tfvccontext";
-import { Settings } from "../helpers/settings";
+import type { Settings } from "../helpers/settings";
 import { TfCommandLineRunner } from "../tfvc/tfcommandlinerunner";
 
 export class RepositoryContextFactory {

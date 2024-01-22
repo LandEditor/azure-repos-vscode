@@ -4,8 +4,8 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Strings } from "../helpers/strings";
-import { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
-import { ITfvcErrorData } from "./interfaces";
+import type { IButtonMessageItem } from "../helpers/vscodeutils.interfaces";
+import type { ITfvcErrorData } from "./interfaces";
 
 export class TfvcError {
 	error: Error;

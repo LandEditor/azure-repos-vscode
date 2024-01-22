@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 /* tslint:disable:no-null-keyword */
 
-import { Event } from "vscode";
+import type { Event } from "vscode";
 
 export function log(...args: any[]): void {
 	console.log.apply(console, ["tfvc:", ...args]);

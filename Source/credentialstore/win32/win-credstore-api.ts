@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Credential } from "../credential";
-import { ICredentialStore } from "../interfaces/icredentialstore";
+import type { ICredentialStore } from "../interfaces/icredentialstore";
 
 import * as Q from "q";
 /* tslint:disable:no-var-keyword */

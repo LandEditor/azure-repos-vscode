@@ -3,13 +3,13 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { TeamServerContext } from "../../contexts/servercontext";
+import type { TeamServerContext } from "../../contexts/servercontext";
 import {
 	AutoResolveType,
-	IArgumentProvider,
-	IConflict,
-	IExecutionResult,
-	ITfvcCommand,
+	type IArgumentProvider,
+	type IConflict,
+	type IExecutionResult,
+	type ITfvcCommand,
 } from "../interfaces";
 import { ConflictType } from "../scm/status";
 import { ArgumentBuilder } from "./argumentbuilder";

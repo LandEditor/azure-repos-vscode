@@ -10,7 +10,7 @@
 const _ = require("underscore");
 const es = require("event-stream");
 const stream = require("readable-stream");
-const util = require("util");
+const util = require("node:util");
 
 const Transform = stream.Transform;
 

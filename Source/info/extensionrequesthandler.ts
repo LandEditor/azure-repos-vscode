@@ -5,7 +5,7 @@
 
 import { getBasicHandler } from "vso-node-api/WebApi";
 import { getNtlmHandler } from "vso-node-api/WebApi";
-import {
+import type {
 	IHttpResponse,
 	IRequestHandler,
 } from "vso-node-api/interfaces/common/VsoBaseInterfaces";

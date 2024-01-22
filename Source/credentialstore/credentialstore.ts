@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as os from "os";
+import * as os from "node:os";
 import * as Q from "q";
 
-import { Credential } from "./credential";
-import { ICredentialStore } from "./interfaces/icredentialstore";
+import type { Credential } from "./credential";
+import type { ICredentialStore } from "./interfaces/icredentialstore";
 import { LinuxFileApi } from "./linux/linux-file-api";
 import { OsxKeychainApi } from "./osx/osx-keychain-api";
 import { WindowsCredentialStoreApi } from "./win32/win-credstore-api";

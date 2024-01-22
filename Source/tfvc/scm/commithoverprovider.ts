@@ -4,14 +4,14 @@
  *--------------------------------------------------------------------------------------------*/
 
 import {
-	Disposable,
+	type Disposable,
 	Hover,
-	HoverProvider,
-	Position,
+	type HoverProvider,
+	type Position,
 	Range,
-	TextDocument,
-	TextEditor,
-	TextEditorDecorationType,
+	type TextDocument,
+	type TextEditor,
+	type TextEditorDecorationType,
 	Uri,
 	WorkspaceEdit,
 	languages,

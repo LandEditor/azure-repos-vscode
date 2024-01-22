@@ -5,10 +5,10 @@
 
 import { Logger } from "../helpers/logger";
 import { RepoUtils } from "../helpers/repoutils";
-import { IWorkspace } from "../tfvc/interfaces";
+import type { IWorkspace } from "../tfvc/interfaces";
 import { TfCommandLineRunner } from "../tfvc/tfcommandlinerunner";
-import { TfvcRepository } from "../tfvc/tfvcrepository";
-import { IRepositoryContext, RepositoryType } from "./repositorycontext";
+import type { TfvcRepository } from "../tfvc/tfvcrepository";
+import { type IRepositoryContext, RepositoryType } from "./repositorycontext";
 
 export class TfvcContext implements IRepositoryContext {
 	private _tfvcFolder: string;
