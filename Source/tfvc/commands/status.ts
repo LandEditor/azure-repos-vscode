@@ -13,7 +13,7 @@ import type {
 import { ArgumentBuilder } from "./argumentbuilder";
 import { CommandHelper } from "./commandhelper";
 
-import * as fs from "node:fs";
+import * as fs from "fs";
 
 /**
  * This command returns the status of the workspace as a list of pending changes.

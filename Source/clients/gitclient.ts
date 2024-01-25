@@ -21,7 +21,7 @@ import { GitVcService, PullRequestScore } from "../services/gitvc";
 import { Telemetry } from "../services/telemetry";
 import { BaseClient } from "./baseclient";
 
-import * as path from "node:path";
+import * as path from "path";
 
 export class GitClient extends BaseClient {
 	//Initial method to display, select and navigate to my pull requests

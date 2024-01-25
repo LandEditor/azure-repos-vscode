@@ -26,7 +26,7 @@ import {
 } from "./resourcegroups";
 import { ConflictType, Status } from "./status";
 
-import * as path from "node:path";
+import * as path from "path";
 import * as _ from "underscore";
 
 export class Model implements Disposable {

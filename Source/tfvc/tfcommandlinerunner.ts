@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import * as cp from "node:child_process";
+import * as cp from "child_process";
 import type { TeamServerContext } from "../contexts/servercontext";
 import { Constants, TelemetryEvents } from "../helpers/constants";
 import { Logger } from "../helpers/logger";
@@ -21,8 +21,8 @@ import { TfvcSettings } from "./tfvcsettings";
 import { TfvcVersion } from "./tfvcversion";
 import { type IDisposable, dispose, toDisposable } from "./util";
 
-import * as fs from "node:fs";
-import * as path from "node:path";
+import * as fs from "fs";
+import * as path from "path";
 import * as _ from "underscore";
 
 /**

@@ -14,7 +14,7 @@ import {
 } from "./interfaces";
 import { TfvcOutput } from "./tfvcoutput";
 
-import * as path from "node:path";
+import * as path from "path";
 
 export class UIHelper {
 	public static async ChoosePendingChange(

@@ -46,8 +46,8 @@ import { TfvcErrorCodes } from "./tfvc/tfvcerror";
 import type { TfvcRepository } from "./tfvc/tfvcrepository";
 import { TfvcSCMProvider } from "./tfvc/tfvcscmprovider";
 
-import * as path from "node:path";
-import * as util from "node:util";
+import * as path from "path";
+import * as util from "util";
 
 export class ExtensionManager implements Disposable {
 	private _teamServicesStatusBarItem: StatusBarItem;

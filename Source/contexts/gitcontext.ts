@@ -7,8 +7,8 @@ import { RepoUtils } from "../helpers/repoutils";
 import { Utils } from "../helpers/utils";
 import { type IRepositoryContext, RepositoryType } from "./repositorycontext";
 
-import * as path from "node:path";
-import * as url from "node:url";
+import * as path from "path";
+import * as url from "url";
 import * as gri from "git-repo-info";
 import * as pgc from "parse-git-config";
 

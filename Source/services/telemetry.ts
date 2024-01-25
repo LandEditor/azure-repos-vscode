@@ -10,8 +10,8 @@ import type { Settings } from "../helpers/settings";
 import appInsights = require("applicationinsights");
 import uuid = require("uuid");
 
-import * as crypto from "node:crypto";
-import * as os from "node:os";
+import * as crypto from "crypto";
+import * as os from "os";
 
 export class Telemetry {
 	private static _appInsightsClient: Client;

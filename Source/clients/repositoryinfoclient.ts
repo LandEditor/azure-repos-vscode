@@ -22,7 +22,7 @@ import { CoreApiClient } from "./coreapiclient";
 import { TeamServicesApi } from "./teamservicesclient";
 import { TfsCatalogSoapClient } from "./tfscatalogsoapclient";
 
-import * as url from "node:url";
+import * as url from "url";
 
 export class RepositoryInfoClient {
 	private _handler: VsoBaseInterfaces.IRequestHandler;

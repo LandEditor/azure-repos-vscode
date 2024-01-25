@@ -8,7 +8,7 @@ import type { IRequestHandler } from "vso-node-api/interfaces/common/VsoBaseInte
 import { UserAgentProvider } from "../helpers/useragentprovider";
 import { SoapClient } from "./soapclient";
 
-import * as url from "node:url";
+import * as url from "url";
 import * as xmldoc from "xmldoc";
 
 // This class is the 'bridge' between the calling RepositoryInfoClient (which uses the

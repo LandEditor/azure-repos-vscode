@@ -5,7 +5,7 @@
 
 import { Constants } from "./constants";
 
-import * as path from "node:path";
+import * as path from "path";
 import * as winston from "winston";
 
 export class Logger {

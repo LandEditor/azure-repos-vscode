@@ -41,8 +41,8 @@ import {
 } from "./helpers/vscodeutils";
 import { Telemetry } from "./services/telemetry";
 
-import * as os from "node:os";
-import * as util from "node:util";
+import * as os from "os";
+import * as util from "util";
 import * as vscode from "vscode";
 
 export class TeamExtension {
