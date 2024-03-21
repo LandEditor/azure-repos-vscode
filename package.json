@@ -1,29 +1,14 @@
 {
-	"name": "team",
-	"displayName": "Azure Repos",
-	"version": "0.0.1",
-	"private": false,
-	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
-	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
-	"bugs": {
-		"url": "https://github.com/CodeEditorLand/Foundation/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
+	"activationEvents": [
+		"*"
+	],
 	"author": {
-		"name": "Playform",
 		"email": "Hello@Playform.Cloud",
+		"name": "Playform",
 		"url": "https://playform.cloud"
 	},
-	"type": "module",
-	"main": "./out/src/extension",
-	"scripts": {
-		"compile": "tsc -watch -p ./",
-		"postinstall": "node ./node_modules/vscode/bin/install",
-		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
+	"bugs": {
+		"url": "https://github.com/CodeEditorLand/Foundation/issues"
 	},
 	"contributes": {
 		"commands": [
@@ -468,9 +453,6 @@
 			]
 		}
 	},
-	"activationEvents": [
-		"*"
-	],
 	"dependencies": {
 		"applicationinsights": "2.9.5",
 		"event-stream": "4.0.1",
@@ -492,6 +474,7 @@
 		"xml2js": "0.6.2",
 		"xmldoc": "1.3.0"
 	},
+	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
 	"devDependencies": {
 		"@types/applicationinsights": "0.15.33",
 		"@types/chai": "4.3.13",
@@ -513,19 +496,36 @@
 		"mocha-junit-reporter": "2.2.1",
 		"should": "13.2.3",
 		"typescript": "5.4.2",
-		"typescript-esbuild": "0.4.5",
+		"typescript-esbuild": "",
 		"vscode": "1.0.0",
 		"vsts-task-lib": "0.9.18",
 		"yargs": "17.7.2"
 	},
-	"publishConfig": {
-		"access": "public"
-	},
-	"icon": "assets/team.png",
+	"displayName": "Azure Repos",
+	"enableProposedApi": false,
 	"galleryBanner": {
 		"color": "#313131",
 		"theme": "dark"
 	},
+	"homepage": "https://github.com/CodeEditorLand/Foundation#readme",
+	"icon": "assets/team.png",
+	"license": "SEE LICENSE IN LICENSE",
+	"main": "./out/src/extension",
 	"markdown": "standard",
-	"enableProposedApi": false
+	"name": "team",
+	"private": false,
+	"publishConfig": {
+		"access": "public"
+	},
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/CodeEditorLand/Foundation.git"
+	},
+	"scripts": {
+		"compile": "tsc -watch -p ./",
+		"postinstall": "node ./node_modules/vscode/bin/install",
+		"prepublishOnly": "TypeScriptESBuild 'Source/**/*.ts'"
+	},
+	"type": "module",
+	"version": "0.0.1"
 }
