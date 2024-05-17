@@ -1,27 +1,7 @@
 {
 	"name": "team",
 	"displayName": "Azure Repos",
-	"version": "0.0.1",
-	"private": false,
 	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
-	"keywords": [
-		"land"
-	],
-	"homepage": "HTTPS://GitHub.Com/CodeEditorLand/AzureReposLand#readme",
-	"bugs": {
-		"url": "HTTPS://GitHub.Com/CodeEditorLand/AzureReposLand/issues"
-	},
-	"repository": {
-		"type": "git",
-		"url": "git+HTTPS://github.com/CodeEditorLand/AzureReposLand.git"
-	},
-	"license": "SEE LICENSE IN LICENSE",
-	"author": {
-		"name": "🛬 Land —",
-		"email": "Land@PlayForm.Cloud",
-		"url": "HTTPS://Land.PlayForm.Cloud"
-	},
-	"type": "module",
 	"main": "./out/src/extension",
 	"scripts": {
 		"Document": "Document 'Source/**/*.ts'",
@@ -496,7 +476,6 @@
 	},
 	"devDependencies": {
 		"@playform/build": "0.0.7",
-		"@playform/document": "0.0.6",
 		"@types/applicationinsights": "0.15.33",
 		"@types/chai": "4.3.16",
 		"@types/node": "20.12.11",
@@ -510,9 +489,6 @@
 		"should": "13.2.3",
 		"vsts-task-lib": "0.9.18",
 		"yargs": "17.7.2"
-	},
-	"publishConfig": {
-		"access": "public"
 	},
 	"icon": "assets/team.png",
 	"galleryBanner": {
