@@ -1,35 +1,29 @@
-/*---------------------------------------------------------------------------------------------
-*  Copyright (c) Microsoft Corporation. All rights reserved.
-*  Licensed under the MIT License. See License.txt in the project root for license information.
-*--------------------------------------------------------------------------------------------*/
-"use strict";
-
-import { ISettings } from "../helpers/settings";
+import type { ISettings } from "../helpers/settings";
 
 export enum RepositoryType {
-    GIT,
-    TFVC,
-    ANY,
-    EXTERNAL
+	GIT = 0,
+	TFVC = 1,
+	ANY = 2,
+	EXTERNAL = 3,
 }
 
 export interface IRepositoryContext {
-    Type: RepositoryType;
+	Type: RepositoryType;
 
-    //Added Initialize() so TFVC could call tf.cmd async
-    Initialize(settings?: ISettings): Promise<boolean>;
+	//Added Initialize() so TFVC could call tf.cmd async
+	Initialize(settings?: ISettings): Promise<boolean>;
 
-    IsSsh: boolean;
-    IsTeamFoundation: boolean;
-    IsTeamServices: boolean;
-    RemoteUrl: string;
-    RepoFolder: string;
-    RepositoryParentFolder: string;
+	IsSsh: boolean;
+	IsTeamFoundation: boolean;
+	IsTeamServices: boolean;
+	RemoteUrl: string;
+	RepoFolder: string;
+	RepositoryParentFolder: string;
 
-    //Git-specific values
-    CurrentBranch: string;
-    CurrentRef: string;
+	//Git-specific values
+	CurrentBranch: string;
+	CurrentRef: string;
 
-    //TFVC-specific values
-    TeamProjectName: string;
+	//TFVC-specific values
+	TeamProjectName: string;
 }
