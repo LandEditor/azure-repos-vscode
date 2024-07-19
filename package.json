@@ -466,7 +466,7 @@
 		"underscore": "1.13.6",
 		"url": "0.11.3",
 		"uuid": "10.0.0",
-		"vso-node-api": "5.1.1",
+		"vso-node-api": "6.3.1-preview",
 		"vsts-device-flow-auth": "1.136.0",
 		"winston": "3.13.1",
 		"xml2js": "0.6.2",
@@ -484,7 +484,7 @@
 		"chai": "5.1.1",
 		"del": "7.1.0",
 		"should": "13.2.3",
-		"vsts-task-lib": "0.9.18",
+		"vsts-task-lib": "2.0.4-preview",
 		"yargs": "17.7.2"
 	},
 	"icon": "assets/team.png",
