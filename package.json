@@ -1,7 +1,11 @@
 {
-	"activationEvents": [
-		"*"
-	],
+	"name": "team",
+	"displayName": "Azure Repos",
+	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
+	"main": "./out/src/extension",
+	"scripts": {
+		"compile": "tsc -watch -p ./"
+	},
 	"contributes": {
 		"commands": [
 			{
@@ -445,6 +449,9 @@
 			]
 		}
 	},
+	"activationEvents": [
+		"*"
+	],
 	"dependencies": {
 		"applicationinsights": "0.15.16",
 		"event-stream": "3.3.2",
@@ -465,7 +472,6 @@
 		"xml2js": "0.4.17",
 		"xmldoc": "0.5.1"
 	},
-	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
 	"devDependencies": {
 		"@types/applicationinsights": "0.15.33",
 		"@types/chai": "3.4.1",
@@ -481,17 +487,11 @@
 		"vsts-task-lib": "0.9.18",
 		"yargs": "5.0.0"
 	},
-	"displayName": "Azure Repos",
-	"enableProposedApi": false,
+	"icon": "assets/team.png",
 	"galleryBanner": {
 		"color": "#313131",
 		"theme": "dark"
 	},
-	"icon": "assets/team.png",
-	"main": "./out/src/extension",
 	"markdown": "standard",
-	"name": "team",
-	"scripts": {
-		"compile": "tsc -watch -p ./"
-	}
+	"enableProposedApi": false
 }
