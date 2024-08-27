@@ -1,0 +1,339 @@
+<!DOCTYPE html><html class="default" lang="en"><head><meta charset="utf-8"/><meta name="keywords" content="@playform/document"/><meta http-equiv="x-ua-compatible" content="IE=edge"/><title>team</title><meta name="description" content="Documentation for team"/><meta name="viewport" content="width=device-width, initial-scale=1"/><link rel="stylesheet" href="assets/style.css"/><link rel="stylesheet" href="assets/highlight.css"/><link rel="stylesheet" href="assets/custom.css"/><script defer src="assets/main.js"></script><script async src="assets/icons.js" id="tsd-icons-script"></script><script async src="assets/search.js" id="tsd-search-script"></script><script async src="assets/navigation.js" id="tsd-nav-script"></script></head><body><script>document.documentElement.dataset.theme = localStorage.getItem("tsd-theme") || "os";document.body.style.display="none";setTimeout(() => app?app.showPage():document.body.style.removeProperty("display"),500)</script><header class="tsd-page-toolbar"><div class="tsd-toolbar-contents container"><div class="table-cell" id="tsd-search" data-base="."><div class="field"><label for="tsd-search-field" class="tsd-widget tsd-toolbar-icon search no-caption"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-search"></use></svg></label><input type="text" id="tsd-search-field" aria-label="Search"/></div><div class="field"><div id="tsd-toolbar-links"></div></div><ul class="results"><li class="state loading">Preparing search index...</li><li class="state failure">The search index is not available</li></ul><a href="index.html" class="title">team</a></div><div class="table-cell" id="tsd-widgets"><a href="#" class="tsd-widget tsd-toolbar-icon menu no-caption" data-toggle="menu" aria-label="Menu"><svg width="16" height="16" viewBox="0 0 16 16" fill="none"><use href="assets/icons.svg#icon-menu"></use></svg></a></div></div></header><div class="container container-main"><div class="col-content"><div class="tsd-page-title"><h2>team</h2></div><div class="tsd-panel tsd-typography"><a id="md:azure-repos-extension-for-visual-studio-code" class="tsd-anchor"></a><h1 class="tsd-anchor-link">Azure Repos Extension for Visual Studio Code<a href="#md:azure-repos-extension-for-visual-studio-code" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h1><p><strong>DEPRECATION NOTICE</strong>: This extension is no longer receiving updates.
+<a href="https://aka.ms/AA9k2vv">Learn more here</a>.</p>
+<hr>
+<p>This extension allows you to connect to Azure DevOps Services and Team
+Foundation Server and provides support for
+<a href="TFVC_README.md#quick-start">Team Foundation Version Control (TFVC)</a>. It allows
+you to monitor your builds and manage your pull requests and work items for your
+TFVC or Git source repositories. The extension uses your local repository
+information to connect to either Azure DevOps Services or Team Foundation Server
+2015 Update 2 (and later).</p>
+<p><img src="media/vscode.png" alt="Azure Repos extension"></p>
+<p>Here is the
+<a href="https://youtu.be/sk6LrzQX4P8">Walkthrough of the Azure Repos extension for Visual Studio Code</a>
+video that shows many of the features of the extension.</p>
+<a id="md:prerequisites" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Prerequisites<a href="#md:prerequisites" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:azure-devops-services" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Azure DevOps Services<a href="#md:azure-devops-services" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>If you are using the extension with Azure DevOps Services, ensure you have an
+Azure DevOps Services organization. If you do not have one,
+<a href="https://aka.ms/SignupAzureDevOps/?campaign=azure~repos~vscode~readme">sign up for Azure DevOps Services</a>.</p>
+<a id="md:team-foundation-server" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Team Foundation Server<a href="#md:team-foundation-server" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>If you are planning on using the extension with Team Foundation Server, you
+<strong>must</strong> be running Team Foundation Server 2015 Update 2 or later. Earlier
+versions of Team Foundation Server are not supported.</p>
+<a id="md:clone-your-git-repository" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Clone your Git repository<a href="#md:clone-your-git-repository" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>With Git, the extension uses the remote origin of your repository to determine
+how to connect to Azure DevOps Services (or your Team Foundation Server), in
+most cases you will need to have a Git repository already cloned locally. If you
+intend on cloning an existing repository, do so before proceeding. If you do not
+have a Git repository cloned locally but already have an Azure DevOps Services
+organization (or a Team Foundation Server instance), you may create a local
+repository (via <code>git init</code>) and once you set the &quot;origin&quot; remote for that local
+repository, the extension will detect the change to the remote and attempt to
+contact Azure DevOps Services (or Team Foundation Server).</p>
+<a id="md:create-your-tfvc-workspace" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Create your TFVC workspace<a href="#md:create-your-tfvc-workspace" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>With TFVC, the extension uses information about the current workspace to
+determine how to connect to Azure DevOps Services (or your Team Foundation
+Server). Workspaces can be created using the Visual Studio IDE, Eclipse or with
+the JetBrains IDEs (e.g, Android Studio, IntelliJ).</p>
+<p><strong>Note:</strong> At this time, you will need to have a <strong><em>local</em></strong> TFVC workspace
+already available on your local machine. More information about the difference
+between the two types (and how to determine which one you're using) can be found
+<a href="TFVC_README.md#what-is-the-difference-between-a-local-and-server-workspace-how-can-i-tell-which-one-im-working-with">here</a>.
+The issue tracking support for Server workspaces is
+<a href="https://github.com/Microsoft/azure-repos-vscode/issues/176">here</a>.</p>
+<a id="md:🚀-installation" class="tsd-anchor"></a><h2 class="tsd-anchor-link">🚀 Installation<a href="#md:🚀-installation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>First, you will need to install
+<a href="https://code.visualstudio.com/download">Visual Studio Code</a> <code>1.12.0</code> or later.</p>
+<p>To install the extension with the latest version of Visual Studio Code (version
+1.13.1 is the latest as of this writing), bring up the Visual Studio Code
+Command Palette (<code>F1</code>), type <code>install</code> and choose
+<code>Extensions: Install Extensions</code>. In the <code>Search Extensions in Marketplace</code> text
+box, type <code>team</code>. Find the <code>Azure Repos</code> extension published by <em>Microsoft</em> and
+click the <code>Install</code> button. Restart Visual Studio Code.</p>
+<a id="md:authentication" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Authentication<a href="#md:authentication" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><a id="md:azure-devops-services-1" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Azure DevOps Services<a href="#md:azure-devops-services-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>If you are connecting to Azure DevOps Services, you will need a personal access
+token (PAT). With the release of v1.121.0 of the extension, you have a choice of
+whether you would like to create a token yourself manually and provide it when
+prompted, or use a new experience in which you are authenticated to Azure DevOps
+Services using your web browser. In the new experience, a personal access token
+is still created on your behalf but only after you are authenticated. The
+created token has <em>All Scopes</em> permissions but can be updated in your profile
+settings. Both tokens (manual or the new experience) are stored securely on your
+machine.</p>
+<a id="md:manual-token-creation" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Manual Token Creation<a href="#md:manual-token-creation" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>Should you wish to create a personal access token yourself, go
+<a href="https://aka.ms/gtgzt4">here</a> to read how. You can also
+<a href="https://youtu.be/t6gGfj8WOgg">view our video</a> on how to do the same.</p>
+<ul>
+<li>Git repositories require that you create your token with the <strong>Build
+(read)</strong>, <strong>Code (read)</strong> and <strong>Work items (read)</strong> scopes to ensure full
+functionality. You can also use <em>All Scopes</em>, but the minimum required
+scopes are those listed above.</li>
+<li>TFVC repositories require tokens with <em>All Scopes</em>. Anything less will cause
+the extension to fail.</li>
+</ul>
+<a id="md:browser-based-authentication" class="tsd-anchor"></a><h4 class="tsd-anchor-link">Browser-based Authentication<a href="#md:browser-based-authentication" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h4><p>When using the new authentication experience, you will be prompted to copy a
+<em>device code</em> used to identify yourself to the authentication system. Once you
+accept the prompt to begin authentication, your default web browser will be
+opened to a login page. After supplying that device code and having it verified,
+you will then be prompted to authenticate with Azure DevOps Services normally
+(e.g., username and password, multi-factor authentication, etc.). Once you are
+authenticated to Azure DevOps Services, a personal access token will be created
+for you and the extension will be initialized normally. To see what this
+experience is like, <a href="https://youtu.be/HnDNdm1WCIo">view this video</a>.</p>
+<a id="md:team-foundation-server-1" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Team Foundation Server<a href="#md:team-foundation-server-1" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>If you are connecting to Team Foundation Server, you will only need your NTLM
+credentials (domain name, server name and password). It is assumed that you have
+the proper permissions on the TFS Server.</p>
+<p>Details on how to connect to either Azure DevOps Services or Team Foundation
+Server are found in the next section.</p>
+<a id="md:tfvc-support" class="tsd-anchor"></a><h2 class="tsd-anchor-link">TFVC Support<a href="#md:tfvc-support" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Once you have a local TFVC workspace available, you must configure the TFVC
+support in Visual Studio Code. You can find that information (including demo
+videos) in our <a href="media/TFVC_README.md">TFVC documentation</a>.</p>
+<a id="md:open-a-local-repository-folder" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Open a local Repository folder<a href="#md:open-a-local-repository-folder" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Once you have installed the extension, open either the root folder or a
+sub-folder of the repository. Once an Azure DevOps Services or Team Foundation
+Server 2015 Update 2 (or later) repository is detected by the extension, you
+will need to provide your credentials (if credentials weren't already found). If
+you are required to provide your credentials, there will be an indicator in the
+status bar whose message will indicate that you need to sign in.</p>
+<p>The indicator looks like this:</p>
+<p><img src="media/team-error.png" alt="Team Error indicator"></p>
+<p>To sign in, run the <code>team signin</code> command or simply click on that indicator. If
+your repository is hosted on Azure Repos, you will be prompted to enter your
+personal access token. When you do, it will be stored securely on your computer
+and used to connect. If your repository is on Team Foundation Server 2015 Update
+2 or later, you will be prompted to enter your username and password. After both
+are provided, they will be stored securely on your computer and used to connect
+to your TFS server.</p>
+<p>Once your credentials are verified, the status bar indicators will be active and
+the remaining commands will be ready to use. The stored credentials will be used
+for each connection to the server until they are either removed by the
+<code>team signout</code> command or overwritten by a subsequent <code>team signin</code> command.</p>
+<p><strong>Note:</strong> In order for the extension to be activated, a repository <em>folder</em> must
+be opened. The extension won't be activated if only a single <em>file</em> in the
+repository is opened.</p>
+<a id="md:status-bar-indicators" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Status Bar Indicators<a href="#md:status-bar-indicators" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><ul>
+<li>
+<p><img src="media/project-indicator.png" alt="Team Project indicator"> – This status bar
+item is populated with the name of the team project to which the repository
+belongs. Clicking on the item will open your browser to the team website.</p>
+</li>
+<li>
+<p><img src="media/pullrequest-indicator.png" alt="Pull Requests indicator"> – <strong><em>Git
+only</em></strong> This status bar item is a count of active pull requests that you
+either requested yourself or were added to explicitly as a reviewer.
+Clicking the item will display that list of pull requests in the quick pick
+list. Choosing one will take you to that pull request in your browser. This
+indicator will update its status every 5 minutes.</p>
+</li>
+<li>
+<p><img src="media/buildstatus-indicator.png" alt="Build Status indicator"> – This status
+bar item shows the status of the build for this particular repository and
+branch. Hovering over the item will provide additional information about
+which build was referenced (if any). Clicking on the item will take you to
+that build’s summary page in your browser. This indicator will update its
+status every 5 minutes.</p>
+</li>
+<li>
+<p><img src="media/pinnedquery-indicator.png" alt="Pinned Work Item Query Status indicator">
+– This status bar item shows the number of items returned by your pinned
+work item query. If you have not configured a pinned query it defaults to
+the work items assigned to you. Clicking the item will show you the work
+items the query returns. This indicator will update its status every 5
+minutes.</p>
+</li>
+<li>
+<p><img src="media/feedback-indicator.png" alt="Feedback indicator"> – Clicking this status
+bar item allows you to quickly send feedback about the Azure Repos
+extension.</p>
+</li>
+</ul>
+<a id="md:commands" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Commands<a href="#md:commands" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>In addition to the status bar integrations, the extension also provides several
+commands for interacting with Azure DevOps Services and Team Foundation Server.
+In the Command Palette (<code>F1</code>), type <code>team</code> and choose a command.</p>
+<ul>
+<li>
+<p><code>team associate work items</code> – Prompts you to choose a work item that is
+assigned to you (or from the results of your custom query). Choosing a work
+item will add it to the current commit/check-in message.</p>
+</li>
+<li>
+<p><code>team create bug</code> – Opens your browser to the webpage used to create a new
+bug. If a single line of text is highlighted in Visual Studio Code, it will
+be used as the title of the bug. The bug will be assigned to you. You can
+then choose to update the fields, save, cancel, etc.</p>
+</li>
+<li>
+<p><code>team create pull request</code> – <strong><em>Git only</em></strong> Opens your browser for a new
+pull request based on the current repository and branch. Before creating the
+pull request, ensure that you save, commit and push any changes you have
+before running the command. Doing so will ensure that all of your latest
+changes are part of the pull request.</p>
+</li>
+<li>
+<p><code>team create task</code> – Opens your browser to the webpage used to create a new
+task. If a single line of text is highlighted in Visual Studio Code, it will
+be used as the title of the task. The task will be assigned to you. You can
+then choose to update the fields, save, cancel, etc.</p>
+</li>
+<li>
+<p><code>team create work item</code> – Prompts you to choose a work item type from the
+list available in your team project. Once you make a selection, your browser
+is opened to the webpage used to create the work item. If a single line f
+text is highlighted in Visual Studio Code, it will be used as the title of
+the task. The work item will be assigned to you. You can then choose to
+update the fields, save, cancel, etc.</p>
+</li>
+<li>
+<p><code>team send feedback</code> – Prompts you to either send a smile or a frown. After
+choosing, you can provide us feedback of up to 1000 characters. Optionally,
+provide your email address so we can contact if you needed. If you do not
+want to provide your email address, just leave it empty (we'll still get
+your feedback). <em>Note:</em> Feedback can be sent even if telemetry reporting is
+disabled.</p>
+</li>
+<li>
+<p><code>team signin</code> – Use this command to sign in to an Azure DevOps Services
+organization or Team Foundation Server 2015 Update 2 (and later) server.
+When your credentials are provided, they will be stored securely on your
+computer. The saved credentials will be used for that organization until
+they are removed by the <code>team signout</code> command or overwritten by a
+subsequent <code>team signin</code> command. See the &quot;Secure Credential Storage&quot; topic
+below for more details.</p>
+</li>
+<li>
+<p><code>team signout</code> – Use this command to sign out from an Azure DevOps Services
+organization or Team Foundation Server 2015 Update 2 (and later) server.
+Signing out will remove your credentials from your local computer. To sign
+back in, you will need to run the <code>team signin</code> command again.</p>
+</li>
+<li>
+<p><code>team view blame</code> – <strong><em>Git only</em></strong> If a file in the repository is opened in
+the editor, it will open your browser to the blame page for that file in the
+current branch in the server repository.</p>
+</li>
+<li>
+<p><code>team view build summary</code> – Same behavior as clicking on the Build Status
+status bar item.</p>
+</li>
+<li>
+<p><code>team view history</code> – If a file in the repository is opened in the editor,
+it will open your browser to the history page for that file in the current
+branch in the server repository. Otherwise, the history of the current
+branch in the server repository will be opened. This command does support
+TFVC repositories.</p>
+</li>
+<li>
+<p><code>team view pull requests</code> – <strong><em>Git only</em></strong> Same behavior as clicking on the
+Pull Requests status bar item.</p>
+</li>
+<li>
+<p><code>team view website</code> – Same behavior as clicking on the team project status
+bar item.</p>
+</li>
+<li>
+<p><code>team view work items</code> – Prompts you to choose a work item that is assigned
+to you, sorted by ChangedDate descending. Choosing a work item will open it
+in your browser. This command will return a maximum of 200 results with an
+option to &quot;Browse additional work items...&quot;. Choosing that option will open
+your browser to show all of the results of your query.</p>
+</li>
+<li>
+<p><code>team view work item queries</code> – Prompts you to choose a query stored in your
+“My Queries” folder in your team project. Choosing a query will run it and
+display the results in the Quick Pick list. Choosing one of the results will
+open that work item in your browser. This command will return a maximum of
+200 results with an option to &quot;Browse additional work items...&quot;. Choosing
+that option will open your browser to show all of the results of your query.</p>
+</li>
+</ul>
+<a id="md:secure-credential-storage" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Secure Credential Storage<a href="#md:secure-credential-storage" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>When you run the <code>team signin</code> command, the credentials that you provide will be
+stored securely on your computer. On Windows, your credentials wil be stored by
+Windows Credential Manager. On macOS, your credentials will be stored in the
+Keychain. On Linux, your credentials will be stored in a file on your local file
+system in a subdirectory of your home folder. That file is created only with RW
+rights for the user running Visual Studio Code. It is <strong>not encrypted</strong> on disk.</p>
+<a id="md:how-to-disable-telemetry-reporting" class="tsd-anchor"></a><h2 class="tsd-anchor-link">How to disable telemetry reporting<a href="#md:how-to-disable-telemetry-reporting" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The Azure Repos extension collects usage data and sends it to Microsoft to help
+improve our products and services. Read our
+<a href="http://go.microsoft.com/fwlink/?LinkId=528096&amp;clcid=0x409">privacy statement</a>
+to learn more.</p>
+<p>If you don’t wish to send usage data to Microsoft, add the following entry to
+Settings (<strong>File &gt; Preferences &gt; Settings</strong>):</p>
+<pre><code class="javascript"><span class="hl-0">    </span><span class="hl-1">&quot;team.appInsights.enabled&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;false&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:polling-interval" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Polling interval<a href="#md:polling-interval" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The polling interval for the pull request and build status bar indicators
+defaults to ten minutes. You can change this value in the Visual Studio Code
+Settings by adding an entry like the one below. The minimum value is 10.</p>
+<pre><code class="javascript"><span class="hl-1">&quot;team.pollingInterval&quot;</span><span class="hl-0">: </span><span class="hl-2">12</span>
+</code><button type="button">Copy</button></pre>
+
+<a id="md:logging" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Logging<a href="#md:logging" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>There may be times when you need to enable file logging to troubleshoot an
+issue. There are five levels of logging (<code>error</code>, <code>warn</code>, <code>info</code>, <code>verbose</code> and
+<code>debug</code>). Since logging is disabled by default, you can add an entry like the
+one shown below to Visual Studio Code's Settings. Once you are finished logging,
+either remove the setting or set it to an empty string.</p>
+<pre><code class="javascript"><span class="hl-1">&quot;team.logging.level&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;debug&quot;</span>
+</code><button type="button">Copy</button></pre>
+
+<p>The log file will be placed at the root of your workspace and will be named
+<code>team-extension.log</code>.</p>
+<a id="md:private-builds" class="tsd-anchor"></a><h3 class="tsd-anchor-link">Private builds<a href="#md:private-builds" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h3><p>In order to facilitate more debugging, you may be provided with a &quot;private
+build&quot; of the extension. The private build will likely come in the form of a
+.ZIP file named similarly to the VSIX that gets deployed to the Marketplace
+(e.g., <code>team-0.117.0.vsix.zip</code>).</p>
+<p>To install the private build, you must uninstall the previous version and then
+<em>side load</em> the new one. First, remove the .ZIP extension from the file and then
+follow
+<a href="https://code.visualstudio.com/docs/editor/extension-gallery#_install-from-a-vsix">these instructions</a>
+to install the VSIX.</p>
+<a id="md:pinned-work-item-queries" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Pinned Work Item Queries<a href="#md:pinned-work-item-queries" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>You can customize the pinned work item query by adding the following in the
+Visual Studio Code Settings. You need to provide the following:</p>
+<ul>
+<li><code>account</code>: For Azure DevOps Services, set <code>account</code> to either
+<code>organization.visualstudio.com</code> or <code>dev.azure.com/organization</code>. For Team
+Foundation Server, if your server URL is <code>http://servername:8080/tfs</code> then
+set <code>account</code> to <code>servername:8080</code>.</li>
+<li><code>queryText</code> or <code>queryPath</code></li>
+</ul>
+<p><strong>Using Query Text</strong></p>
+<pre><code class="javascript"><span class="hl-0">  </span><span class="hl-1">&quot;team.pinnedQueries&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">      {</span><br/><span class="hl-0">          </span><span class="hl-1">&quot;account&quot;</span><span class="hl-3">:</span><span class="hl-0"> </span><span class="hl-1">&quot;dev.azure.com/organization&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">          </span><span class="hl-1">&quot;queryText&quot;</span><span class="hl-3">:</span><span class="hl-0"> </span><span class="hl-1">&quot;SELECT * FROM WorkItems WHERE [System.AssignedTo] = @me AND [System.ChangedDate] &gt; @Today - 14&quot;</span><br/><span class="hl-0">      }</span><br/><span class="hl-0">  ]</span>
+</code><button type="button">Copy</button></pre>
+
+<p><strong>Using Query Path</strong></p>
+<pre><code class="javascript"><span class="hl-0">  </span><span class="hl-1">&quot;team.pinnedQueries&quot;</span><span class="hl-0">: [</span><br/><span class="hl-0">      {</span><br/><span class="hl-0">          </span><span class="hl-1">&quot;account&quot;</span><span class="hl-3">:</span><span class="hl-0"> </span><span class="hl-1">&quot;dev.azure.com/organization&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">          </span><span class="hl-1">&quot;queryPath&quot;</span><span class="hl-3">:</span><span class="hl-0"> </span><span class="hl-1">&quot;Shared Queries/My Folder/My Query&quot;</span><br/><span class="hl-0">      }</span><br/><span class="hl-0">  ]</span>
+</code><button type="button">Copy</button></pre>
+
+<p>You can also create a <em>global</em> pinned query which will be the default if you
+have not configured one by replacing <em><a href="http://dev.azure.com/organization">dev.azure.com/organization</a></em> with <em>global</em>
+in the previous examples.</p>
+<a id="md:using-external-non-microsoft-source-repositories" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Using External (non-Microsoft) Source Repositories<a href="#md:using-external-non-microsoft-source-repositories" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Starting with version 1.113.0, you can now use the extension with repositories
+that are <strong>not</strong> hosted with either Azure DevOps Services or Team Foundation
+Server. You will be able to monitor your builds (for a specific build
+definition) and work items that <em>are</em> hosted with either Azure DevOps Services
+or Team Foundation Server by specifying your server information. To do this, set
+the following settings in VS Code. It is recommended that you set these in your
+Workspace Settings (and not User Settings). You will, of course, still need to
+authenticate (provide credentials).</p>
+<p><strong>Note:</strong> If you're using a Team Foundation Version Control repository, you
+should <em>not</em> use these settings. Have a look at the
+<a href="TFVC_README.md#quick-start">TFVC Quick Start</a>.</p>
+<pre><code class="javascript"><span class="hl-0">  </span><span class="hl-1">&quot;team.remoteUrl&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;https://organization.visualstudio.com&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;team.teamProject&quot;</span><span class="hl-0">: </span><span class="hl-1">&quot;myTeamProject&quot;</span><span class="hl-0">,</span><br/><span class="hl-0">  </span><span class="hl-1">&quot;team.buildDefinitionId&quot;</span><span class="hl-0">: </span><span class="hl-2">42</span><span class="hl-0">,</span>
+</code><button type="button">Copy</button></pre>
+
+<p>To determine your build definition id, open the build summary for the build
+you'd like to monitor and grab the value of the <em>buildId=</em> parameter in the url.</p>
+<a id="md:support" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Support<a href="#md:support" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>Support for this extension is provided on our
+<a href="https://github.com/Microsoft/azure-repos-vscode/issues">GitHub Issue Tracker</a>.
+You can submit a
+<a href="https://github.com/Microsoft/azure-repos-vscode/issues/new">bug report</a>, a
+<a href="https://github.com/Microsoft/azure-repos-vscode/issues/new">feature request</a> or
+participate in
+<a href="https://github.com/Microsoft/azure-repos-vscode/issues">discussions</a>.</p>
+<a id="md:contributing-to-the-extension" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Contributing to the Extension<a href="#md:contributing-to-the-extension" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>See the <a href="media/CONTRIBUTING.md">developer documentation</a> for details on how to
+contribute to this extension.</p>
+<a id="md:code-of-conduct" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Code of Conduct<a href="#md:code-of-conduct" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This project has adopted the
+<a href="https://opensource.microsoft.com/codeofconduct/">Microsoft Open Source Code of Conduct</a>.
+For more information see the
+<a href="https://opensource.microsoft.com/codeofconduct/faq/">Code of Conduct FAQ</a> or
+contact <a href="mailto:opencode@microsoft.com">opencode@microsoft.com</a> with any
+additional questions or comments.</p>
+<a id="md:privacy-statement" class="tsd-anchor"></a><h2 class="tsd-anchor-link">Privacy Statement<a href="#md:privacy-statement" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>The
+<a href="http://go.microsoft.com/fwlink/?LinkId=528096&amp;clcid=0x409">Microsoft Visual Studio Product Family Privacy Statement</a>
+describes the privacy statement of this software.</p>
+<a id="md:license" class="tsd-anchor"></a><h2 class="tsd-anchor-link">License<a href="#md:license" aria-label="Permalink" class="tsd-anchor-icon"><svg viewBox="0 0 24 24"><use href="assets/icons.svg#icon-anchor"></use></svg></a></h2><p>This extension is <a href="LICENSE.txt">licensed under the MIT License</a>. Please see the
+<a href="media/ThirdPartyNotices.txt">third-party notices</a> file for additional copyright
+notices and license terms applicable to portions of the software.</p>
+</div></div><div class="col-sidebar"><div class="page-menu"><div class="tsd-navigation settings"><details class="tsd-accordion"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>Settings</h3></summary><div class="tsd-accordion-details"><div class="tsd-filter-visibility"><span class="settings-label">Member Visibility</span><ul id="tsd-filter-options"><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-protected" name="protected"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Protected</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-inherited" name="inherited" checked/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>Inherited</span></label></li><li class="tsd-filter-item"><label class="tsd-filter-input"><input type="checkbox" id="tsd-filter-external" name="external"/><svg width="32" height="32" viewBox="0 0 32 32" aria-hidden="true"><rect class="tsd-checkbox-background" width="30" height="30" x="1" y="1" rx="6" fill="none"></rect><path class="tsd-checkbox-checkmark" d="M8.35422 16.8214L13.2143 21.75L24.6458 10.25" stroke="none" stroke-width="3.5" stroke-linejoin="round" fill="none"></path></svg><span>External</span></label></li></ul></div><div class="tsd-theme-toggle"><label class="settings-label" for="tsd-theme">Theme</label><select id="tsd-theme"><option value="os">OS</option><option value="light">Light</option><option value="dark">Dark</option></select></div></div></details></div><details open class="tsd-accordion tsd-page-navigation"><summary class="tsd-accordion-summary"><h3><svg width="20" height="20" viewBox="0 0 24 24" fill="none"><use href="assets/icons.svg#icon-chevronDown"></use></svg>On This Page</h3></summary><div class="tsd-accordion-details"><a href="#md:azure-repos-extension-for-visual-studio-code"><span>Azure <wbr/>Repos <wbr/>Extension for <wbr/>Visual <wbr/>Studio <wbr/>Code</span></a><ul><li><a href="#md:prerequisites"><span>Prerequisites</span></a></li><li><ul><li><a href="#md:azure-devops-services"><span>Azure <wbr/>Dev<wbr/>Ops <wbr/>Services</span></a></li><li><a href="#md:team-foundation-server"><span>Team <wbr/>Foundation <wbr/>Server</span></a></li><li><a href="#md:clone-your-git-repository"><span>Clone your <wbr/>Git repository</span></a></li><li><a href="#md:create-your-tfvc-workspace"><span>Create your TFVC workspace</span></a></li></ul></li><li><a href="#md:🚀-installation"><span>🚀 <wbr/>Installation</span></a></li><li><a href="#md:authentication"><span>Authentication</span></a></li><li><ul><li><a href="#md:azure-devops-services-1"><span>Azure <wbr/>Dev<wbr/>Ops <wbr/>Services</span></a></li><li><ul><li><a href="#md:manual-token-creation"><span>Manual <wbr/>Token <wbr/>Creation</span></a></li><li><a href="#md:browser-based-authentication"><span>Browser-<wbr/>based <wbr/>Authentication</span></a></li></ul></li><li><a href="#md:team-foundation-server-1"><span>Team <wbr/>Foundation <wbr/>Server</span></a></li></ul></li><li><a href="#md:tfvc-support"><span>TFVC <wbr/>Support</span></a></li><li><a href="#md:open-a-local-repository-folder"><span>Open a local <wbr/>Repository folder</span></a></li><li><a href="#md:status-bar-indicators"><span>Status <wbr/>Bar <wbr/>Indicators</span></a></li><li><a href="#md:commands"><span>Commands</span></a></li><li><a href="#md:secure-credential-storage"><span>Secure <wbr/>Credential <wbr/>Storage</span></a></li><li><a href="#md:how-to-disable-telemetry-reporting"><span>How to disable telemetry reporting</span></a></li><li><a href="#md:polling-interval"><span>Polling interval</span></a></li><li><a href="#md:logging"><span>Logging</span></a></li><li><ul><li><a href="#md:private-builds"><span>Private builds</span></a></li></ul></li><li><a href="#md:pinned-work-item-queries"><span>Pinned <wbr/>Work <wbr/>Item <wbr/>Queries</span></a></li><li><a href="#md:using-external-non-microsoft-source-repositories"><span>Using <wbr/>External (non-<wbr/>Microsoft) <wbr/>Source <wbr/>Repositories</span></a></li><li><a href="#md:support"><span>Support</span></a></li><li><a href="#md:contributing-to-the-extension"><span>Contributing to the <wbr/>Extension</span></a></li><li><a href="#md:code-of-conduct"><span>Code of <wbr/>Conduct</span></a></li><li><a href="#md:privacy-statement"><span>Privacy <wbr/>Statement</span></a></li><li><a href="#md:license"><span>License</span></a></li></ul></div></details></div><div class="site-menu"><nav class="tsd-navigation"><a href="modules.html" class="current"><svg class="tsd-kind-icon" viewBox="0 0 24 24"><use href="assets/icons.svg#icon-1"></use></svg><span>team</span></a><ul class="tsd-small-nested-navigation" id="tsd-nav-container" data-base="."><li>Loading...</li></ul></nav></div></div></div><footer><p class="tsd-generator">Generated using <a href="https://typedoc.org/" target="_blank">TypeDoc</a></p></footer><div class="overlay"></div></body></html>
