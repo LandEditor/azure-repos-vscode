@@ -59,7 +59,7 @@ between the two types (and how to determine which one you're using) can be found
 The issue tracking support for Server workspaces is
 [here](https://github.com/Microsoft/azure-repos-vscode/issues/176).
 
-## Installation
+## 🚀 Installation
 
 First, you will need to install
 [Visual Studio Code](https://code.visualstudio.com/download) `1.12.0` or later.
