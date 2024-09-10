@@ -80,7 +80,7 @@ export class CommitHoverProvider implements HoverProvider {
 
     private update(): void {
         this.diagnostics = [];
-        //TODO provide any diagnostic info based on the message here (see git ecommitcontroller)
+        //TODO provide any diagnostic info based on the message here (see git commitcontroller)
         this.editor.setDecorations(this.decorationType, this.diagnostics.map((d) => d.range));
     }
 
