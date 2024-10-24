@@ -475,7 +475,7 @@
 		"@types/winston": "2.4.4",
 		"@types/xml2js": "0.4.14",
 		"@types/xmldoc": "1.1.9",
-		"chai": "5.1.1",
+		"chai": "5.1.2",
 		"del": "8.0.0",
 		"should": "13.2.3",
 		"vsts-task-lib": "2.7.0",
