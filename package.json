@@ -446,7 +446,7 @@
 		}
 	},
 	"dependencies": {
-		"applicationinsights": "3.3.0",
+		"applicationinsights": "3.4.0",
 		"event-stream": "4.0.1",
 		"fs": "0.0.2",
 		"git-repo-info": "2.1.1",
@@ -458,7 +458,7 @@
 		"request-promise-native": "1.0.9",
 		"underscore": "1.13.7",
 		"url": "0.11.4",
-		"uuid": "11.0.1",
+		"uuid": "11.0.2",
 		"vso-node-api": "6.5.0",
 		"vsts-device-flow-auth": "1.136.0",
 		"winston": "3.15.0",
@@ -468,8 +468,8 @@
 	"description": "Connect to Azure Repos and work with Git and Team Foundation Version Control (TFVC) repositories. Manage your pull requests, work items, and more.",
 	"devDependencies": {
 		"@types/applicationinsights": "0.20.0",
-		"@types/chai": "5.0.0",
-		"@types/node": "22.8.1",
+		"@types/chai": "5.0.1",
+		"@types/node": "22.8.2",
 		"@types/q": "1.5.8",
 		"@types/uuid": "10.0.0",
 		"@types/winston": "2.4.4",
