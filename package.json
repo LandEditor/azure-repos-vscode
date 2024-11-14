@@ -458,10 +458,10 @@
 		"request-promise-native": "1.0.9",
 		"underscore": "1.13.7",
 		"url": "0.11.4",
-		"uuid": "11.0.2",
+		"uuid": "11.0.3",
 		"vso-node-api": "6.5.0",
 		"vsts-device-flow-auth": "1.136.0",
-		"winston": "3.16.0",
+		"winston": "3.17.0",
 		"xml2js": "0.6.2",
 		"xmldoc": "1.3.0"
 	},
