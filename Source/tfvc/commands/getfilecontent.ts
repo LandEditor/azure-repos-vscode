@@ -45,6 +45,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 			"print",
 			this._serverContext,
 		).Add(this._localPath);
+
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
 		}
@@ -79,6 +80,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 		);
+
 		return lines.join(
 			CommandHelper.GetNewLineCharacter(executionResult.stdout),
 		);
@@ -89,6 +91,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 			"view",
 			this._serverContext,
 		).Add(this._localPath);
+
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
 		}

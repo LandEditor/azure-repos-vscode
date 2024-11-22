@@ -51,6 +51,7 @@ export class GitVcService {
 			status: status,
 			targetRefName: undefined,
 		};
+
 		return await this._gitApi.getPullRequests(repositoryId, criteria);
 	}
 
@@ -67,7 +68,9 @@ export class GitVcService {
 		currentBranch: string,
 	): string {
 		const file: string = encodeURIComponent(currentFile);
+
 		const branch: string = encodeURIComponent(currentBranch);
+
 		return UrlBuilder.AddHashes(
 			remoteUrl,
 			`path=${file}`,
@@ -84,7 +87,9 @@ export class GitVcService {
 		currentBranch: string,
 	): string {
 		const file: string = encodeURIComponent(currentFile);
+
 		const branch: string = encodeURIComponent(currentBranch);
+
 		return UrlBuilder.AddHashes(
 			remoteUrl,
 			`path=${file}`,
@@ -100,7 +105,9 @@ export class GitVcService {
 		currentBranch: string,
 	): string {
 		const branch: string = encodeURIComponent(currentBranch);
+
 		const repoHistoryUrl: string = UrlBuilder.Join(remoteUrl, "history");
+
 		return UrlBuilder.AddQueryParams(
 			repoHistoryUrl,
 			`itemVersion=GB${branch}`,
@@ -115,6 +122,7 @@ export class GitVcService {
 		currentBranch: string,
 	): string {
 		const branch: string = encodeURIComponent(currentBranch);
+
 		return UrlBuilder.AddHashes(
 			GitVcService.GetPullRequestsUrl(remoteUrl),
 			`_a=createnew`,
@@ -137,6 +145,7 @@ export class GitVcService {
 			discussionUrl,
 			"view=discussion",
 		);
+
 		return discussionUrl;
 	}
 
@@ -152,6 +161,7 @@ export class GitVcService {
 		pullRequest: GitPullRequest,
 	): PullRequestScore {
 		const mergeStatus: PullRequestAsyncStatus = pullRequest.mergeStatus;
+
 		if (
 			mergeStatus === PullRequestAsyncStatus.Conflicts ||
 			mergeStatus === PullRequestAsyncStatus.Failure ||
@@ -161,13 +171,16 @@ export class GitVcService {
 		}
 
 		let lowestVote: number = 0;
+
 		let highestVote: number = 0;
+
 		if (
 			pullRequest.reviewers !== undefined &&
 			pullRequest.reviewers.length > 0
 		) {
 			pullRequest.reviewers.forEach((reviewer) => {
 				const vote: number = reviewer.vote;
+
 				if (vote < lowestVote) {
 					lowestVote = vote;
 				}
@@ -178,6 +191,7 @@ export class GitVcService {
 		}
 
 		let finalVote: number = GitVcService.REVIEWER_VOTE_NO_RESPONSE;
+
 		if (lowestVote < GitVcService.REVIEWER_VOTE_NO_RESPONSE) {
 			finalVote = lowestVote;
 		} else if (highestVote > GitVcService.REVIEWER_VOTE_NO_RESPONSE) {

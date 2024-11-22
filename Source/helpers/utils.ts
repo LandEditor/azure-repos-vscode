@@ -29,7 +29,9 @@ export class Utils {
 		}
 
 		let gitPath: string;
+
 		let lastPath: string;
+
 		let currentPath: string = startingPath;
 
 		do {
@@ -51,14 +53,19 @@ export class Utils {
 		switch (result) {
 			case BuildResult.Succeeded:
 				return "check";
+
 			case BuildResult.Canceled:
 				return "alert";
+
 			case BuildResult.Failed:
 				return "stop";
+
 			case BuildResult.PartiallySucceeded:
 				return "alert";
+
 			case BuildResult.None:
 				return "question";
+
 			default:
 				return "question";
 		}
@@ -71,6 +78,7 @@ export class Utils {
 		prefix?: string,
 	): string {
 		let msg: string = undefined;
+
 		if (prefix === undefined) {
 			msg = "";
 		} else {
@@ -78,6 +86,7 @@ export class Utils {
 		}
 
 		let statusCode: string = "0";
+
 		if (reason.statusCode !== undefined) {
 			statusCode = reason.statusCode.toString();
 		} else if (reason.code !== undefined) {
@@ -87,19 +96,25 @@ export class Utils {
 		switch (statusCode) {
 			case "401":
 				msg = msg + Strings.StatusCode401;
+
 				break;
+
 			case "ENOENT":
 			case "ENOTFOUND":
 			case "EAI_AGAIN":
 				msg = msg + Strings.StatusCodeOffline;
+
 				break;
+
 			case "ECONNRESET":
 			case "ECONNREFUSED":
 				if (this.IsProxyEnabled()) {
 					msg = msg + Strings.ProxyUnreachable;
+
 					break;
 				}
 				return message;
+
 			default:
 				return message;
 		}
@@ -176,6 +191,7 @@ export class Utils {
 		// Use the built in VS Code openExternal function if present.
 		if ((<any>vscode.env).openExternal) {
 			(<any>vscode.env).openExternal(vscode.Uri.parse(url));
+
 			return;
 		}
 
@@ -184,9 +200,12 @@ export class Utils {
 			case "win32":
 			case "darwin":
 				open(url);
+
 				break;
+
 			default:
 				opener(url);
+
 				break;
 		}
 	}

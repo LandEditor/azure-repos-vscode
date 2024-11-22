@@ -77,12 +77,15 @@ export class Rename implements ITfvcCommand<string> {
 		);
 
 		let path: string = "";
+
 		for (let index: number = 0; index < lines.length; index++) {
 			const line: string = lines[index];
+
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
 			} else {
 				const file: string = this.getFileFromLine(line);
+
 				return CommandHelper.GetFilePath(path, file);
 			}
 		}

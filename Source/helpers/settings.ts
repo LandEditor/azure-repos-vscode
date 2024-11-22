@@ -12,6 +12,7 @@ import { SettingNames, WitQueries } from "./constants";
 export abstract class BaseSettings {
 	protected readSetting<T>(name: string, defaultValue: T): T {
 		const configuration = workspace.getConfiguration();
+
 		const value = configuration.get<T>(name, undefined);
 
 		// If user specified a value, use it
@@ -48,13 +49,17 @@ export class PinnedQuerySettings extends BaseSettings {
 			SettingNames.PinnedQueries,
 			undefined,
 		);
+
 		if (pinnedQueries !== undefined) {
 			Logger.LogDebug(
 				"Found pinned queries in user configuration settings.",
 			);
+
 			let global: IPinnedQuery = undefined;
+
 			for (let index: number = 0; index < pinnedQueries.length; index++) {
 				const element = pinnedQueries[index];
+
 				if (
 					element.account === account ||
 					element.account === account + ".visualstudio.com"
@@ -68,12 +73,14 @@ export class PinnedQuerySettings extends BaseSettings {
 				Logger.LogDebug(
 					"No account-specific pinned query found, using global pinned query.",
 				);
+
 				return global;
 			}
 		}
 		Logger.LogDebug(
 			"No account-specific pinned query or global pinned query found. Using default.",
 		);
+
 		return undefined;
 	}
 

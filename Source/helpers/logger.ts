@@ -40,6 +40,7 @@ export class Logger {
 
 	public static LogDebug(message: string): void {
 		Logger.initalize();
+
 		if (
 			Logger.initialized === true &&
 			this.loggingLevel === LoggingLevel.Debug
@@ -52,6 +53,7 @@ export class Logger {
 	//Logs message to console and winston logger
 	public static LogError(message: string): void {
 		Logger.initalize();
+
 		if (
 			Logger.initialized === true &&
 			this.loggingLevel >= LoggingLevel.Error
@@ -65,6 +67,7 @@ export class Logger {
 	//Logs message only to console
 	public static LogInfo(message: string): void {
 		Logger.initalize();
+
 		if (
 			Logger.initialized === true &&
 			this.loggingLevel >= LoggingLevel.Info
@@ -76,6 +79,7 @@ export class Logger {
 
 	public static LogObject(object: any): void {
 		Logger.initalize();
+
 		if (
 			Logger.initialized === true &&
 			this.loggingLevel === LoggingLevel.Debug
@@ -88,6 +92,7 @@ export class Logger {
 	//Logs message to console and displays Warning message
 	public static LogWarning(message: string): void {
 		Logger.initalize();
+
 		if (
 			Logger.initialized === true &&
 			this.loggingLevel >= LoggingLevel.Warn
@@ -115,27 +120,39 @@ export class Logger {
 	public static SetLoggingLevel(level: string): void {
 		if (level === undefined) {
 			Logger.loggingLevel = undefined;
+
 			return;
 		}
 
 		switch (level.toLowerCase()) {
 			case "error":
 				Logger.loggingLevel = LoggingLevel.Error;
+
 				break;
+
 			case "warn":
 				Logger.loggingLevel = LoggingLevel.Warn;
+
 				break;
+
 			case "info":
 				Logger.loggingLevel = LoggingLevel.Info;
+
 				break;
+
 			case "verbose":
 				Logger.loggingLevel = LoggingLevel.Verbose;
+
 				break;
+
 			case "debug":
 				Logger.loggingLevel = LoggingLevel.Debug;
+
 				break;
+
 			default:
 				Logger.loggingLevel = undefined;
+
 				break;
 		}
 	}
@@ -146,6 +163,7 @@ export class Logger {
 	}
 	private static getNow(): string {
 		const now: Date = new Date();
+
 		const strDateTime: string = [
 			[
 				Logger.addZero(now.getHours()),
@@ -161,6 +179,7 @@ export class Logger {
 	//Adds a preceding zero if num is less than base (or the default of 10)
 	private static addZero(num: number, base?: number): string {
 		let val: number = base;
+
 		if (val === undefined) {
 			val = 10;
 		}

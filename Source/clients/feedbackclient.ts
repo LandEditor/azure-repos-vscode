@@ -36,6 +36,7 @@ export class FeedbackClient {
 					placeHolder: Strings.SendFeedback,
 				},
 			);
+
 			if (choice) {
 				const value: string = await window.showInputBox({
 					value: undefined,
@@ -43,16 +44,20 @@ export class FeedbackClient {
 					placeHolder: undefined,
 					password: false,
 				});
+
 				if (value === undefined) {
 					const disposable = window.setStatusBarMessage(
 						Strings.NoFeedbackSent,
 					);
+
 					setTimeout(() => disposable.dispose(), 1000 * 5);
+
 					return;
 				}
 
 				//This feedback will go no matter whether Application Insights is enabled or not.
 				let trimmedValue: string = value.trim();
+
 				if (trimmedValue.length > 1000) {
 					trimmedValue = trimmedValue.substring(0, 1000);
 				}
@@ -63,6 +68,7 @@ export class FeedbackClient {
 				const disposable: Disposable = window.setStatusBarMessage(
 					Strings.ThanksForFeedback,
 				);
+
 				setTimeout(() => disposable.dispose(), 1000 * 5);
 			}
 		} catch (err) {

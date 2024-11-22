@@ -61,12 +61,15 @@ export class TfvcSCMProvider {
 
 		try {
 			const files: string[] = [];
+
 			const commitMessage: string = scm.inputBox.value;
+
 			const workItemIds: number[] =
 				TfvcSCMProvider.getWorkItemIdsFromMessage(commitMessage);
 
 			const resources: Resource[] =
 				tfvcProvider._model.IncludedGroup.resources;
+
 			if (!resources || resources.length === 0) {
 				return undefined;
 			}
@@ -84,19 +87,23 @@ export class TfvcSCMProvider {
 			Logger.LogDebug(
 				"Failed to GetCheckinInfo. Details: " + err.message,
 			);
+
 			throw TfvcError.CreateUnknownError(err);
 		}
 	}
 
 	private static getWorkItemIdsFromMessage(message: string) {
 		const ids: number[] = [];
+
 		try {
 			// Find all the work item mentions in the string.
 			// This returns an array like: ["#1", "#12", "#33"]
 			const matches: string[] = message ? message.match(/#(\d+)/gm) : [];
+
 			if (matches) {
 				for (let i: number = 0; i < matches.length; i++) {
 					const id: number = parseInt(matches[i].slice(1));
+
 					if (!isNaN(id)) {
 						ids.push(id);
 					}
@@ -193,6 +200,7 @@ export class TfvcSCMProvider {
 
 	private async setup(): Promise<void> {
 		const rootPath = workspace.rootPath;
+
 		if (!rootPath) {
 			// no root means no need for an scm provider
 			return;
@@ -211,12 +219,15 @@ export class TfvcSCMProvider {
 		const repoContext: TfvcContext = <TfvcContext>(
 			this._extensionManager.RepoContext
 		);
+
 		const fsWatcher = workspace.createFileSystemWatcher("**");
+
 		const onWorkspaceChange = anyEvent(
 			fsWatcher.onDidChange,
 			fsWatcher.onDidCreate,
 			fsWatcher.onDidDelete,
 		);
+
 		const onTfvcChange = filterEvent(onWorkspaceChange, (uri) =>
 			/^\$tf\//.test(workspace.asRelativePath(uri)),
 		);
@@ -231,6 +242,7 @@ export class TfvcSCMProvider {
 		);
 
 		let version: string = "unknown";
+
 		try {
 			version = await repoContext.TfvcRepository.CheckVersion();
 		} catch (err) {
@@ -246,6 +258,7 @@ export class TfvcSCMProvider {
 
 		const commitHoverProvider: CommitHoverProvider =
 			new CommitHoverProvider();
+
 		const contentProvider: TfvcContentProvider = new TfvcContentProvider(
 			repoContext.TfvcRepository,
 			rootPath,
@@ -299,6 +312,7 @@ export class TfvcSCMProvider {
 	dispose(): void {
 		TfvcSCMProvider.instance = undefined;
 		this.cleanup();
+
 		if (this._disposables) {
 			this._disposables.forEach((d) => d.dispose());
 			this._disposables = [];
@@ -310,6 +324,7 @@ export class TfvcSCMProvider {
 	 */
 	public static HasItems(): boolean {
 		const tfvcProvider: TfvcSCMProvider = TfvcSCMProvider.instance;
+
 		if (tfvcProvider) {
 			if (tfvcProvider.count > 0) {
 				return true;
@@ -349,9 +364,11 @@ export class TfvcSCMProvider {
 
 	private static getProviderInstance(): TfvcSCMProvider {
 		const tfvcProvider: TfvcSCMProvider = TfvcSCMProvider.instance;
+
 		if (!tfvcProvider) {
 			// We are not the active provider
 			Logger.LogDebug("TFVC is not the active provider.");
+
 			throw TfvcError.CreateInvalidStateError();
 		}
 		return tfvcProvider;

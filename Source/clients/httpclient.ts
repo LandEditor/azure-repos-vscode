@@ -29,6 +29,7 @@ export class HttpClient {
 	) {
 		this.userAgent = userAgent;
 		this.handlers = handlers;
+
 		if (socketTimeout) {
 			this.socketTimeout = socketTimeout;
 		} else {
@@ -55,12 +56,16 @@ export class HttpClient {
 
 	_getOptions(method: string, requestUrl: string, headers: any): any {
 		var parsedUrl: url.Url = url.parse(requestUrl);
+
 		var usingSsl = parsedUrl.protocol === "https:";
+
 		var prot: any = usingSsl ? https : http;
+
 		var defaultPort = usingSsl ? 443 : 80;
 		this.isSsl = usingSsl;
 
 		var proxyUrl: url.Url;
+
 		if (process.env.HTTPS_PROXY && usingSsl) {
 			proxyUrl = url.parse(process.env.HTTPS_PROXY);
 		} else if (process.env.HTTP_PROXY) {
@@ -79,6 +84,7 @@ export class HttpClient {
 		options.headers["User-Agent"] = this.userAgent;
 
 		var useProxy = proxyUrl && proxyUrl.hostname;
+
 		if (useProxy) {
 			var agentOptions: tunnel.TunnelOptions = {
 				maxSockets: http.globalAgent.maxSockets,
@@ -91,7 +97,9 @@ export class HttpClient {
 			};
 
 			var tunnelAgent: Function;
+
 			var overHttps = proxyUrl.protocol === "https:";
+
 			if (usingSsl) {
 				tunnelAgent = overHttps
 					? tunnel.httpsOverHttps
@@ -134,11 +142,13 @@ export class HttpClient {
 			contents: string,
 		) => {
 			var authHandler;
+
 			if (this.handlers) {
 				this.handlers.some(function (handler /*, index, handlers*/) {
 					// Find the first one that can handle the auth based on the response
 					if (handler.canHandleAuthentication(res)) {
 						authHandler = handler;
+
 						return true;
 					}
 					return false;
@@ -172,6 +182,7 @@ export class HttpClient {
 		) => void,
 	): void {
 		var reqData;
+
 		var socket;
 
 		if (objs) {
@@ -179,6 +190,7 @@ export class HttpClient {
 		}
 
 		var callbackCalled: boolean = false;
+
 		var handleResult = (
 			err: any,
 			res: http.ClientResponse,
@@ -192,6 +204,7 @@ export class HttpClient {
 
 		var req = protocol.request(options, function (res) {
 			var buffer = [];
+
 			var output = "";
 
 			// If we're handling gzip compression, don't set the encoding to utf8

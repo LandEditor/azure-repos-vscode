@@ -18,6 +18,7 @@ export interface ICredentialStore {
 		password: any,
 	): Q.Promise<void>;
 	RemoveCredential(service: string): Q.Promise<void>;
+
 	getCredentialByName(
 		service: string,
 		username: string,

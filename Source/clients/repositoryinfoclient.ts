@@ -40,7 +40,9 @@ export class RepositoryInfoClient {
 
 	public async GetRepositoryInfo(): Promise<RepositoryInfo> {
 		let repoInfo: any;
+
 		let repositoryInfo: RepositoryInfo;
+
 		let repositoryClient: TeamServicesApi;
 
 		if (this._repoContext.Type === RepositoryType.GIT) {
@@ -62,6 +64,7 @@ export class RepositoryInfoClient {
 			Logger.LogDebug(
 				`Finished getting repository information for a Git repository at ${this._repoContext.RemoteUrl}`,
 			);
+
 			return repositoryInfo;
 		} else if (
 			this._repoContext.Type === RepositoryType.TFVC ||
@@ -79,11 +82,14 @@ export class RepositoryInfoClient {
 			repositoryInfo = new RepositoryInfo(this._repoContext.RemoteUrl);
 
 			let serverUrl: string;
+
 			let collectionName: string;
+
 			const isTeamServices: boolean =
 				RepoUtils.IsTeamFoundationServicesRepo(
 					this._repoContext.RemoteUrl,
 				);
+
 			if (isTeamServices) {
 				// The Team Services collection is ALWAYS defaultCollection, and both the url with defaultcollection
 				// and the url without defaultCollection will validate just fine. However, it expects you to refer to
@@ -91,6 +97,7 @@ export class RepositoryInfoClient {
 				// recreate the url.
 				// If validation fails, we return false.
 				collectionName = repositoryInfo.Account;
+
 				if (
 					RepoUtils.IsTeamFoundationServicesAzureRepo(
 						this._repoContext.RemoteUrl,
@@ -102,9 +109,11 @@ export class RepositoryInfoClient {
 				}
 				const valid: boolean =
 					await this.validateTfvcCollectionUrl(serverUrl);
+
 				if (!valid) {
 					const errorMsg: string = `${Strings.UnableToValidateTeamServicesCollection} Collection name: '${collectionName}', Url: '${serverUrl}'`;
 					Logger.LogDebug(errorMsg);
+
 					throw new Error(errorMsg);
 				}
 				Logger.LogDebug(
@@ -119,8 +128,10 @@ export class RepositoryInfoClient {
 				Logger.LogDebug(
 					`Starting the validation of the collection. Url: '${serverUrl}'`,
 				);
+
 				let valid: boolean =
 					await this.validateTfvcCollectionUrl(serverUrl);
+
 				if (valid) {
 					const parts: string[] =
 						this.splitTfvcCollectionUrl(serverUrl);
@@ -134,15 +145,18 @@ export class RepositoryInfoClient {
 						`Unable to validate the collection. Url: '${serverUrl}' Attempting validation assuming 'DefaultCollection'...`,
 					);
 					collectionName = "DefaultCollection";
+
 					const remoteUrl: string = url.resolve(
 						serverUrl,
 						collectionName,
 					);
 					valid = await this.validateTfvcCollectionUrl(remoteUrl);
+
 					if (!valid) {
 						Logger.LogDebug(
 							Strings.UnableToValidateCollectionAssumingDefaultCollection,
 						);
+
 						throw new Error(
 							Strings.UnableToValidateCollectionAssumingDefaultCollection,
 						);
@@ -161,10 +175,12 @@ export class RepositoryInfoClient {
 			}
 
 			const coreApiClient: CoreApiClient = new CoreApiClient();
+
 			let collection: TeamProjectCollection;
 			Logger.LogDebug(
 				`Getting project collection...  url: '${serverUrl}', and collection name: '${collectionName}'`,
 			);
+
 			if (isTeamServices) {
 				//The following call works for VSTS, TFS 2017 and TFS 2015U3 (multiple collections, spaces in the name), just not for non-admins on-prem (!)
 				Logger.LogDebug(
@@ -183,9 +199,11 @@ export class RepositoryInfoClient {
 					new TfsCatalogSoapClient(serverUrl, [this._handler]);
 				collection =
 					await tfsClient.GetProjectCollection(collectionName);
+
 				if (!collection) {
 					const error: string = `Using SOAP, could not find a project collection object for ${collectionName} at ${serverUrl}`;
 					Logger.LogDebug(error);
+
 					throw new Error(error);
 				}
 			}
@@ -234,6 +252,7 @@ export class RepositoryInfoClient {
 			Logger.LogDebug(
 				`Finished getting repository information for the repository at ${this._repoContext.RemoteUrl}`,
 			);
+
 			return repositoryInfo;
 		}
 		return repositoryInfo;
@@ -248,13 +267,16 @@ export class RepositoryInfoClient {
 
 	private splitTfvcCollectionUrl(collectionUrl: string): string[] {
 		const result: string[] = [,];
+
 		if (!collectionUrl) {
 			return result;
 		}
 
 		// Now find the TRUE last separator (before the collection name)
 		const trimmedUrl: string = this.trimTrailingSeparators(collectionUrl);
+
 		const index: number = trimmedUrl.lastIndexOf("/");
+
 		if (index >= 0) {
 			// result0 is the server url without the collection name
 			result[0] = trimmedUrl.substring(0, index + 1);
@@ -272,6 +294,7 @@ export class RepositoryInfoClient {
 	private trimTrailingSeparators(uri: string): string {
 		if (uri) {
 			let lastIndex: number = uri.length;
+
 			while (
 				lastIndex > 0 &&
 				uri.charAt(lastIndex - 1) === "/".charAt(0)
@@ -338,6 +361,7 @@ export class RepositoryInfoClient {
 				[this._handler],
 			);
 			await repositoryClient.validateTfvcCollectionUrl();
+
 			return true;
 		} catch (err) {
 			if (err.statusCode === 404) {

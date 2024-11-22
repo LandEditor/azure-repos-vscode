@@ -56,6 +56,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 
 	public Add(arg: string): ArgumentBuilder {
 		this._arguments.push(arg);
+
 		return this;
 	}
 
@@ -71,6 +72,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 	public AddSecret(arg: string): ArgumentBuilder {
 		this.Add(arg);
 		this._secretArgumentIndexes.push(this._arguments.length - 1);
+
 		return this;
 	}
 
@@ -84,6 +86,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 		isSecret: boolean,
 	): ArgumentBuilder {
 		let arg: string;
+
 		if (!switchValue) {
 			arg = "-" + switchName;
 		} else {
@@ -114,6 +117,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 			result += escapedArg + " ";
 		});
 		result += "\n";
+
 		return result;
 	}
 
@@ -127,6 +131,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 		}
 
 		let escaped = arg.replace(/\"/g, '""');
+
 		if (/\s/.test(escaped)) {
 			escaped = '"' + escaped + '"';
 		}
@@ -135,8 +140,10 @@ export class ArgumentBuilder implements IArgumentProvider {
 
 	public ToString(): string {
 		let output: string = "";
+
 		for (let i = 0; i < this._arguments.length; i++) {
 			let arg: string = this._arguments[i];
+
 			if (this._secretArgumentIndexes.indexOf(i) >= 0) {
 				// This arg is a secret so hide the value
 				arg = "********";

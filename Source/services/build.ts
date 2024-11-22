@@ -137,6 +137,7 @@ export class BuildService {
 			`buildId=${buildId}`,
 			`_a=summary`,
 		);
+
 		return summaryUrl;
 	}
 

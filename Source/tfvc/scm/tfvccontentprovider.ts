@@ -18,6 +18,7 @@ export class TfvcContentProvider {
 	private _disposables: Disposable[] = [];
 
 	private _onDidChangeEmitter = new EventEmitter<Uri>();
+
 	get onDidChange(): Event<Uri> {
 		return this._onDidChangeEmitter.event;
 	}
@@ -48,6 +49,7 @@ export class TfvcContentProvider {
 
 	async provideTextDocumentContent(uri: Uri): Promise<string> {
 		let path: string = uri.fsPath;
+
 		const versionSpec: string = uri.query;
 
 		if (versionSpec.toLowerCase() === "c0") {
@@ -68,10 +70,12 @@ export class TfvcContentProvider {
 					? TfvcTelemetryEvents.GetFileContentExe
 					: TfvcTelemetryEvents.GetFileContentClc,
 			);
+
 			const contents: string = await this._tfvcRepository.GetFileContent(
 				path,
 				versionSpec,
 			);
+
 			return contents;
 		} catch (err) {
 			return "";

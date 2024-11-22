@@ -114,15 +114,18 @@ export class TeamExtension {
 			matchOnDescription: false,
 			placeHolder: Strings.DeviceFlowPlaceholder,
 		});
+
 		if (choice) {
 			if (choice.id === DeviceFlowConstants.ManualOption) {
 				Logger.LogDebug(`Manual personal access token option chosen.`);
+
 				const token: string = await window.showInputBox({
 					value: "",
 					prompt: `${Strings.ProvideAccessToken} (${this._manager.ServerContext.RepoInfo.Account})`,
 					placeHolder: "",
 					password: true,
 				});
+
 				if (token) {
 					Telemetry.SendEvent(TelemetryEvents.ManualPat);
 				}
@@ -131,20 +134,24 @@ export class TeamExtension {
 				Logger.LogDebug(
 					`Device flow personal access token option chosen.`,
 				);
+
 				const authOptions: IDeviceFlowAuthenticationOptions = {
 					clientId: DeviceFlowConstants.ClientId,
 					redirectUri: DeviceFlowConstants.RedirectUri,
 					userAgent: `${UserAgentProvider.UserAgent}`,
 				};
+
 				const tokenOptions: IDeviceFlowTokenOptions = {
 					tokenDescription: `Azure Repos VSCode extension: ${this._manager.ServerContext.RepoInfo.AccountUrl} on ${os.hostname()}`,
 				};
+
 				const dfa: DeviceFlowAuthenticator =
 					new DeviceFlowAuthenticator(
 						this._manager.ServerContext.RepoInfo.AccountUrl,
 						authOptions,
 						tokenOptions,
 					);
+
 				const details: DeviceFlowDetails =
 					await dfa.GetDeviceFlowDetails();
 				//To sign in, use a web browser to open the page https://aka.ms/devicelogin and enter the code F3VXCTH2L to authenticate.
@@ -154,6 +161,7 @@ export class TeamExtension {
 					placeHolder: undefined,
 					password: false,
 				});
+
 				if (value) {
 					//At this point, user has no way to cancel until our timeout expires. Before this point, they could
 					//cancel out of the showInputBox. After that, they will need to wait for the automatic cancel to occur.
@@ -183,6 +191,7 @@ export class TeamExtension {
 						Strings.DeviceFlowAuthenticatingToTeamServices,
 						details.UserCode,
 					);
+
 					const token: string = await window.withProgress(
 						{ location: ProgressLocation.Window, title: title },
 						async () => {
@@ -219,11 +228,13 @@ export class TeamExtension {
 		) {
 			this._signedOut = false;
 			Logger.LogDebug(`Starting sign in process`);
+
 			if (
 				this._manager.ServerContext.RepoInfo.IsTeamFoundationServer ===
 				true
 			) {
 				const defaultUsername: string = this.getDefaultUsername();
+
 				const username: string = await window.showInputBox({
 					value: defaultUsername || "",
 					prompt:
@@ -234,6 +245,7 @@ export class TeamExtension {
 					placeHolder: "",
 					password: false,
 				});
+
 				if (username !== undefined && username.length > 0) {
 					const password: string = await window.showInputBox({
 						value: "",
@@ -241,6 +253,7 @@ export class TeamExtension {
 						placeHolder: "",
 						password: true,
 					});
+
 					if (password !== undefined) {
 						Logger.LogInfo(
 							"Signin: Username and Password provided as authentication.",
@@ -271,9 +284,11 @@ export class TeamExtension {
 				!this._signingIn
 			) {
 				this._signingIn = true;
+
 				try {
 					const token: string =
 						await this.requestPersonalAccessToken();
+
 					if (token !== undefined) {
 						Logger.LogInfo(
 							`Signin: Personal Access Token provided as authentication.`,
@@ -300,6 +315,7 @@ export class TeamExtension {
 						Strings.ErrorRequestingToken,
 						this._manager.ServerContext.RepoInfo.AccountUrl,
 					);
+
 					if (err.message) {
 						msg = `${msg} (${err.message})`;
 						//If the request wasn't canceled, log a failure of the device flow auth
@@ -320,12 +336,14 @@ export class TeamExtension {
 		} else {
 			//If _manager has an error to display, display it and forgo the other. Otherwise, show the default error message.
 			const displayed: boolean = this._manager.DisplayErrorMessage();
+
 			if (!displayed) {
 				const messageItem: ButtonMessageItem = {
 					title: Strings.LearnMore,
 					url: Constants.ReadmeLearnMoreUrl,
 					telemetryId: TelemetryEvents.ReadmeLearnMoreClick,
 				};
+
 				const tfvcInfoItem: ButtonMessageItem = {
 					title: Strings.LearnMoreAboutTfvc,
 					url: Constants.TfvcLearnMoreUrl,
@@ -512,7 +530,9 @@ export class TeamExtension {
 	public async AssociateWorkItems(): Promise<void> {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Telemetry.SendEvent(TelemetryEvents.AssociateWorkItems);
+
 			const workitems: string[] = await this.chooseWorkItems();
+
 			for (let i: number = 0; i < workitems.length; i++) {
 				// Append the string to end of the message
 				// Note: we are prefixing the message with a space so that the # char is not in the first column
@@ -527,6 +547,7 @@ export class TeamExtension {
 	private appendToCheckinMessage(line: string): void {
 		this.withSourceControlInputBox((inputBox: SourceControlInputBox) => {
 			const previousMessage = inputBox.value;
+
 			if (previousMessage) {
 				inputBox.value = previousMessage + "\n" + line;
 			} else {
@@ -538,8 +559,11 @@ export class TeamExtension {
 	private getDefaultUsername(): string {
 		if (os.platform() === "win32") {
 			let defaultUsername: string;
+
 			const domain: string = process.env.USERDOMAIN || "";
+
 			const username: string = process.env.USERNAME || "";
+
 			if (domain !== undefined) {
 				defaultUsername = domain;
 			}
@@ -693,12 +717,15 @@ export class TeamExtension {
 		fn: (input: SourceControlInputBox) => void,
 	) {
 		const gitExtension = vscode.extensions.getExtension("vscode.git");
+
 		if (gitExtension) {
 			const git = gitExtension.exports;
+
 			if (git) {
 				git.getRepositories().then((repos: any[]) => {
 					if (repos && repos.length > 0) {
 						const inputBox = repos[0].inputBox;
+
 						if (inputBox) {
 							fn(inputBox);
 						}

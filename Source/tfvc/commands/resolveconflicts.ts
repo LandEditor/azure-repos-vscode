@@ -51,6 +51,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 				AutoResolveType[this._autoResolveType],
 				false,
 			);
+
 		return builder;
 	}
 
@@ -70,15 +71,20 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const conflicts: IConflict[] = [];
+
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			executionResult.stdout,
 			true,
 			true,
 		);
+
 		for (let i: number = 0; i < lines.length; i++) {
 			const line: string = lines[i];
+
 			const startIndex: number = line.indexOf("Resolved ");
+
 			const endIndex: number = line.lastIndexOf(" as ");
+
 			if (startIndex >= 0 && endIndex > startIndex) {
 				conflicts.push({
 					localPath: line.slice(
@@ -106,6 +112,7 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 				AutoResolveType[this._autoResolveType],
 				false,
 			);
+
 		return builder;
 	}
 

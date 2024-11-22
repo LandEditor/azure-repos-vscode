@@ -99,6 +99,7 @@ export class TfvcRepository {
 
 	public async Add(itemPaths: string[]): Promise<string[]> {
 		Logger.LogDebug(`TFVC Repository.Add`);
+
 		return this.RunCommand<string[]>(
 			new Add(this._serverContext, itemPaths),
 		);
@@ -110,6 +111,7 @@ export class TfvcRepository {
 		workItemIds: number[],
 	): Promise<string> {
 		Logger.LogDebug(`TFVC Repository.Checkin`);
+
 		return this.RunCommand<string>(
 			new Checkin(this._serverContext, files, comment, workItemIds),
 		);
@@ -117,6 +119,7 @@ export class TfvcRepository {
 
 	public async Delete(itemPaths: string[]): Promise<string[]> {
 		Logger.LogDebug(`TFVC Repository.Delete`);
+
 		return this.RunCommand<string[]>(
 			new Delete(this._serverContext, itemPaths),
 		);
@@ -124,6 +127,7 @@ export class TfvcRepository {
 
 	public async FindConflicts(itemPath?: string): Promise<IConflict[]> {
 		Logger.LogDebug(`TFVC Repository.FindConflicts`);
+
 		return this.RunCommand<IConflict[]>(
 			new FindConflicts(
 				this._serverContext,
@@ -136,6 +140,7 @@ export class TfvcRepository {
 		Logger.LogDebug(
 			`TFVC Repository.FindWorkspace with localPath='${localPath}'`,
 		);
+
 		return this.RunCommand<IWorkspace>(
 			new FindWorkspace(localPath, this._settings.RestrictWorkspace),
 		);
@@ -143,6 +148,7 @@ export class TfvcRepository {
 
 	public async GetInfo(itemPaths: string[]): Promise<IItemInfo[]> {
 		Logger.LogDebug(`TFVC Repository.GetInfo`);
+
 		return this.RunCommand<IItemInfo[]>(
 			new GetInfo(this._serverContext, itemPaths),
 		);
@@ -153,6 +159,7 @@ export class TfvcRepository {
 		versionSpec?: string,
 	): Promise<string> {
 		Logger.LogDebug(`TFVC Repository.GetFileContent`);
+
 		return this.RunCommand<string>(
 			new GetFileContent(
 				this._serverContext,
@@ -165,6 +172,7 @@ export class TfvcRepository {
 
 	public async GetStatus(ignoreFiles?: boolean): Promise<IPendingChange[]> {
 		Logger.LogDebug(`TFVC Repository.GetStatus`);
+
 		let statusCommand: Status = new Status(
 			this._serverContext,
 			ignoreFiles === undefined ? true : ignoreFiles,
@@ -185,6 +193,7 @@ export class TfvcRepository {
 		destinationPath: string,
 	): Promise<string> {
 		Logger.LogDebug(`TFVC Repository.Rename`);
+
 		return this.RunCommand<string>(
 			new Rename(this._serverContext, sourcePath, destinationPath),
 		);
@@ -195,6 +204,7 @@ export class TfvcRepository {
 		autoResolveType: AutoResolveType,
 	): Promise<IConflict[]> {
 		Logger.LogDebug(`TFVC Repository.ResolveConflicts`);
+
 		return this.RunCommand<IConflict[]>(
 			new ResolveConflicts(
 				this._serverContext,
@@ -209,6 +219,7 @@ export class TfvcRepository {
 		recursive: boolean,
 	): Promise<ISyncResults> {
 		Logger.LogDebug(`TFVC Repository.Sync`);
+
 		return this.RunCommand<ISyncResults>(
 			new Sync(this._serverContext, itemPaths, recursive),
 		);
@@ -216,6 +227,7 @@ export class TfvcRepository {
 
 	public async Undo(itemPaths: string[]): Promise<string[]> {
 		Logger.LogDebug(`TFVC Repository.Undo`);
+
 		return this.RunCommand<string[]>(
 			new Undo(this._serverContext, itemPaths),
 		);
@@ -226,10 +238,12 @@ export class TfvcRepository {
 			Logger.LogDebug(`TFVC Repository.CheckVersion`);
 			// Set the versionAlreadyChecked flag first in case one of the other lines throws
 			this._versionAlreadyChecked = true;
+
 			const version: string = await this.RunCommand<string>(
 				new GetVersion(),
 			);
 			TfCommandLineRunner.CheckVersion(this._tfCommandLine, version);
+
 			return version;
 		}
 
@@ -245,6 +259,7 @@ export class TfvcRepository {
 			);
 			// We will call ParseExeOutput to give the command a chance to handle any specific errors itself.
 			const output: T = await cmd.ParseExeOutput(result);
+
 			return output;
 		} else {
 			//This is the CLC path
@@ -254,6 +269,7 @@ export class TfvcRepository {
 			);
 			// We will call ParseOutput to give the command a chance to handle any specific errors itself.
 			const output: T = await cmd.ParseOutput(result);
+
 			return output;
 		}
 	}
@@ -264,6 +280,7 @@ export class TfvcRepository {
 	): Promise<IExecutionResult> {
 		options.env = _.assign({}, options.env || {});
 		options.env = _.assign(options.env, this._env);
+
 		return await TfCommandLineRunner.Exec(
 			this._tfCommandLine,
 			this._repositoryRootFolder,

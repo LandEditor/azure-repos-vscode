@@ -164,10 +164,12 @@ export class ExtensionManager implements Disposable {
 			//Display the message straightaway in this case (instead of using status bar)
 			if (expectedType === RepositoryType.GIT) {
 				VsCodeUtils.ShowErrorMessage(Strings.NotAGitRepository);
+
 				return false;
 			}
 			if (expectedType === RepositoryType.TFVC) {
 				VsCodeUtils.ShowErrorMessage(Strings.NotATfvcRepository);
+
 				return false;
 			}
 		}
@@ -179,6 +181,7 @@ export class ExtensionManager implements Disposable {
 			!this._repoContext.TeamProjectName
 		) {
 			this.setErrorStatus(Strings.NoTeamProjectFound);
+
 			return false;
 		}
 		//Finally, if we set a global error message, there's an issue so we can't initialize.
@@ -191,8 +194,10 @@ export class ExtensionManager implements Disposable {
 	//Return value indicates whether a message was displayed
 	public DisplayErrorMessage(message?: string): boolean {
 		const msg: string = message ? message : this._errorMessage;
+
 		if (msg) {
 			VsCodeUtils.ShowErrorMessage(msg);
+
 			return true;
 		}
 		return false;
@@ -212,6 +217,7 @@ export class ExtensionManager implements Disposable {
 
 		// Log the message
 		Logger.LogError(fullMessage);
+
 		if (err && err.message) {
 			// Log additional information for debugging purposes
 			Logger.LogDebug(err.message);
@@ -240,6 +246,7 @@ export class ExtensionManager implements Disposable {
 	public RunCommand(funcToTry: (args) => void, ...args: string[]): void {
 		if (!workspace || !workspace.rootPath) {
 			this.DisplayErrorMessage(Strings.FolderNotOpened);
+
 			return;
 		}
 		funcToTry(args);
@@ -247,8 +254,11 @@ export class ExtensionManager implements Disposable {
 
 	private displayNoCredentialsMessage(): void {
 		let error: string = Strings.NoTeamServerCredentialsRunSignin;
+
 		let displayError: string = Strings.NoTeamServerCredentialsRunSignin;
+
 		const messageItems: IButtonMessageItem[] = [];
+
 		if (this._serverContext.RepoInfo.IsTeamServices === true) {
 			messageItems.push({
 				title: Strings.LearnMore,
@@ -278,6 +288,7 @@ export class ExtensionManager implements Disposable {
 
 	private formatErrorLogMessage(err): string {
 		let logMsg: string = err.message;
+
 		if (err.stderr) {
 			//Add stderr to logged message if we have it
 			logMsg = Utils.FormatMessage(`${logMsg} ${err.stderr}`);
@@ -326,6 +337,7 @@ export class ExtensionManager implements Disposable {
 					workspace.rootPath,
 					this._settings,
 				);
+
 			if (this._repoContext) {
 				this.showFeedbackItem();
 				this.setupFileSystemWatcherOnHead();
@@ -346,6 +358,7 @@ export class ExtensionManager implements Disposable {
 					.then(async (creds: CredentialInfo) => {
 						if (!creds || !creds.CredentialHandler) {
 							this.displayNoCredentialsMessage();
+
 							return;
 						} else {
 							this._serverContext.CredentialInfo = creds;
@@ -370,6 +383,7 @@ export class ExtensionManager implements Disposable {
 							Logger.LogDebug(
 								"RemoteUrl = " + this._repoContext.RemoteUrl,
 							);
+
 							try {
 								//At this point, we have either successfully called git.exe or tf.cmd (we just need to verify the remote urls)
 								//For Git repositories, we call vsts/info and get collection ids, etc.
@@ -385,6 +399,7 @@ export class ExtensionManager implements Disposable {
 												.AccountUrl
 										: this._serverContext.RepoInfo
 												.CollectionUrl;
+
 								const accountClient: TeamServicesApi =
 									new TeamServicesApi(connectionUrl, [
 										CredentialManager.GetCredentialHandler(),
@@ -395,6 +410,7 @@ export class ExtensionManager implements Disposable {
 								Logger.LogDebug(
 									"connectionUrl = " + connectionUrl,
 								);
+
 								try {
 									const settings: any =
 										await accountClient.connect();
@@ -497,6 +513,7 @@ export class ExtensionManager implements Disposable {
 									tfvcContext.TfvcRepository,
 								);
 								Logger.LogInfo(`Sent TFVC tooling telemetry`);
+
 								if (!this._scmProvider) {
 									Logger.LogDebug(
 										`Initializing the TfvcSCMProvider`,
@@ -525,13 +542,16 @@ export class ExtensionManager implements Disposable {
 							Logger.LogError(
 								`Caught an exception during Tfvc SCM Provider initialization`,
 							);
+
 							const logMsg: string =
 								this.formatErrorLogMessage(err);
 							Logger.LogError(logMsg);
+
 							if (err.tfvcErrorCode) {
 								this.setErrorStatus(err.message);
 								//Dispose of the Build and WIT status bar items so they don't show up (they should be re-created once a new folder is opened)
 								this._teamExtension.cleanup();
+
 								if (
 									this.shouldDisplayTfvcError(
 										err.tfvcErrorCode,
@@ -635,6 +655,7 @@ export class ExtensionManager implements Disposable {
 	private async showWelcomeMessage(): Promise<void> {
 		if (this._settings.ShowWelcomeMessage) {
 			const welcomeMessage: string = `This is version ${Constants.ExtensionVersion} of the Azure Repos extension.`;
+
 			const messageItems: IButtonMessageItem[] = [];
 			messageItems.push({
 				title: Strings.LearnMore,
@@ -647,11 +668,13 @@ export class ExtensionManager implements Disposable {
 				telemetryId: TfvcTelemetryEvents.SetupTfvcSupportClick,
 			});
 			messageItems.push({ title: Strings.DontShowAgain });
+
 			const chosenItem: IButtonMessageItem =
 				await VsCodeUtils.ShowInfoMessage(
 					welcomeMessage,
 					...messageItems,
 				);
+
 			if (chosenItem && chosenItem.title === Strings.DontShowAgain) {
 				this._settings.ShowWelcomeMessage = false;
 			}
@@ -661,6 +684,7 @@ export class ExtensionManager implements Disposable {
 	private async showFarewellMessage(): Promise<void> {
 		if (this._settings.ShowFarewellMessage) {
 			const farewellMessage: string = `The Azure Repos extension has been sunsetted.`;
+
 			const messageItems: IButtonMessageItem[] = [];
 			messageItems.push({
 				title: Strings.LearnMore,
@@ -668,11 +692,13 @@ export class ExtensionManager implements Disposable {
 				telemetryId: TelemetryEvents.FarewellLearnMoreClick,
 			});
 			messageItems.push({ title: Strings.DontShowAgain });
+
 			const chosenItem: IButtonMessageItem =
 				await VsCodeUtils.ShowInfoMessage(
 					farewellMessage,
 					...messageItems,
 				);
+
 			if (chosenItem && chosenItem.title === Strings.DontShowAgain) {
 				this._settings.ShowFarewellMessage = false;
 			}
@@ -731,6 +757,7 @@ export class ExtensionManager implements Disposable {
 		);
 		Logger.LogDebug("repositoryFolder: " + this._repoContext.RepoFolder);
 		Logger.LogDebug("repositoryRemoteUrl: " + this._repoContext.RemoteUrl);
+
 		if (this._repoContext.Type === RepositoryType.GIT) {
 			Logger.LogDebug(
 				"gitRepositoryParentFolder: " +
@@ -755,6 +782,7 @@ export class ExtensionManager implements Disposable {
 			return;
 		}
 		Logger.SetLoggingLevel(loggingLevel);
+
 		if (rootPath !== undefined) {
 			Logger.LogPath = rootPath;
 			Logger.LogInfo(`*** FOLDER: ${rootPath} ***`);
@@ -770,6 +798,7 @@ export class ExtensionManager implements Disposable {
 
 	private setErrorStatus(message: string, commandOnClick?: string): void {
 		this._errorMessage = message;
+
 		if (this._teamServicesStatusBarItem !== undefined) {
 			//TODO: Should the default command be to display the message?
 			this._teamServicesStatusBarItem.command = commandOnClick; // undefined clears the command
@@ -786,6 +815,7 @@ export class ExtensionManager implements Disposable {
 			this._repoContext.Type === RepositoryType.GIT
 		) {
 			const pattern: string = this._repoContext.RepoFolder + "/HEAD";
+
 			const fsw: FileSystemWatcher = workspace.createFileSystemWatcher(
 				pattern,
 				true,
@@ -848,12 +878,15 @@ export class ExtensionManager implements Disposable {
 				Logger.LogInfo(
 					"config has changed, checking if 'remote origin' changed",
 				);
+
 				const context: IRepositoryContext =
 					await RepositoryContextFactory.CreateRepositoryContext(
 						uri.fsPath,
 						this._settings,
 					);
+
 				const remote: string = context.RemoteUrl;
+
 				if (remote === undefined) {
 					//There is either no remote defined yet or it isn't a Team Services repo
 					if (this._repoContext.RemoteUrl !== undefined) {
@@ -862,6 +895,7 @@ export class ExtensionManager implements Disposable {
 							"remote was removed, previously had an Azure Repos remote, re-initializing the extension",
 						);
 						this.Reinitialize();
+
 						return;
 					}
 					//There was no previous remote, so do nothing

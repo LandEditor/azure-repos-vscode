@@ -12,7 +12,9 @@ export class CredentialInfo {
 	private _credentialHandler: ExtensionRequestHandler;
 
 	constructor(accessToken: string);
+
 	constructor(username: string, password?: string);
+
 	constructor(
 		username: string,
 		password?: string,

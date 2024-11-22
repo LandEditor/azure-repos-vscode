@@ -66,9 +66,12 @@ export class Add implements ITfvcCommand<string[]> {
 		lines = lines.filter((e) => !e.endsWith(" No file matches.")); //tf.exe
 
 		const filesAdded: string[] = [];
+
 		let path: string = "";
+
 		for (let index: number = 0; index < lines.length; index++) {
 			const line: string = lines[index];
+
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
 			} else {

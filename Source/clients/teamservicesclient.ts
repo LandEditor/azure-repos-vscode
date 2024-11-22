@@ -35,6 +35,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 				},
 			);
 		});
+
 		return promise;
 	}
 
@@ -59,6 +60,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 				},
 			);
 		});
+
 		return promise;
 	}
 }

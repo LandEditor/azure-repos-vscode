@@ -77,9 +77,12 @@ export class Delete implements ITfvcCommand<string[]> {
 		);
 
 		const filesUndone: string[] = [];
+
 		let path: string = "";
+
 		for (let index: number = 0; index < lines.length; index++) {
 			const line: string = lines[index];
+
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
 			} else if (line) {

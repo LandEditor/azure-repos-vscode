@@ -68,6 +68,7 @@ export class Undo implements ITfvcCommand<string[]> {
 		if (executionResult.exitCode !== 0) {
 			//Remove any entries for which there were no pending changes
 			lines = lines.filter((e) => !e.startsWith("No pending changes "));
+
 			if (executionResult.exitCode === 100 && lines.length === 0) {
 				//All of the files had no pending changes, return []
 				return [];
@@ -78,9 +79,12 @@ export class Undo implements ITfvcCommand<string[]> {
 		}
 
 		const filesUndone: string[] = [];
+
 		let path: string = "";
+
 		for (let index: number = 0; index < lines.length; index++) {
 			const line: string = lines[index];
+
 			if (CommandHelper.IsFilePath(line)) {
 				path = line;
 			} else if (line) {
@@ -109,6 +113,7 @@ export class Undo implements ITfvcCommand<string[]> {
 	private getFileFromLine(line: string): string {
 		const prefix: string = ": "; //"Undoing edit: ", "Undoing add: ", etc.
 		const idx: number = line.indexOf(prefix);
+
 		if (idx > 0) {
 			return line.substring(idx + prefix.length);
 		}

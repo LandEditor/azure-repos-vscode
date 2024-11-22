@@ -39,6 +39,7 @@ export class RepositoryInfo {
 	private _repositoryId: string;
 
 	constructor(repositoryUrl: string);
+
 	constructor(repositoryInfo: any);
 
 	constructor(repositoryInfo: any) {
@@ -59,6 +60,7 @@ export class RepositoryInfo {
 			.replace("/_git/_optimized/", "/_git/");
 
 		const purl: url.Url = url.parse(repositoryUrl);
+
 		if (purl) {
 			this._host = purl.host;
 			this._hostName = purl.hostname;
@@ -69,6 +71,7 @@ export class RepositoryInfo {
 			this._query = purl.query;
 
 			this._repositoryUrl = repositoryUrl;
+
 			if (RepoUtils.IsTeamFoundationServicesRepo(repositoryUrl)) {
 				if (
 					RepoUtils.IsTeamFoundationServicesAzureRepo(
@@ -76,6 +79,7 @@ export class RepositoryInfo {
 					)
 				) {
 					const splitPath = this._path.split("/");
+
 					if (splitPath.length >= 1) {
 						this._account = splitPath[1];
 					} else {
@@ -109,6 +113,7 @@ export class RepositoryInfo {
 				Logger.LogDebug("_repositoryName: " + this._repositoryName);
 				this._teamProject = repositoryInfo.repository.project.name;
 				Logger.LogDebug("_teamProject: " + this._teamProject);
+
 				if (this._isTeamFoundationServer === true) {
 					Logger.LogDebug("_isTeamFoundationServer: true");
 					//_serverUrl is only set for TeamFoundationServer repositories

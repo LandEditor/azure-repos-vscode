@@ -112,18 +112,23 @@ export class TfsCatalogSoapClient {
 		const organizationDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(
 			envelopeXml,
 		);
+
 		const soapBody: xmldoc.XmlElement = organizationDocument.childNamed(
 			TfsCatalogSoapClient.XmlSoapBody,
 		);
+
 		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResponse,
 		);
+
 		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResult,
 		);
+
 		const catalogResources: any = nodesResult.childNamed(
 			TfsCatalogSoapClient.XmlCatalogResources,
 		);
+
 		if (!catalogResources) {
 			throw new Error(
 				`No CatalogResources were received for OrganizationRoot from ${this.endpointUrl}`,
@@ -131,6 +136,7 @@ export class TfsCatalogSoapClient {
 		}
 		//Spin through children doing insensitive check
 		let orgRoot: any;
+
 		for (
 			let idx: number = 0;
 			idx < catalogResources.children.length;
@@ -143,6 +149,7 @@ export class TfsCatalogSoapClient {
 				TfsCatalogSoapClient.OrganizationalRoot
 			) {
 				orgRoot = catalogResources.children[idx];
+
 				break;
 			}
 		}
@@ -154,6 +161,7 @@ export class TfsCatalogSoapClient {
 		const nodeRefPaths: any = orgRoot.childNamed(
 			TfsCatalogSoapClient.XmlNodeReferencesPaths,
 		);
+
 		const nodeRefPath: string = nodeRefPaths.children[0].val;
 
 		return nodeRefPath;
@@ -229,18 +237,23 @@ export class TfsCatalogSoapClient {
 		}
 		const foundationServerDocument: xmldoc.XmlDocument =
 			new xmldoc.XmlDocument(envelopeXml);
+
 		const soapBody: xmldoc.XmlElement = foundationServerDocument.childNamed(
 			TfsCatalogSoapClient.XmlSoapBody,
 		);
+
 		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResponse,
 		);
+
 		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResult,
 		);
+
 		const catalogResources: any = nodesResult.childNamed(
 			TfsCatalogSoapClient.XmlCatalogResources,
 		);
+
 		if (!catalogResources) {
 			throw new Error(
 				`No CatalogResources were received for FoundationServer from ${this.endpointUrl}`,
@@ -260,6 +273,7 @@ export class TfsCatalogSoapClient {
 				TfsCatalogSoapClient.TeamFoundationServerInstance
 			) {
 				serverInstance = catalogResources.children[idx];
+
 				break;
 			}
 		}
@@ -271,7 +285,9 @@ export class TfsCatalogSoapClient {
 		const nodeRefPaths: any = serverInstance.childNamed(
 			TfsCatalogSoapClient.XmlNodeReferencesPaths,
 		);
+
 		const nodeRefPath: string = nodeRefPaths.children[0].val;
+
 		return nodeRefPath;
 	}
 
@@ -556,19 +572,24 @@ export class TfsCatalogSoapClient {
 		}
 		const projectCollectionsDocument: xmldoc.XmlDocument =
 			new xmldoc.XmlDocument(envelopeXml);
+
 		const soapBody: xmldoc.XmlElement =
 			projectCollectionsDocument.childNamed(
 				TfsCatalogSoapClient.XmlSoapBody,
 			);
+
 		const nodesResponse: xmldoc.XmlElement = soapBody.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResponse,
 		);
+
 		const nodesResult: xmldoc.XmlElement = nodesResponse.childNamed(
 			TfsCatalogSoapClient.XmlQueryNodesResult,
 		);
+
 		const catalogResources: any = nodesResult.childNamed(
 			TfsCatalogSoapClient.XmlCatalogResources,
 		);
+
 		if (!catalogResources) {
 			throw new Error(
 				`No CatalogResources were received for ProjectCollections from ${this.endpointUrl}`,
@@ -583,6 +604,7 @@ export class TfsCatalogSoapClient {
 				collectionNodes.push(catalogResource);
 			}
 		});
+
 		return collectionNodes;
 	}
 
@@ -621,6 +643,7 @@ export class TfsCatalogSoapClient {
 
 						//Now go and find the project collection we're looking for
 						let foundTeamProject: any;
+
 						for (
 							let idx: number = 0;
 							idx < collectionNodes.length;
@@ -633,15 +656,18 @@ export class TfsCatalogSoapClient {
 								collectionName.toLowerCase()
 							) {
 								foundTeamProject = collectionNodes[idx];
+
 								break;
 							}
 						}
 						if (foundTeamProject) {
 							const props: any =
 								foundTeamProject.childNamed("Properties");
+
 							const strstr: any = props.childNamed(
 								"KeyValueOfStringString",
 							);
+
 							const id: any = strstr.childNamed("Value");
 							//Resolve an object that +looks_ like a TeamProjectCollectionReference object
 							deferred.resolve({

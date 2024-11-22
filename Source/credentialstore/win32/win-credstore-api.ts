@@ -29,6 +29,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	public GetCredential(service: string): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
+
 		let credential: Credential;
 
 		//TODO: Why not just have listCredentials send back the ones I want based on (optional) service?
@@ -41,6 +42,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);
+
 					if (credential.Service === service) {
 						break;
 					} else {
@@ -53,6 +55,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 			.fail((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -62,6 +65,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		password: any,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
+
 		const targetName: string = this.createTargetName(service, username);
 
 		// Here, `password` is either the password or pat
@@ -72,11 +76,13 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				deferred.resolve(undefined);
 			}
 		});
+
 		return deferred.promise;
 	}
 
 	public RemoveCredential(service: string): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
+
 		const targetName: string = this.createTargetName(service, "*");
 
 		wincredstore.remove(targetName, function (err) {
@@ -92,6 +98,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				deferred.resolve(undefined);
 			}
 		});
+
 		return deferred.promise;
 	}
 
@@ -101,6 +108,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
+
 		let credential: Credential;
 
 		this.listCredentials()
@@ -112,6 +120,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);
+
 					if (
 						credential.Service === service &&
 						credential.Username === username
@@ -127,6 +136,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 			.fail((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -135,6 +145,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		username: string,
 	): Q.Promise<void> {
 		const deferred: Q.Deferred<void> = Q.defer<void>();
+
 		const targetName: string = this.createTargetName(service, username);
 
 		wincredstore.remove(targetName, function (err) {
@@ -150,6 +161,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				deferred.resolve(undefined);
 			}
 		});
+
 		return deferred.promise;
 	}
 
@@ -161,8 +173,11 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		const segments: Array<string> = cred.targetName.split(
 			WindowsCredentialStoreApi.separator,
 		);
+
 		const username: string = segments[segments.length - 1];
+
 		const service: string = segments[0];
+
 		return new Credential(service, username, password);
 	}
 
@@ -172,6 +187,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 
 	private listCredentials(): Q.Promise<Array<any>> {
 		const deferred: Q.Deferred<Array<any>> = Q.defer<Array<any>>();
+
 		const credentials: Array<any> = [];
 
 		const stream = wincredstore.list();
@@ -185,6 +201,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 			console.log(error);
 			deferred.reject(error);
 		});
+
 		return deferred.promise;
 	}
 }

@@ -44,6 +44,7 @@ export class Checkin implements ITfvcCommand<string> {
 			"checkin",
 			this._serverContext,
 		).AddAll(this._files);
+
 		if (this._comment) {
 			builder.AddSwitchWithValue("comment", this.getComment(), false);
 		}
@@ -109,6 +110,7 @@ export class Checkin implements ITfvcCommand<string> {
 			this._serverContext,
 			true /* skipCollectionOption */,
 		).AddAll(this._files);
+
 		if (this._comment) {
 			builder.AddSwitchWithValue("comment", this.getComment(), false);
 		}

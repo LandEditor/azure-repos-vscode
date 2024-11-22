@@ -38,13 +38,16 @@ export class RepoUtils {
 
 		// TFS uses /_git/ in all repository paths
 		const containsUnderGit = asLower.indexOf("/_git/") >= 0;
+
 		if (containsUnderGit) {
 			return true;
 		}
 
 		// VSTS uses /_ssh/ after visualstudio.com in all repository paths
 		const underSSHIndex = asLower.indexOf("/_ssh/");
+
 		const visualstudioDotComIndex = asLower.indexOf(".visualstudio.com");
+
 		if (
 			visualstudioDotComIndex >= 0 &&
 			underSSHIndex >= visualstudioDotComIndex
@@ -81,6 +84,7 @@ export class RepoUtils {
 				return true;
 			}
 			const purl: url.Url = url.parse(respositoryUrl);
+
 			if (purl.hostname.toLowerCase().indexOf("azure.com") >= 0) {
 				return true;
 			}
@@ -100,7 +104,9 @@ export class RepoUtils {
 
 	public static ConvertSshV3ToUrl(respositoryUrl: string): string {
 		const scheme = "https://";
+
 		const match = RepoUtils.sshV3.exec(respositoryUrl.toLowerCase());
+
 		if (match.length === 5) {
 			if (match[1] === "visualstudio.com") {
 				return (
@@ -128,6 +134,7 @@ export class RepoUtils {
 		Logger.LogDebug(
 			"Could not parse as v3 repository url: " + respositoryUrl,
 		);
+
 		return undefined;
 	}
 

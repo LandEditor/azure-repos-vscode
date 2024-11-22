@@ -30,6 +30,7 @@ export class OsxKeychainApi implements ICredentialStore {
 
 	public GetCredential(service: string): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
+
 		let credential: Credential;
 
 		// To get the credential, I must first list all of the credentials we previously
@@ -45,6 +46,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				) {
 					if (credentials[index].Service === service) {
 						credential = credentials[index];
+
 						break;
 					}
 				}
@@ -74,6 +76,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			.fail((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -98,6 +101,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				}
 			},
 		);
+
 		return deferred.promise;
 	}
 
@@ -111,6 +115,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			.fail((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -119,6 +124,7 @@ export class OsxKeychainApi implements ICredentialStore {
 		username: string,
 	): Q.Promise<Credential> {
 		const deferred: Q.Deferred<Credential> = Q.defer<Credential>();
+
 		let credential: Credential;
 
 		// To get the credential, I must first list all of the credentials we previously
@@ -137,6 +143,7 @@ export class OsxKeychainApi implements ICredentialStore {
 						credentials[index].Username === username
 					) {
 						credential = credentials[index];
+
 						break;
 					}
 				}
@@ -166,6 +173,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			.fail((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -229,12 +237,14 @@ export class OsxKeychainApi implements ICredentialStore {
 				deferred.resolve(undefined);
 			}
 		});
+
 		return deferred.promise;
 	}
 
 	private listCredentials(service?: string): Q.Promise<Array<Credential>> {
 		const deferred: Q.Deferred<Array<Credential>> =
 			Q.defer<Array<Credential>>();
+
 		const credentials: Array<Credential> = [];
 
 		const stream = osxkeychain.list();
@@ -246,6 +256,7 @@ export class OsxKeychainApi implements ICredentialStore {
 					const svc: string = cred.svce.substring(
 						this._prefix.length,
 					);
+
 					const username: string = cred.acct;
 					//password is undefined because we don't have it yet
 					const credential: Credential = new Credential(

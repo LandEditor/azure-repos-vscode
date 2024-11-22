@@ -40,6 +40,7 @@ export class TfCommandLineRunner {
 		env: any = {},
 	): TfvcRepository {
 		const tfvc: ITfCommandLine = TfCommandLineRunner.GetCommandLine();
+
 		return new TfvcRepository(
 			serverContext,
 			tfvc,
@@ -55,20 +56,24 @@ export class TfCommandLineRunner {
 		);
 		// Get Proxy from settings
 		const settings: TfvcSettings = new TfvcSettings();
+
 		const proxy: string = settings.Proxy;
 		Logger.LogDebug(`Using TFS proxy: ${proxy}`);
 
 		let tfvcPath: string = localPath;
+
 		if (!tfvcPath) {
 			// get the location from settings
 			tfvcPath = settings.Location;
 			Logger.LogDebug(
 				`TFVC Retrieved from settings; localPath='${tfvcPath}'`,
 			);
+
 			if (!tfvcPath) {
 				Logger.LogWarning(
 					`TFVC Couldn't find where the TF command lives on disk.`,
 				);
+
 				throw new TfvcError({
 					message: Strings.TfvcLocationMissingError,
 					tfvcErrorCode: TfvcErrorCodes.LocationMissing,
@@ -78,13 +83,16 @@ export class TfCommandLineRunner {
 
 		// check to make sure that the file exists in that location
 		const exists: boolean = fs.existsSync(tfvcPath);
+
 		if (exists) {
 			// if it exists, check to ensure that it's a file and not a folder
 			const stats: fs.Stats = fs.lstatSync(tfvcPath);
+
 			if (!stats || (!stats.isFile() && !stats.isSymbolicLink())) {
 				Logger.LogWarning(
 					`TFVC ${tfvcPath} exists but isn't a file or symlink.`,
 				);
+
 				throw new TfvcError({
 					message: Strings.TfMissingError,
 					tfvcErrorCode: TfvcErrorCodes.NotFound,
@@ -92,6 +100,7 @@ export class TfCommandLineRunner {
 			}
 		} else {
 			Logger.LogWarning(`TFVC ${tfvcPath} does not exist.`);
+
 			throw new TfvcError({
 				message: Strings.TfMissingError,
 				tfvcErrorCode: TfvcErrorCodes.NotFound,
@@ -100,6 +109,7 @@ export class TfCommandLineRunner {
 
 		// Determine the min version
 		const isExe: boolean = path.extname(tfvcPath).toLowerCase() === ".exe";
+
 		let minVersion: string = "14.0.4"; //CLC min version
 		if (isExe) {
 			minVersion = "14.102.0"; //Minimum tf.exe version
@@ -121,19 +131,25 @@ export class TfCommandLineRunner {
 		if (!version) {
 			// If the version isn't set just return
 			Logger.LogDebug(`TFVC CheckVersion called without a version.`);
+
 			return;
 		}
 
 		// check the version of TFVC command line
 		Logger.LogDebug(`TFVC Minimum required version: ${tfvc.minVersion}`);
 		Logger.LogDebug(`TFVC (TF.exe, TF.cmd) version: ${version}`);
+
 		const minVersion: TfvcVersion = TfvcVersion.FromString(tfvc.minVersion);
+
 		const curVersion: TfvcVersion = TfvcVersion.FromString(version);
+
 		if (TfvcVersion.Compare(curVersion, minVersion) < 0) {
 			Logger.LogWarning(
 				`TFVC ${version} is less that the min version of ${tfvc.minVersion}.`,
 			);
+
 			let options: IButtonMessageItem[] = [];
+
 			if (tfvc.isExe) {
 				//Provide more information on how to update tf.exe to the minimum version required
 				options = [
@@ -168,6 +184,7 @@ export class TfCommandLineRunner {
 		}
 
 		Logger.LogDebug(`TFVC: tf ${args.GetArgumentsForDisplay()}`);
+
 		if (options.log !== false) {
 			TfvcOutput.AppendLine(`tf ${args.GetArgumentsForDisplay()}`);
 		}
@@ -202,6 +219,7 @@ export class TfCommandLineRunner {
 		isExe: boolean,
 	): Promise<IExecutionResult> {
 		const start: number = new Date().getTime();
+
 		const tfInstance: cp.ChildProcess =
 			await TfCommandLineRunner.getMatchingTfInstance(tfvc, options);
 		// now that we have the matching one, start a new process (but don't wait on it to finish)
@@ -209,6 +227,7 @@ export class TfCommandLineRunner {
 
 		// Use the tf instance to perform the command
 		const argsForStandardInput: string = args.GetCommandLine();
+
 		const result: IExecutionResult = await TfCommandLineRunner.runCommand(
 			argsForStandardInput,
 			tfInstance,
@@ -263,6 +282,7 @@ export class TfCommandLineRunner {
 			tfvc.path,
 			options,
 		);
+
 		return TfCommandLineRunner._runningInstance;
 	}
 
@@ -281,11 +301,14 @@ export class TfCommandLineRunner {
 
 		const start: number = new Date().getTime();
 		options.stdio = ["pipe", "pipe", "pipe"];
+
 		const child: cp.ChildProcess = await cp.spawn(location, ["@"], options);
+
 		const end: number = new Date().getTime();
 		Logger.LogDebug(
 			`TFVC: spawned new process (duration: ${end - start}ms)`,
 		);
+
 		return child;
 	}
 
@@ -320,10 +343,12 @@ export class TfCommandLineRunner {
 				});
 				once(child.stdout, "close", () => {
 					let stdout: string = buffers.join("");
+
 					if (isExe) {
 						// TF.exe repeats the command line as part of the standard out when using the @ response file options
 						// So, we look for the noprompt option to allow us to know where that line is so we can strip it off
 						const start: number = stdout.indexOf("-noprompt");
+
 						if (start >= 0) {
 							const end: number = stdout.indexOf("\n", start);
 							stdout = stdout.slice(end + 1);

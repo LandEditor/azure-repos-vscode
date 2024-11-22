@@ -33,12 +33,14 @@ export class VsCodeUtils {
 	//Returns the trimmed value if there's an activeTextEditor and a selection
 	public static GetActiveSelection(): string {
 		const editor = window.activeTextEditor;
+
 		if (!editor) {
 			return undefined;
 		}
 
 		// Make sure that the selection is not empty and it is a single line
 		const selection = editor.selection;
+
 		if (selection.isEmpty || !selection.isSingleLine) {
 			return undefined;
 		}
@@ -49,6 +51,7 @@ export class VsCodeUtils {
 			selection.end.line,
 			selection.end.character,
 		);
+
 		const value = editor.document.getText(range).trim();
 
 		return value;
@@ -85,29 +88,37 @@ export class VsCodeUtils {
 		const messageItems: ButtonMessageItem[] = <ButtonMessageItem[]>(
 			urlMessageItem
 		);
+
 		const messageToDisplay: string = `${Utils.FormatMessage(message)}`;
 
 		//Use the typescript spread operator to pass the rest parameter to showErrorMessage
 		let chosenItem: IButtonMessageItem;
+
 		switch (type) {
 			case MessageTypes.Error:
 				chosenItem = await window.showErrorMessage(
 					messageToDisplay,
 					...messageItems,
 				);
+
 				break;
+
 			case MessageTypes.Info:
 				chosenItem = await window.showInformationMessage(
 					messageToDisplay,
 					...messageItems,
 				);
+
 				break;
+
 			case MessageTypes.Warn:
 				chosenItem = await window.showWarningMessage(
 					messageToDisplay,
 					...messageItems,
 				);
+
 				break;
+
 			default:
 				break;
 		}

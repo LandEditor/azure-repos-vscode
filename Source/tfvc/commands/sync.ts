@@ -100,9 +100,11 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 			const itemResults: ISyncItemResult[] = this.getItemResults(
 				executionResult.stdout,
 			);
+
 			const errorMessages: ISyncItemResult[] = this.getErrorMessages(
 				executionResult.stderr,
 			);
+
 			return {
 				hasConflicts:
 					errorMessages.filter(
@@ -145,14 +147,18 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 
 	private getItemResults(stdout: string): ISyncItemResult[] {
 		const itemResults: ISyncItemResult[] = [];
+
 		let folderPath: string = "";
+
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			stdout,
 			true,
 			true,
 		);
+
 		for (let i: number = 0; i < lines.length; i++) {
 			const line = lines[i];
+
 			if (CommandHelper.IsFilePath(line)) {
 				folderPath = line;
 			} else if (line) {
@@ -160,6 +166,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 					folderPath,
 					line,
 				);
+
 				if (sr) {
 					itemResults.push(sr);
 				}
@@ -177,6 +184,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		}
 
 		let newResult: ISyncItemResult = undefined;
+
 		if (line.startsWith("Getting ")) {
 			newResult = {
 				syncType: SyncType.New,
@@ -224,6 +232,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		} else {
 			// This must be an error. Usually of the form "filename - message" or "filename cannot be deleted reason"
 			let index: number = line.lastIndexOf("-");
+
 			if (index >= 0) {
 				newResult = {
 					syncType: SyncType.Error,
@@ -235,6 +244,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				};
 			} else {
 				index = line.indexOf("cannot be deleted");
+
 				if (index >= 0) {
 					newResult = {
 						syncType: SyncType.Warning,
@@ -261,11 +271,13 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 	 */
 	private getErrorMessages(stderr: string): ISyncItemResult[] {
 		const errorMessages: ISyncItemResult[] = [];
+
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			stderr,
 			false,
 			true,
 		);
+
 		for (let i: number = 0; i < lines.length; i++) {
 			// stderr doesn't get any file path lines, so the files will all be just the filenames
 			errorMessages.push(this.getSyncResultFromLine("", lines[i]));

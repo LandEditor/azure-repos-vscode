@@ -61,11 +61,13 @@ export function processResponse(url, res, contents, onResult) {
 	} else {
 		try {
 			var soapObj = null;
+
 			if (contents && contents.length > 0) {
 				soapObj = contents;
 			}
 		} catch (e) {
 			onResult(new Error("Invalid Resource"), res.statusCode, null);
+
 			return;
 		}
 
@@ -111,6 +113,7 @@ export class SoapClient {
 			(err: any, res: ifm.IHttpResponse, responseEnvelope: string) => {
 				if (err) {
 					onResult(err, err.statusCode, null);
+
 					return;
 				}
 

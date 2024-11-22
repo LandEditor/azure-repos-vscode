@@ -45,7 +45,9 @@ export class BuildClient extends BaseClient {
 		try {
 			const svc: BuildService = new BuildService(this._serverContext);
 			Logger.LogInfo("Getting current build from badge...");
+
 			let buildBadge: BuildBadge;
+
 			if (context.Type === RepositoryType.GIT) {
 				buildBadge = await svc.GetBuildBadge(
 					this._serverContext.RepoInfo.TeamProject,
@@ -68,6 +70,7 @@ export class BuildClient extends BaseClient {
 					this._serverContext.RepoInfo.TeamProject,
 					definitionId,
 				);
+
 				if (builds.length > 0) {
 					buildBadge = { buildId: builds[0].id, imageUrl: undefined };
 				} else {
@@ -82,6 +85,7 @@ export class BuildClient extends BaseClient {
 						buildBadge.buildId.toString() +
 						". Getting build details...",
 				);
+
 				const build: Build = await svc.GetBuildById(buildBadge.buildId);
 				this._buildSummaryUrl = BuildService.GetBuildSummaryUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
@@ -122,6 +126,7 @@ export class BuildClient extends BaseClient {
 							? "UNKNOWN"
 							: context.CurrentBranch.toString()),
 				);
+
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.command =
 						CommandNames.OpenBuildSummaryPage;
@@ -154,11 +159,13 @@ export class BuildClient extends BaseClient {
 		};
 
 		const builds: Build[] = await svc.GetBuilds(teamProjectId);
+
 		if (builds.length === 0) {
 			return emptyBuild;
 		}
 
 		let matchingBuild: Build;
+
 		for (let idx: number = 0; idx < builds.length; idx++) {
 			const b: Build = builds[idx];
 			// Ignore canceled builds
@@ -170,6 +177,7 @@ export class BuildClient extends BaseClient {
 				b.repository.type.toLowerCase() === "tfsversioncontrol"
 			) {
 				matchingBuild = b;
+
 				break;
 			}
 		}
@@ -182,7 +190,9 @@ export class BuildClient extends BaseClient {
 
 	public OpenBuildSummaryPage(): void {
 		Telemetry.SendEvent(TelemetryEvents.OpenBuildSummaryPage);
+
 		let url: string = this._buildSummaryUrl;
+
 		if (url === undefined) {
 			Logger.LogInfo(
 				"No build summary available, using build definitions url.",

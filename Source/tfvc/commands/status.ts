@@ -78,12 +78,15 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const changes: IPendingChange[] = [];
+
 		const xml: string = CommandHelper.TrimToXml(executionResult.stdout);
 		// Parse the xml using xml2js
 		const json: any = await CommandHelper.ParseXml(xml);
+
 		if (json && json.status) {
 			// get all the pending changes first
 			const pending: any = json.status.pendingchanges[0].pendingchange;
+
 			if (pending) {
 				for (let i: number = 0; i < pending.length; i++) {
 					this.add(
@@ -96,6 +99,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 			// next, get all the candidate pending changes
 			const candidate: any =
 				json.status.candidatependingchanges[0].pendingchange;
+
 			if (candidate) {
 				for (let i: number = 0; i < candidate.length; i++) {
 					this.add(
@@ -111,6 +115,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 
 	public GetExeArguments(): IArgumentProvider {
 		//return this.GetArguments();
+
 		const builder: ArgumentBuilder = new ArgumentBuilder(
 			"status",
 			this._serverContext,
@@ -163,6 +168,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const changes: IPendingChange[] = [];
+
 		if (!executionResult.stdout) {
 			return changes;
 		}
@@ -173,9 +179,12 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 			false,
 		); //leave empty lines
 		let detectedChanges: boolean = false;
+
 		let curChange: IPendingChange;
+
 		for (let i: number = 0; i < lines.length; i++) {
 			const line: string = lines[i];
+
 			if (line.indexOf(" detected change(s)") > 0) {
 				//This tells us we're done
 				break;
@@ -196,6 +205,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 			) {
 				//Starting Detected Changes...
 				detectedChanges = true;
+
 				continue;
 			}
 
@@ -221,15 +231,18 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 			} else {
 				// Add the property to the current item
 				const colonPos: number = line.indexOf(":");
+
 				if (colonPos > 0) {
 					const propertyName = this.getPropertyName(
 						line.slice(0, colonPos).trim().toLowerCase(),
 					);
+
 					if (propertyName) {
 						let propertyValue: string =
 							colonPos + 1 < line.length
 								? line.slice(colonPos + 1).trim()
 								: "";
+
 						if (propertyName.toLowerCase() === "localitem") {
 							//Local item : [JEYOU-DEV00] C:\repos\TfExe.Tfvc.L2VSCodeExtension.RC.TFS\README.md
 							const parts: string[] = propertyValue.split("] ");
@@ -249,16 +262,21 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		switch (name) {
 			case "local item":
 				return "localItem";
+
 			case "source item":
 				return "sourceItem";
+
 			case "user":
 				return "owner"; //TODO: I don't think this is accurate
 			case "date":
 				return "date";
+
 			case "lock":
 				return "lock";
+
 			case "change":
 				return "changeType";
+
 			case "workspace":
 				return "workspace";
 		}
@@ -274,7 +292,9 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		if (ignoreFolders && fs.existsSync(newChange.localItem)) {
 			// check to see if the local item is a file or folder
 			const f: string = newChange.localItem;
+
 			const stats: any = fs.lstatSync(f);
+
 			if (stats.isDirectory()) {
 				// It's a directory/folder and we don't want those
 				return;

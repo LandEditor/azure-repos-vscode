@@ -22,6 +22,7 @@ export class ExtensionRequestHandler implements IRequestHandler {
 	private _credentialHandler: IRequestHandler;
 
 	constructor(accessToken: string);
+
 	constructor(
 		username: string,
 		password?: string,

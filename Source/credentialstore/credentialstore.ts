@@ -47,12 +47,15 @@ export class CredentialStore implements ICredentialStore {
 				this._credentialStore = new WindowsCredentialStoreApi(
 					this._prefix,
 				);
+
 				break;
+
 			case "darwin":
 				if (prefix === undefined) {
 					this._prefix = this._defaultPrefix;
 				}
 				this._credentialStore = new OsxKeychainApi(this._prefix);
+
 				break;
 			/* tslint:disable:no-switch-case-fall-through */
 			case "linux":
@@ -68,6 +71,7 @@ export class CredentialStore implements ICredentialStore {
 					this._folder,
 					this._filename,
 				);
+
 				break;
 		}
 	}
@@ -116,6 +120,7 @@ export class CredentialStore implements ICredentialStore {
 			.catch((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 

@@ -40,6 +40,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 			.Add(this._itemPath)
 			.AddSwitch("recursive")
 			.AddSwitch("preview");
+
 		return builder;
 	}
 
@@ -64,6 +65,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 		const conflicts: IConflict[] = [];
 		//"Picked up _JAVA_OPTIONS: -Xmx1024M"
 		let outputToProcess: string = executionResult.stderr;
+
 		if (outputToProcess && outputToProcess.includes("_JAVA_OPTIONS")) {
 			//When you don't need _JAVA_OPTIONS set, the results we want are always in stderr (this is the default case)
 			//With _JAVA_OPTIONS set and there are no conflicts, _JAVA_OPTIONS is in stderr but the result we want to process is moved to stdout
@@ -77,15 +79,20 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 			false,
 			true,
 		);
+
 		for (let i: number = 0; i < lines.length; i++) {
 			const line: string = lines[i];
+
 			if (line.includes("_JAVA_OPTIONS")) {
 				continue; //This is not a conflict
 			}
 			const colonIndex: number = line.lastIndexOf(":");
+
 			if (colonIndex >= 0) {
 				const localPath: string = line.slice(0, colonIndex);
+
 				let type: ConflictType = ConflictType.CONTENT;
+
 				if (
 					/You have a conflicting pending change/i.test(line) ||
 					/A newer version exists on the server/i.test(line)
@@ -136,6 +143,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 			.Add(this._itemPath)
 			.AddSwitch("recursive")
 			.AddSwitch("preview");
+
 		return builder;
 	}
 

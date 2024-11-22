@@ -67,6 +67,7 @@ export class GetVersion implements ITfvcCommand<string> {
 		//German  tf.exe example: "Microsoft (R) TF - Team Foundation-Versionskontrolltool, Version 14.102.25619.0"
 		//value = "14.102.25619.0"
 		const matches: string[] = executionResult.stdout.match(expression);
+
 		if (matches) {
 			//Sample tf.exe matches:
 			// Version 15.112.2641.0
@@ -85,6 +86,7 @@ export class GetVersion implements ITfvcCommand<string> {
 						TfvcTelemetryEvents.ExeNonEnuConfiguredMoreDetails,
 				},
 			];
+
 			throw new TfvcError({
 				message: Strings.NotAnEnuTfCommandLine,
 				messageOptions: messageOptions,

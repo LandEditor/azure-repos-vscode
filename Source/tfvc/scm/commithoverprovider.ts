@@ -71,9 +71,13 @@ export class CommitHoverProvider implements HoverProvider {
 		}
 
 		const document = this.editor.document;
+
 		const start = document.lineAt(0).range.start;
+
 		const end = document.lineAt(document.lineCount - 1).range.end;
+
 		const range = new Range(start, end);
+
 		const edit = new WorkspaceEdit();
 		edit.replace(scmInputUri, range, message);
 		workspace.applyEdit(edit);

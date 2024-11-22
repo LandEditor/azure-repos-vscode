@@ -67,6 +67,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const itemInfos: IItemInfo[] = [];
+
 		if (!executionResult.stdout) {
 			return itemInfos;
 		}
@@ -76,8 +77,10 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 			true,
 			true,
 		);
+
 		let curMode: string = ""; // "" is local mode, "server" is server mode
 		let curItem: IItemInfo;
+
 		for (let i: number = 0; i < lines.length; i++) {
 			const line: string = lines[i];
 			// Check the beginning of a new item
@@ -90,6 +93,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 				// We are starting a new Info section for the next item.
 				// So, finish off any in progress item and start a new one.
 				curMode = "";
+
 				if (curItem !== undefined) {
 					itemInfos.push(curItem);
 				}
@@ -100,10 +104,12 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 			} else {
 				// Add the property to the current item
 				const colonPos: number = line.indexOf(":");
+
 				if (colonPos > 0) {
 					const propertyName: string = this.getPropertyName(
 						curMode + line.slice(0, colonPos).trim().toLowerCase(),
 					);
+
 					if (propertyName) {
 						const propertyValue =
 							colonPos + 1 < line.length
@@ -152,26 +158,37 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 		switch (name) {
 			case "server path":
 				return "serverItem";
+
 			case "local path":
 				return "localItem";
+
 			case "server changeset":
 				return "serverVersion";
+
 			case "changeset":
 				return "localVersion";
+
 			case "change":
 				return "change";
+
 			case "type":
 				return "type";
+
 			case "server lock":
 				return "lock";
+
 			case "server lock owner":
 				return "lockOwner";
+
 			case "server deletion id":
 				return "deletionId";
+
 			case "server last modified":
 				return "lastModified";
+
 			case "server file type":
 				return "fileType";
+
 			case "server size":
 				return "fileSize";
 		}

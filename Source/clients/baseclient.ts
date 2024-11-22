@@ -30,13 +30,16 @@ export abstract class BaseClient {
 		infoMessage?: string,
 	): void {
 		const offline: boolean = Utils.IsOffline(err);
+
 		const msg: string = Utils.GetMessageForStatusCode(err, err.message);
+
 		const logPrefix: string =
 			infoMessage === undefined ? "" : infoMessage + " ";
 
 		//When polling, we never display an error, we only log it (no telemetry either)
 		if (polling === true) {
 			Logger.LogError(logPrefix + msg);
+
 			if (offline === true) {
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.text = offlineText;
@@ -57,6 +60,7 @@ export abstract class BaseClient {
 			//If we aren't polling, we always log an error and, optionally, send telemetry
 		} else {
 			const logMessage: string = logPrefix + msg;
+
 			if (offline === true) {
 				Logger.LogError(logMessage);
 			} else {

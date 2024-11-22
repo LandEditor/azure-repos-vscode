@@ -17,6 +17,7 @@ export interface IDisposable {
 
 export function dispose<T extends IDisposable>(disposables: T[]): T[] {
 	disposables.forEach((d) => d.dispose());
+
 	return [];
 }
 
@@ -66,6 +67,7 @@ export function once<T>(event: Event<T>): Event<T> {
 		const result = event(
 			(e) => {
 				result.dispose();
+
 				return listener.call(thisArgs, e);
 			},
 			null,

@@ -17,6 +17,7 @@ export class TfvcOutput {
 		}
 
 		TfvcOutput._outputChannel = window.createOutputChannel("TFVC");
+
 		if (disposables) {
 			disposables.push(TfvcOutput._outputChannel);
 		}

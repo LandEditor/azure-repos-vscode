@@ -99,11 +99,14 @@ export class WorkItemTrackingService {
 	): Promise<WorkItemType[]> {
 		const types: WorkItemType[] =
 			await this._witApi.getWorkItemTypes(teamProject);
+
 		const workItemTypes: WorkItemType[] = [];
+
 		const hiddenTypes: WorkItemTypeReference[] = [];
 		types.forEach((type) => {
 			workItemTypes.push(type);
 		});
+
 		const category: WorkItemTypeCategory =
 			await this._witApi.getWorkItemTypeCategory(
 				teamProject,
@@ -112,6 +115,7 @@ export class WorkItemTrackingService {
 		category.workItemTypes.forEach((hiddenType) => {
 			hiddenTypes.push(hiddenType);
 		});
+
 		const filteredTypes: WorkItemType[] = workItemTypes.filter(
 			function (el) {
 				for (
@@ -126,6 +130,7 @@ export class WorkItemTrackingService {
 				return true;
 			},
 		);
+
 		return filteredTypes;
 	}
 
@@ -135,9 +140,11 @@ export class WorkItemTrackingService {
 			parseInt(id),
 			[WorkItemFields.Id, WorkItemFields.Title],
 		);
+
 		const result: SimpleWorkItem = new SimpleWorkItem();
 		result.id = workItem.id.toString();
 		result.label = workItem.fields[WorkItemFields.Title];
+
 		return result;
 	}
 
@@ -159,8 +166,11 @@ export class WorkItemTrackingService {
 			wiql,
 			teamContext,
 		);
+
 		const results: SimpleWorkItem[] = [];
+
 		let workItemIds: number[] = [];
+
 		if (queryResult.queryResultType === QueryResultType.WorkItem) {
 			workItemIds = queryResult.workItems.map(function (w) {
 				return w.id;
@@ -201,6 +211,7 @@ export class WorkItemTrackingService {
 			const item: WorkItem = workItems.find(
 				(i) => i.id === workItemIds[index],
 			);
+
 			const id: string = item.id.toString();
 			results.push({
 				id: id,
@@ -259,7 +270,9 @@ export class WorkItemTrackingService {
 			"create",
 			issueType,
 		);
+
 		let separator: string = "?";
+
 		if (title !== undefined) {
 			//title may need to be encoded (issues if first character is '#', for instance)
 			url += separator + "[" + WorkItemFields.Title + "]=" + title;

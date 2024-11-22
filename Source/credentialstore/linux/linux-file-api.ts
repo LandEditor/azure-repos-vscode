@@ -42,6 +42,7 @@ export class LinuxFileApi implements ICredentialStore {
 				const entryArray: Array<any> = _.where(entries, {
 					service: service,
 				});
+
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
 						entryArray[0],
@@ -54,6 +55,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 
@@ -72,6 +74,7 @@ export class LinuxFileApi implements ICredentialStore {
 						elem.username === username && elem.service === service
 					);
 				});
+
 				const newEntry = {
 					username: username,
 					password: password,
@@ -89,6 +92,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 
@@ -115,6 +119,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 
@@ -131,6 +136,7 @@ export class LinuxFileApi implements ICredentialStore {
 					service: service,
 					username: username,
 				});
+
 				if (entryArray !== undefined && entryArray.length > 0) {
 					const credential: Credential = this.createCredential(
 						entryArray[0],
@@ -143,6 +149,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 
@@ -179,6 +186,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 
@@ -197,6 +205,7 @@ export class LinuxFileApi implements ICredentialStore {
 			.catch((err) => {
 				deferred.reject(err);
 			});
+
 		return deferred.promise;
 	}
 }

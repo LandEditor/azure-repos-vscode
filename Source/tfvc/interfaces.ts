@@ -42,6 +42,7 @@ export interface IWorkspace {
 	owner?: string;
 	comment?: string;
 	mappings: IWorkspaceMapping[];
+
 	defaultTeamProject: string;
 }
 

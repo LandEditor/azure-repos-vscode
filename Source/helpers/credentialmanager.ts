@@ -48,6 +48,7 @@ export class CredentialManager {
 			.catch((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -62,6 +63,7 @@ export class CredentialManager {
 			.catch((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -84,6 +86,7 @@ export class CredentialManager {
 			.catch((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 
@@ -100,8 +103,11 @@ export class CredentialManager {
 						deferred.resolve(new CredentialInfo(cred.Password));
 					} else if (context.RepoInfo.IsTeamFoundationServer) {
 						let domain: string;
+
 						let user: string = cred.Username;
+
 						const pair: string[] = user.split("\\");
+
 						if (pair.length > 1) {
 							domain = pair[0];
 							user = pair[pair.length - 1];
@@ -122,6 +128,7 @@ export class CredentialManager {
 			.catch((reason) => {
 				deferred.reject(reason);
 			});
+
 		return deferred.promise;
 	}
 

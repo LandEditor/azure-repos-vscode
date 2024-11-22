@@ -69,6 +69,7 @@ export class Model implements Disposable {
 			const isLogFile: boolean = !(
 				path.basename(uri.fsPath) === "team-extension.log"
 			);
+
 			return isSubFolder && isTfFolder && isLogFile;
 		});
 		onNonGitChange(this.onFileSystemChange, this, this._disposables);
@@ -93,11 +94,13 @@ export class Model implements Disposable {
 
 	public get Resources(): ResourceGroup[] {
 		const result: ResourceGroup[] = [];
+
 		if (this._conflictsGroup.resources.length > 0) {
 			result.push(this._conflictsGroup);
 		}
 		result.push(this._includedGroup);
 		result.push(this._excludedGroup);
+
 		return result;
 	}
 
@@ -106,6 +109,7 @@ export class Model implements Disposable {
 			return;
 		}
 		this._statusAlreadyInProgress = true;
+
 		try {
 			await this.run(undefined);
 		} finally {
@@ -136,6 +140,7 @@ export class Model implements Disposable {
 		if (paths && paths.length > 0) {
 			paths.forEach((path) => {
 				const normalizedPath: string = path.toLowerCase();
+
 				if (!_.contains(this._explicitlyExcluded, normalizedPath)) {
 					this._explicitlyExcluded.push(normalizedPath);
 				}
@@ -149,6 +154,7 @@ export class Model implements Disposable {
 		if (paths && paths.length > 0) {
 			paths.forEach((path) => {
 				const normalizedPath: string = path.toLowerCase();
+
 				if (_.contains(this._explicitlyExcluded, normalizedPath)) {
 					this._explicitlyExcluded = _.without(
 						this._explicitlyExcluded,
@@ -166,6 +172,7 @@ export class Model implements Disposable {
 
 	private async update(): Promise<void> {
 		const changes: IPendingChange[] = await this._repository.GetStatus();
+
 		let foundConflicts: IConflict[] = [];
 
 		// Without any server context we can't run delete or resolve commands
@@ -185,6 +192,7 @@ export class Model implements Disposable {
 				c.type === ConflictType.NAME_AND_CONTENT ||
 				c.type === ConflictType.RENAME,
 		);
+
 		if (conflict) {
 			if (conflict.type === ConflictType.RENAME) {
 				Telemetry.SendEvent(TfvcTelemetryEvents.RenameConflict);
@@ -194,13 +202,16 @@ export class Model implements Disposable {
 		}
 
 		const included: Resource[] = [];
+
 		const excluded: Resource[] = [];
+
 		const conflicts: Resource[] = [];
 
 		changes.forEach((raw) => {
 			const conflict: IConflict = foundConflicts.find((c) =>
 				this.conflictMatchesPendingChange(raw, c),
 			);
+
 			const resource: Resource = new Resource(raw, conflict);
 
 			if (resource.HasStatus(Status.CONFLICT)) {
@@ -244,6 +255,7 @@ export class Model implements Disposable {
 		conflict: IConflict,
 	): boolean {
 		let result: boolean = false;
+
 		if (change && change.localItem && conflict && conflict.localPath) {
 			// TODO: If resource or conflict are renames we have a lot more work to do
 			//       We are postponing this work for now until we have evidence that it happens a lot

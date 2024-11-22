@@ -48,6 +48,7 @@ export class TfvcContext implements IRepositoryContext {
 		Logger.LogDebug(
 			`Found a TFVC repository for url: '${this._tfvcRemoteUrl}' and team project: '${this._teamProjectName}'.`,
 		);
+
 		return true;
 	}
 

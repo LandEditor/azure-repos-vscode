@@ -42,9 +42,12 @@ export class GitClient extends BaseClient {
 					placeHolder: Strings.ChoosePullRequest,
 				},
 			);
+
 			if (request) {
 				Telemetry.SendEvent(TelemetryEvents.ViewPullRequest);
+
 				let discUrl: string = undefined;
+
 				if (request.id !== undefined) {
 					discUrl = GitVcService.GetPullRequestDiscussionUrl(
 						this._serverContext.RepoInfo.RepositoryUrl,
@@ -71,9 +74,11 @@ export class GitClient extends BaseClient {
 	//Opens the blame page for the currently active file
 	public OpenBlamePage(context: IRepositoryContext): void {
 		this.ensureGitContext(context);
+
 		let url: string = undefined;
 
 		const editor = window.activeTextEditor;
+
 		if (editor) {
 			Telemetry.SendEvent(TelemetryEvents.OpenBlamePage);
 
@@ -107,9 +112,11 @@ export class GitClient extends BaseClient {
 	//Opens the file history page for the currently active file
 	public OpenFileHistory(context: IRepositoryContext): void {
 		this.ensureGitContext(context);
+
 		let historyUrl: string = undefined;
 
 		const editor = window.activeTextEditor;
+
 		if (!editor) {
 			Telemetry.SendEvent(TelemetryEvents.OpenRepositoryHistory);
 
@@ -174,17 +181,22 @@ export class GitClient extends BaseClient {
 
 	private async getMyPullRequests(): Promise<BaseQuickPickItem[]> {
 		const requestItems: BaseQuickPickItem[] = [];
+
 		const requestIds: number[] = [];
 
 		Logger.LogInfo("Getting pull requests that I requested...");
+
 		const svc: GitVcService = new GitVcService(this._serverContext);
+
 		const myPullRequests: GitPullRequest[] = await svc.GetPullRequests(
 			this._serverContext.RepoInfo.RepositoryId,
 			this._serverContext.UserInfo.Id,
 			undefined,
 			PullRequestStatus.Active,
 		);
+
 		const icon: string = "search";
+
 		const label: string = `$(${icon}) `;
 		requestItems.push({
 			label: label + Strings.BrowseYourPullRequests,
@@ -224,6 +236,7 @@ export class GitClient extends BaseClient {
 		myReviewPullRequests.forEach((pr) => {
 			const score: PullRequestScore =
 				GitVcService.GetPullRequestScore(pr);
+
 			if (requestIds.indexOf(pr.pullRequestId) < 0) {
 				requestItems.push(
 					this.getPullRequestLabel(
@@ -260,6 +273,7 @@ export class GitClient extends BaseClient {
 		score: PullRequestScore,
 	): BaseQuickPickItem {
 		let scoreIcon: string = "";
+
 		if (score === PullRequestScore.Succeeded) {
 			scoreIcon = "check";
 		} else if (score === PullRequestScore.Failed) {

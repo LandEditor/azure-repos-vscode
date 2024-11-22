@@ -76,6 +76,7 @@ export class TfvcError {
 			`command: ${this.tfvcCommand}, ` +
 			`stdout: ${this.stdout}, ` +
 			`stderr: ${this.stderr}`;
+
 		if (this.error) {
 			result += " Stack: " + (<any>this.error).stack;
 		}

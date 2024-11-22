@@ -24,6 +24,7 @@ export class UIHelper {
 		if (changes && changes.length > 0) {
 			// First, create an array of quick pick items from the changes
 			const items: QuickPickItem[] = [];
+
 			for (let i: number = 0; i < changes.length; i++) {
 				items.push({
 					label: UIHelper.GetFileName(changes[i]),
@@ -66,6 +67,7 @@ export class UIHelper {
 		onlyShowErrors,
 	): Promise<void> {
 		const items: QuickPickItem[] = [];
+
 		if (syncResults.itemResults.length === 0) {
 			TfvcOutput.AppendLine(Strings.AllFilesUpToDate);
 			items.push({
@@ -76,6 +78,7 @@ export class UIHelper {
 		} else {
 			for (let i: number = 0; i < syncResults.itemResults.length; i++) {
 				const item: ISyncItemResult = syncResults.itemResults[i];
+
 				if (onlyShowErrors && !UIHelper.isSyncError(item.syncType)) {
 					continue;
 				}
@@ -103,10 +106,12 @@ export class UIHelper {
 			case SyncType.Error:
 			case SyncType.Warning:
 				return true;
+
 			case SyncType.Deleted:
 			case SyncType.New:
 			case SyncType.Updated:
 				return false;
+
 			default:
 				return false;
 		}
@@ -116,16 +121,22 @@ export class UIHelper {
 		switch (type) {
 			case SyncType.Conflict:
 				return Strings.SyncTypeConflict;
+
 			case SyncType.Deleted:
 				return Strings.SyncTypeDeleted;
+
 			case SyncType.Error:
 				return Strings.SyncTypeError;
+
 			case SyncType.New:
 				return Strings.SyncTypeNew;
+
 			case SyncType.Updated:
 				return Strings.SyncTypeUpdated;
+
 			case SyncType.Warning:
 				return Strings.SyncTypeWarning;
+
 			default:
 				return Strings.SyncTypeUpdated;
 		}
@@ -137,16 +148,22 @@ export class UIHelper {
 		switch (type) {
 			case AutoResolveType.AutoMerge:
 				return Strings.AutoResolveTypeAutoMerge;
+
 			case AutoResolveType.DeleteConflict:
 				return Strings.AutoResolveTypeDeleteConflict;
+
 			case AutoResolveType.KeepYours:
 				return Strings.AutoResolveTypeKeepYours;
+
 			case AutoResolveType.KeepYoursRenameTheirs:
 				return Strings.AutoResolveTypeKeepYoursRenameTheirs;
+
 			case AutoResolveType.OverwriteLocal:
 				return Strings.AutoResolveTypeOverwriteLocal;
+
 			case AutoResolveType.TakeTheirs:
 				return Strings.AutoResolveTypeTakeTheirs;
+
 			default:
 				return Strings.AutoResolveTypeAutoMerge;
 		}
@@ -155,6 +172,7 @@ export class UIHelper {
 	public static GetFileName(change: IPendingChange): string {
 		if (change && change.localItem) {
 			const filename: string = path.parse(change.localItem).base;
+
 			return filename;
 		}
 
@@ -179,6 +197,7 @@ export class UIHelper {
 			message,
 			/*{ modal: true },*/ okButtonText,
 		);
+
 		return pick === okButtonText;
 	}
 }

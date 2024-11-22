@@ -31,6 +31,7 @@ export class Resource implements SourceControlResourceState {
 		this._uri = Uri.file(change.localItem);
 		this._statuses = GetStatuses(change.changeType);
 		this._version = change.version;
+
 		if (conflict) {
 			this._statuses.push(Status.CONFLICT);
 			this._conflictType = conflict.type;
@@ -66,6 +67,7 @@ export class Resource implements SourceControlResourceState {
 		const versionSpec: string = this.HasStatus(Status.CONFLICT)
 			? "T"
 			: "C" + this._change.version;
+
 		return Uri.file(serverItem).with({
 			scheme: TfvcSCMProvider.scmScheme,
 			query: versionSpec,
@@ -74,6 +76,7 @@ export class Resource implements SourceControlResourceState {
 
 	public GetTitle(): string {
 		const basename = path.basename(this._change.localItem);
+
 		const sourceBasename = this._change.sourceItem
 			? path.basename(this._change.sourceItem)
 			: "";
@@ -89,8 +92,10 @@ export class Resource implements SourceControlResourceState {
 					}
 					// Use the default title for all other cases
 					break;
+
 				case ConflictType.DELETE:
 					return `${basename} (${Strings.ConflictAlreadyDeleted})`;
+
 				case ConflictType.DELETE_TARGET:
 					return `${basename} (${Strings.ConflictDeletedLocally})`;
 			}

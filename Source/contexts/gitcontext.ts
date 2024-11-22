@@ -41,6 +41,7 @@ export class GitContext implements IRepositoryContext {
 			if (this._gitFolder !== undefined) {
 				// With parse-git-config, cwd is the directory containing the path, .git/config, you want to sync
 				this._gitParentFolder = path.dirname(this._gitFolder);
+
 				let syncObj: any = { cwd: this._gitParentFolder };
 				//If gitDir, send pgc the exact path to the config file to use
 				if (gitDir) {
@@ -72,6 +73,7 @@ export class GitContext implements IRepositoryContext {
 					)
 				) {
 					const purl = url.parse(this._gitOriginalRemoteUrl);
+
 					if (purl) {
 						if (
 							RepoUtils.IsTeamFoundationServicesRepo(
@@ -79,7 +81,9 @@ export class GitContext implements IRepositoryContext {
 							)
 						) {
 							this._isTeamServicesUrl = true;
+
 							const splitHref = purl.href.split("@");
+
 							if (splitHref.length === 2) {
 								//RemoteUrl is SSH
 								this._isSsh = true;
@@ -105,8 +109,10 @@ export class GitContext implements IRepositoryContext {
 									// so ssh://account@vsts-ssh.visualstudio.com/DefaultCollection/_ssh/foo
 									// becomes https://account.visualstudio.com/DefaultCollection/_git/foo
 									const scheme = "https://";
+
 									const hostname =
 										purl.auth + ".visualstudio.com";
+
 									const path = purl.pathname.replace(
 										"_ssh",
 										"_git",
@@ -124,6 +130,7 @@ export class GitContext implements IRepositoryContext {
 						) {
 							this._isTeamFoundationServer = true;
 							this._gitRemoteUrl = this._gitOriginalRemoteUrl;
+
 							if (purl.protocol.toLowerCase() === "ssh:") {
 								this._isSsh = true;
 								// TODO: No support yet for SSH on-premises (no-op the extension)

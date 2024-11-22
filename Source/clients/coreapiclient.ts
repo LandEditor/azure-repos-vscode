@@ -21,8 +21,10 @@ export class CoreApiClient {
 		teamProjectName: string,
 	): Promise<TeamProject> {
 		const svc: CoreApiService = new CoreApiService(remoteUrl);
+
 		const teamProject: TeamProject =
 			await svc.GetTeamProject(teamProjectName);
+
 		return teamProject;
 	}
 
@@ -31,8 +33,10 @@ export class CoreApiClient {
 		collectionName: string,
 	): Promise<TeamProjectCollection> {
 		const svc: CoreApiService = new CoreApiService(remoteUrl);
+
 		const collection: TeamProjectCollection =
 			await svc.GetProjectCollection(collectionName);
+
 		return collection;
 	}
 }

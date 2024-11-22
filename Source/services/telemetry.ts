@@ -37,6 +37,7 @@ export class Telemetry {
 
 		// Always initialize Application Insights
 		let insightsKey: string = Telemetry._productionKey;
+
 		if (settings.AppInsightsKey !== undefined) {
 			insightsKey = settings.AppInsightsKey;
 		}
@@ -94,6 +95,7 @@ export class Telemetry {
 	//Will generate a consistent ApplicationInsights userId
 	private static setUserId(): void {
 		let username: string = "UNKNOWN";
+
 		let hostname: string = "UNKNOWN";
 
 		if (os.userInfo().username) {

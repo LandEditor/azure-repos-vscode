@@ -43,8 +43,10 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			// get the checkin info from the SCM viewlet
 			const checkinInfo: ICheckinInfo = TfvcSCMProvider.GetCheckinInfo();
+
 			if (!checkinInfo) {
 				window.showInformationMessage(Strings.NoChangesToCheckin);
+
 				return;
 			}
 
@@ -53,6 +55,7 @@ export class TfvcExtension {
 					? TfvcTelemetryEvents.CheckinExe
 					: TfvcTelemetryEvents.CheckinClc,
 			);
+
 			const changeset: string = await this._repo.Checkin(
 				checkinInfo.files,
 				checkinInfo.comment,
@@ -71,8 +74,10 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (uri) {
 				const basename: string = path.basename(uri.fsPath);
+
 				try {
 					const message: string = `Are you sure you want to delete '${basename}'?`;
+
 					if (
 						await UIHelper.PromptForConfirmation(
 							message,
@@ -124,7 +129,9 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (resources && resources.length > 0) {
 				const pathsToUnexclude: string[] = [];
+
 				const pathsToAdd: string[] = [];
+
 				const pathsToDelete: string[] = [];
 				resources.forEach((resource) => {
 					const path: string = resource.resourceUri.fsPath;
@@ -181,12 +188,15 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (resource) {
 				const left: Uri = TfvcSCMProvider.GetLeftResource(resource);
+
 				const right: Uri = TfvcSCMProvider.GetRightResource(resource);
+
 				const title: string = resource.GetTitle();
 
 				if (!right) {
 					// TODO
 					console.error("oh no");
+
 					return;
 				}
 
@@ -239,14 +249,17 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (uri) {
 				const basename: string = path.basename(uri.fsPath);
+
 				const newFilename: string = await window.showInputBox({
 					value: basename,
 					prompt: Strings.RenamePrompt,
 					placeHolder: undefined,
 					password: false,
 				});
+
 				if (newFilename && newFilename !== basename) {
 					const dirName: string = path.dirname(uri.fsPath);
+
 					const destination: string = path.join(dirName, newFilename);
 
 					try {
@@ -286,10 +299,14 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (resource) {
 				const localPath: string = resource.resourceUri.fsPath;
+
 				const resolveTypeString: string =
 					UIHelper.GetDisplayTextForAutoResolveType(autoResolveType);
+
 				const basename: string = path.basename(localPath);
+
 				const message: string = `Are you sure you want to resolve changes in '${basename}' as ${resolveTypeString}?`;
+
 				if (
 					await UIHelper.PromptForConfirmation(
 						message,
@@ -330,6 +347,7 @@ export class TfvcExtension {
 					? TfvcTelemetryEvents.SyncExe
 					: TfvcTelemetryEvents.SyncClc,
 			);
+
 			const results: ISyncResults = await this._repo.Sync(
 				[this._repo.Path],
 				true,
@@ -357,7 +375,9 @@ export class TfvcExtension {
 				//When calling from UI, we have the uri of the resource from which the command was invoked
 				if (pathsToUndo.length > 0) {
 					const basename: string = path.basename(pathsToUndo[0]);
+
 					let message: string = `Are you sure you want to undo changes to '${basename}'?`;
+
 					if (pathsToUndo.length > 1) {
 						message = `Are you sure you want to undo changes to ${pathsToUndo.length.toString()} files?`;
 					}
@@ -388,6 +408,7 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (TfvcSCMProvider.HasItems()) {
 				const message: string = `Are you sure you want to undo all changes?`;
+
 				if (
 					await UIHelper.PromptForConfirmation(
 						message,
@@ -403,6 +424,7 @@ export class TfvcExtension {
 				}
 			} else {
 				window.showInformationMessage(Strings.NoChangesToUndo);
+
 				return;
 			}
 		}, "UndoAll");
@@ -417,11 +439,13 @@ export class TfvcExtension {
 		//to ensure it is initialized for Team Services
 		if (!this._manager.EnsureInitialized(RepositoryType.TFVC)) {
 			this._manager.DisplayErrorMessage();
+
 			return;
 		}
 
 		try {
 			let itemPath: string;
+
 			const editor = window.activeTextEditor;
 			//Get the path to the file open in the VSCode editor (if any)
 			if (editor) {
@@ -430,6 +454,7 @@ export class TfvcExtension {
 			if (!itemPath) {
 				//If no file open in editor, just display the history url of the entire repo
 				this.showRepositoryHistory();
+
 				return;
 			}
 
@@ -437,8 +462,11 @@ export class TfvcExtension {
 			//With a single file, show that file's history
 			if (itemInfos && itemInfos.length === 1) {
 				Telemetry.SendEvent(TfvcTelemetryEvents.OpenFileHistory);
+
 				const serverPath: string = itemInfos[0].serverItem;
+
 				const file: string = encodeURIComponent(serverPath);
+
 				let historyUrl: string = UrlBuilder.Join(
 					this._manager.RepoContext.RemoteUrl,
 					"_versionControl",
@@ -449,6 +477,7 @@ export class TfvcExtension {
 					`_a=history`,
 				);
 				Utils.OpenUrl(historyUrl);
+
 				return;
 			} else {
 				//If the file is in the workspace folder (but not mapped), just display the history url of the entire repo
@@ -473,12 +502,14 @@ export class TfvcExtension {
 	): Promise<void> {
 		if (!this._manager.EnsureInitializedForTFVC()) {
 			this._manager.DisplayErrorMessage();
+
 			return;
 		}
 		//This occurs in the case where we 1) sign in successfully, 2) sign out, 3) sign back in but with invalid credentials
 		//Essentially, the tfvcExtension.InitializeClients call hasn't been made successfully yet.
 		if (!this._repo) {
 			this._manager.DisplayErrorMessage(Strings.UserMustSignIn);
+
 			return;
 		}
 
@@ -521,6 +552,7 @@ export class TfvcExtension {
 
 	private showRepositoryHistory(): void {
 		Telemetry.SendEvent(TfvcTelemetryEvents.OpenRepositoryHistory);
+
 		let historyUrl: string = UrlBuilder.Join(
 			this._manager.RepoContext.RemoteUrl,
 			"_versionControl",

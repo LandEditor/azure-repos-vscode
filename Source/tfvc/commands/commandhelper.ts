@@ -53,7 +53,9 @@ export class CommandHelper {
 	public static ProcessErrors(result: IExecutionResult): void {
 		if (result.exitCode) {
 			let tfvcErrorCode: string = TfvcErrorCodes.UnknownError;
+
 			let message: string;
+
 			let messageOptions: IButtonMessageItem[] = [];
 
 			if (/Authentication failed/.test(result.stderr)) {
@@ -166,9 +168,12 @@ export class CommandHelper {
 		// parse output for changeset number
 		if (stdout) {
 			const prefix: string = "Changeset #";
+
 			const start: number = stdout.indexOf(prefix) + prefix.length;
+
 			if (start >= 0) {
 				const end: number = stdout.indexOf(" ", start);
+
 				if (end > start) {
 					return stdout.slice(start, end);
 				}
@@ -198,6 +203,7 @@ export class CommandHelper {
 		// Ignore WARNings that may be above the desired lines
 		if (skipWarnings) {
 			let index: number = 0;
+
 			while (index < lines.length && lines[index].startsWith("WARN")) {
 				index++;
 			}
@@ -235,7 +241,9 @@ export class CommandHelper {
 	public static TrimToXml(xml: string): string {
 		if (xml) {
 			const start: number = xml.indexOf("<?xml");
+
 			const end: number = xml.lastIndexOf(">");
+
 			if (start >= 0 && end > start) {
 				return xml.slice(start, end + 1);
 			}

@@ -23,9 +23,11 @@ export class DecorationProvider {
 		conflictType?: ConflictType,
 	): SourceControlResourceDecorations {
 		const status: Status = this.getDominantStatus(statuses);
+
 		const light = {
 			iconPath: DecorationProvider.getIconPath(status, "light"),
 		};
+
 		const dark = {
 			iconPath: DecorationProvider.getIconPath(status, "dark"),
 		};
@@ -54,12 +56,14 @@ export class DecorationProvider {
 		let index: number = statuses.findIndex(
 			(s) => s === Status.ADD || s === Status.EDIT || s === Status.DELETE,
 		);
+
 		if (index >= 0) {
 			return statuses[index];
 		}
 
 		// The next dominant type is RENAME
 		index = statuses.findIndex((s) => s === Status.RENAME);
+
 		if (index >= 0) {
 			return statuses[index];
 		}
@@ -82,20 +86,28 @@ export class DecorationProvider {
 		switch (status) {
 			case Status.ADD:
 				return DecorationProvider.getIconUri("status-add", theme);
+
 			case Status.BRANCH:
 				return DecorationProvider.getIconUri("status-branch", theme);
+
 			case Status.DELETE:
 				return DecorationProvider.getIconUri("status-delete", theme);
+
 			case Status.EDIT:
 				return DecorationProvider.getIconUri("status-edit", theme);
+
 			case Status.LOCK:
 				return DecorationProvider.getIconUri("status-lock", theme);
+
 			case Status.MERGE:
 				return DecorationProvider.getIconUri("status-merge", theme);
+
 			case Status.RENAME:
 				return DecorationProvider.getIconUri("status-rename", theme);
+
 			case Status.UNDELETE:
 				return DecorationProvider.getIconUri("status-undelete", theme);
+
 			default:
 				return void 0;
 		}

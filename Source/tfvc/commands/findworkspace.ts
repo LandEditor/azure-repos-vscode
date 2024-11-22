@@ -68,26 +68,34 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 		CommandHelper.ProcessErrors(executionResult);
 
 		const stdout = executionResult.stdout;
+
 		if (!stdout) {
 			return undefined;
 		}
 
 		// Find the workspace name and collectionUrl
 		const lines = CommandHelper.SplitIntoLines(stdout);
+
 		let workspaceName: string = "";
+
 		let collectionUrl: string = "";
+
 		let equalsLineFound: boolean = false;
+
 		const mappings: IWorkspaceMapping[] = [];
+
 		let teamProject: string = undefined;
 
 		for (let i: number = 0; i <= lines.length; i++) {
 			const line: string = lines[i];
+
 			if (!line) {
 				continue;
 			}
 
 			if (line.startsWith("==========")) {
 				equalsLineFound = true;
+
 				continue;
 			} else if (!equalsLineFound) {
 				continue;
@@ -104,6 +112,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			} else {
 				// This should be a mapping
 				const mapping: IWorkspaceMapping = this.getMapping(line);
+
 				if (mapping) {
 					mappings.push(mapping);
 					//If we're restricting workspaces, tf.exe will return the proper (single) folder. While TEE will
@@ -128,11 +137,13 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 					this._localPath,
 					mappings[i].localPath,
 				);
+
 				if (isWithin) {
 					const project: string = this.getTeamProject(
 						mappings[i].serverPath,
 					); //maintain case in serverPath
 					teamProject = project;
+
 					break;
 				}
 			}
@@ -150,6 +161,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 						TfvcTelemetryEvents.ExeNonEnuConfiguredMoreDetails,
 				},
 			];
+
 			throw new TfvcError({
 				message: Strings.NotAnEnuTfCommandLine,
 				messageOptions: messageOptions,
@@ -189,9 +201,11 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 		executionResult: IExecutionResult,
 	): Promise<IWorkspace> {
 		const workspace: IWorkspace = await this.ParseOutput(executionResult);
+
 		if (workspace && workspace.name) {
 			// The workspace name includes the user name, so let's fix that
 			const lastOpenParenIndex: number = workspace.name.lastIndexOf(" (");
+
 			if (lastOpenParenIndex >= 0) {
 				workspace.name = workspace.name
 					.slice(0, lastOpenParenIndex)
@@ -207,6 +221,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	private getValue(line: string): string {
 		if (line) {
 			const index: number = line.indexOf(":");
+
 			if (index >= 0 && index + 1 < line.length) {
 				return line.slice(index + 1).trim();
 			}
@@ -227,6 +242,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 				.trim()
 				.toLowerCase()
 				.startsWith("(cloaked)");
+
 			let end: number = line.indexOf(":");
 			//EXE: cloaked entries end with ':'
 			//CLC: cloaked entries *don't* end with ':'
@@ -234,7 +250,9 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 				end = line.length;
 			}
 			const start: number = cloaked ? line.indexOf(")") + 1 : 0;
+
 			const serverPath: string = line.slice(start, end).trim();
+
 			let localPath: string;
 			//cloaked entries don't have local paths
 			if (end >= 0 && end + 1 < line.length) {
@@ -262,6 +280,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			serverPath.length > 2
 		) {
 			const index: number = serverPath.indexOf("/", 2);
+
 			if (index > 0) {
 				return serverPath.slice(2, index);
 			} else {

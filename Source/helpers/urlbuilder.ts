@@ -43,6 +43,7 @@ export class UrlBuilder {
 			const prefix: string = idx === 0 ? "?" : "&";
 
 			let arg: string = args[idx];
+
 			if (arg.startsWith("?") || arg.startsWith("&")) {
 				arg = arg.substring(1, arg.length);
 			}
@@ -67,6 +68,7 @@ export class UrlBuilder {
 			const prefix: string = idx === 0 ? "#" : "&";
 
 			let arg: string = args[idx];
+
 			if (arg.startsWith("#") || arg.startsWith("&")) {
 				arg = arg.substring(1, arg.length);
 			}

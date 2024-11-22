@@ -26,6 +26,7 @@ export class FileTokenStorage {
 		existingEntries: Array<any>,
 	): Q.Promise<void> {
 		const entries: Array<any> = existingEntries.concat(newEntries);
+
 		return this.saveEntries(entries);
 	}
 
@@ -35,7 +36,9 @@ export class FileTokenStorage {
 
 	public LoadEntries(): Q.Promise<any> {
 		const deferred: Q.Deferred<any> = Q.defer();
+
 		let entries: Array<any> = [];
+
 		let err: any;
 
 		try {
@@ -75,6 +78,7 @@ export class FileTokenStorage {
 
 		// If the path we want to store in doesn't exist, create it
 		const folder: string = path.dirname(this._filename);
+
 		if (!fs.existsSync(folder)) {
 			fs.mkdirSync(folder);
 		}
@@ -90,6 +94,7 @@ export class FileTokenStorage {
 				}
 			},
 		);
+
 		return defer.promise;
 	}
 }
