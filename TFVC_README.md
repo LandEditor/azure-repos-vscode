@@ -38,25 +38,25 @@ to check out the other TFVC documentation on this page.
 -   Open a folder containing a _Local_ TFVC Workspace and sign in when prompted.
     [More info...](#open-a-local-tfvc-repository-folder)
 -   Set the SCM Provider to `TFVC`.
-    [Read how...](https://code.visualstudio.com/updates/v1_13#_install-additional-scm-providers)
+    [Read how...](HTTPS://code.visualstudio.com/updates/v1_13#_install-additional-scm-providers)
 
 ## Getting Started Videos
 
 Below are a few videos to help get you started using TFVC quickly.
 
--   [TFVC Source Code Control for Visual Studio Code](https://youtu.be/6IzJ2UPGmoQ) -
+-   [TFVC Source Code Control for Visual Studio Code](HTTPS://youtu.be/6IzJ2UPGmoQ) -
     This video shows you how to set up the TFVC support on Windows and
     demonstrates much of the functionality available for Team Foundation Version
     Control. The features shown in this video apply equally well to the TFVC
     support on macOS and Linux.
--   [Set up and Configure the TEE CLC on Linux (and macOS)](https://youtu.be/VPNaEIVZfr0) -
+-   [Set up and Configure the TEE CLC on Linux (and macOS)](HTTPS://youtu.be/VPNaEIVZfr0) -
     This video demonstrates how to set up the Team Explorer Everywhere Command
     Line Client (TEE CLC) on Ubuntu. On macOS and Linux, the CLC provides the
     TFVC capability to the extension.
--   [Set up the Azure Repos extension for Visual Studio Code](https://youtu.be/t6gGfj8WOgg) -
+-   [Set up the Azure Repos extension for Visual Studio Code](HTTPS://youtu.be/t6gGfj8WOgg) -
     If you haven't used the extension before, this video will show you how to
     set it up, create a personal access token and get up and running.
--   [Walkthrough of the Azure Repos extension for Visual Studio Code](https://youtu.be/sk6LrzQX4P8) -
+-   [Walkthrough of the Azure Repos extension for Visual Studio Code](HTTPS://youtu.be/sk6LrzQX4P8) -
     This is a walkthrough of most of the features of the Azure Repos extension.
 
 ## Prerequisites
@@ -65,7 +65,7 @@ Below are a few videos to help get you started using TFVC quickly.
 
 If you are using the extension with Azure DevOps Services, ensure you have an
 Azure DevOps Services organization. If you do not have one,
-[sign up for Azure DevOps Services](https://aka.ms/SignupAzureDevOps/?campaign=azure~repos~vscode~tfvcreadme).
+[sign up for Azure DevOps Services](HTTPS://aka.ms/SignupAzureDevOps/?campaign=azure~repos~vscode~tfvcreadme).
 
 ### Team Foundation Server
 
@@ -76,7 +76,7 @@ versions of Team Foundation Server are not supported.
 ## Installation
 
 First, you will need to install
-[Visual Studio Code](https://code.visualstudio.com/download) `1.11.1` or later.
+[Visual Studio Code](HTTPS://code.visualstudio.com/download) `1.11.1` or later.
 
 ### The Visual Studio Code Extension
 
@@ -104,7 +104,7 @@ folder. It will typically be placed in a location similar to
 to
 `C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\CommonExtensions\Microsoft\TeamFoundation\Team Explorer\TF.exe`.
 Visual Studio Community can be downloaded from
-[here](https://www.visualstudio.com/free-developer-offers/).
+[here](HTTPS://www.visualstudio.com/free-developer-offers/).
 
 #### Eclipse, JetBrains IDEs (Windows, macOS, Linux)
 
@@ -112,7 +112,7 @@ If you typically use Eclipse or one of the JetBrains IDEs (e.g., Android Studio,
 IntelliJ), you will need to download and extract a version of the Team Explorer
 Everywhere Command Line Client (TEE CLC). As of this update, the latest version
 can be downloaded from
-[TEE-CLC-14.114.0.zip](https://github.com/Microsoft/team-explorer-everywhere/releases/download/v14.114.0/TEE-CLC-14.114.0.zip).
+[TEE-CLC-14.114.0.zip](HTTPS://github.com/Microsoft/team-explorer-everywhere/releases/download/v14.114.0/TEE-CLC-14.114.0.zip).
 After downloading, extract it to a folder and open a Terminal window.
 
 From that Terminal window, ensure that at least Java 8 is installed and
@@ -122,7 +122,7 @@ properly, you will need to accept the TEE End User License Agreement by running
 extension will not function properly until this EULA is accepted.
 
 If you are using the TEE CLC, see how to set it up by viewing
-[this video](https://youtu.be/VPNaEIVZfr0).
+[this video](HTTPS://youtu.be/VPNaEIVZfr0).
 
 ## Authentication
 
@@ -135,8 +135,8 @@ token and store it in your Visual Studio Code settings.
 
 If you do not have a personal access token yet, you will need to create one on
 your Azure DevOps Services organization. To create the token, go
-[here](https://aka.ms/gtgzt4) to read how. You can also
-[view our video](https://youtu.be/t6gGfj8WOgg) on how to do the same.
+[here](HTTPS://aka.ms/gtgzt4) to read how. You can also
+[view our video](HTTPS://youtu.be/t6gGfj8WOgg) on how to do the same.
 
 -   TFVC repositories require tokens with _All Scopes_. Anything less will cause
     the extension to fail.
@@ -174,12 +174,12 @@ If you plan to use the TEE CLC, the value to provide will be similar to
 `/home/username/TEE-CLC-14.114.0/tf`. On Windows, the entry should point to
 `tf.cmd`. On macOS and Linux, it should point to the script `tf`. If you are
 using the TEE CLC, see how to do this by viewing
-[this video](https://youtu.be/VPNaEIVZfr0).
+[this video](HTTPS://youtu.be/VPNaEIVZfr0).
 
 ## Team Foundation Version Control
 
 To get an overview of the TFVC support provided by the extension, view
-[this video](https://youtu.be/6IzJ2UPGmoQ). Although it demonstrates the
+[this video](HTTPS://youtu.be/6IzJ2UPGmoQ). Although it demonstrates the
 extension running on Windows, the TFVC functionality will work the same on macOS
 and Linux. Further information is detailed below.
 
@@ -297,7 +297,7 @@ To configure a TFS proxy server, you must provide the URL to that server in the
 Visual Studio Code Settings (**File > Preferences > Settings**):
 
 ```javascript
-  "tfvc.proxy": "http://servername:9999/proxy"
+  "tfvc.proxy": "HTTP://servername:9999/proxy"
 ```
 
 ### Restricting Status changes to the current VS Code Workspace
@@ -354,13 +354,13 @@ While the TEE CLC is primarily for macOS and Linux users it can also be used on
 Windows. In order to use the CLC on Windows, you need to do the following:
 
 -   Download and install a version of
-    [Java 8 for Windows](http://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).
+    [Java 8 for Windows](HTTP://www.oracle.com/technetwork/java/javase/downloads/jre8-downloads-2133155.html).
     -   Make sure to install the version (i.e., x86 or x64) that matches your
         processor architecture
 -   Ensure the path to `java.exe` is a part of your `PATH` environment variable.
     -   Check that you can successully run `java -version`
 -   Download and unzip the
-    [latest version](https://github.com/Microsoft/team-explorer-everywhere/releases)
+    [latest version](HTTPS://github.com/Microsoft/team-explorer-everywhere/releases)
     of the TEE CLC to a local folder of your choice.
     -   The file you need to download is of the format `TEE-CLC-14.114.0.zip`
 -   Open a command prompt and run `{path-to-tf.cmd} eula` and accept the End
@@ -373,13 +373,13 @@ Windows. In order to use the CLC on Windows, you need to do the following:
     so that the CLC is aware of the workspaces in the specified collection.
     (Each tool, tf.cmd and tf.exe, keeps its own local cache of workspaces.)
 
-Finally, there's also a [video](https://youtu.be/VPNaEIVZfr0) that shows how to
+Finally, there's also a [video](HTTPS://youtu.be/VPNaEIVZfr0) that shows how to
 do this on Linux (the same high-level steps apply on Windows).
 
 ### _Which instructions do I follow to set up TFVC functionality on the macOS?_
 
 You will follow the same instructions for setting up the TEE CLC as is shown on
-Ubuntu in [this video](https://youtu.be/VPNaEIVZfr0).
+Ubuntu in [this video](HTTPS://youtu.be/VPNaEIVZfr0).
 
 ### _I have workspaces created with Visual Studio. Can I use the TEE CLC to work with them?_
 
@@ -419,14 +419,14 @@ TEE CLC on Windows.
 The Visual Studio IDE shows these files as 'Detected Changes' and simply
 displays the number of them. The TFVC Viewlet will display each file
 individually. See
-[this issue](https://github.com/Microsoft/azure-repos-vscode/issues/248) for an
+[this issue](HTTPS://github.com/Microsoft/azure-repos-vscode/issues/248) for an
 example of what you may see. To properly ignore these files, create a
 `.tfignore` file and add it to the root folder of your TFVC repository. (You
 will also want to check this file in.) You can find the official documentation
 on how to do this
-[here](https://www.visualstudio.com/en-us/docs/tfvc/add-files-server#customize-which-files-are-ignored-by-version-control).
+[here](HTTPS://www.visualstudio.com/en-us/docs/tfvc/add-files-server#customize-which-files-are-ignored-by-version-control).
 To get started easily, copy this
-[example file](https://www.visualstudio.com/en-us/docs/tfvc/add-files-server#tfignore-file-example),
+[example file](HTTPS://www.visualstudio.com/en-us/docs/tfvc/add-files-server#tfignore-file-example),
 place it in the root of your repository, update it as necessary and check it in.
 For example, if you want to ignore all files under the `node_modules` folder,
 you would add a `\node_modules` entry to the `.tfignore` file.
@@ -434,7 +434,7 @@ you would add a `\node_modules` entry to the `.tfignore` file.
 ### _I already have Visual Studio installed. How can I determine the location of TF.exe?_
 
 Here's a tip from **@dsolodow**
-([original comment](https://github.com/Microsoft/azure-repos-vscode/issues/269#issuecomment-311837077)):
+([original comment](HTTPS://github.com/Microsoft/azure-repos-vscode/issues/269#issuecomment-311837077)):
 _When you install Visual Studio, it creates a Start Menu shortcut called
 "Developer Command Prompt for VS YEAR" where YEAR is 2015, 2017, etc. If you
 launch that, and then at that prompt run `where tf.exe` it will give you the
@@ -447,21 +447,21 @@ Community, Enterprise and Professional versions of Visual Studio 2017, there is
 also a free, standalone "Visual Studio Team Explorer 2017" version that contains
 TF.exe. You can find all of the versions of Visual Studio (including Team
 Explorer) on the
-[Visual Studio 2017 Downloads](https://www.visualstudio.com/downloads/) page
+[Visual Studio 2017 Downloads](HTTPS://www.visualstudio.com/downloads/) page
 (which needs to be expanded first). It is listed under the "Visual Studio 2017"
 section on that page. The release notes for Team Explorer 2017 can be found
-[here](https://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes-v15.1#te).
+[here](HTTPS://www.visualstudio.com/en-us/news/releasenotes/vs2017-relnotes-v15.1#te).
 
 ### _Where is the support for Server workspaces?_
 
 At this time, it's still on the backlog. The issue tracking support for Server
 workspaces is
-[here](https://github.com/Microsoft/azure-repos-vscode/issues/176).
+[here](HTTPS://github.com/Microsoft/azure-repos-vscode/issues/176).
 
 ### _What is the difference between a Local and Server workspace? How can I tell which one I'm working with?_
 
 You can read about the differences between the two in
-[our documentation](https://www.visualstudio.com/en-us/docs/tfvc/decide-between-using-local-server-workspace).
+[our documentation](HTTPS://www.visualstudio.com/en-us/docs/tfvc/decide-between-using-local-server-workspace).
 Using `tf.exe` on Windows, you can determine which type of workspace you have by
 running `tf workspace` from the folder where your workspace resides. When you
 do, a dialog box similar to the one below will be displayed and you can see the
