@@ -6,6 +6,7 @@
 
 import basem = require("vso-node-api/ClientApiBases");
 import VsoBaseInterfaces = require("vso-node-api/interfaces/common/VsoBaseInterfaces");
+
 export class TeamServicesApi extends basem.ClientApiBase {
 	constructor(
 		baseUrl: string,
