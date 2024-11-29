@@ -16,10 +16,12 @@ import { Telemetry } from "../services/telemetry";
 
 export abstract class BaseClient {
 	protected _serverContext: TeamServerContext;
+
 	protected _statusBarItem: StatusBarItem;
 
 	constructor(context: TeamServerContext, statusBarItem: StatusBarItem) {
 		this._serverContext = context;
+
 		this._statusBarItem = statusBarItem;
 	}
 
@@ -43,10 +45,12 @@ export abstract class BaseClient {
 			if (offline === true) {
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.text = offlineText;
+
 					this._statusBarItem.tooltip =
 						Strings.StatusCodeOffline +
 						" " +
 						Strings.ClickToRetryConnection;
+
 					this._statusBarItem.command =
 						CommandNames.RefreshPollingStatus;
 				}
@@ -54,6 +58,7 @@ export abstract class BaseClient {
 				//Could happen if PAT doesn't have proper permissions
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.text = offlineText;
+
 					this._statusBarItem.tooltip = msg;
 				}
 			}
@@ -65,8 +70,10 @@ export abstract class BaseClient {
 				Logger.LogError(logMessage);
 			} else {
 				Logger.LogError(logMessage);
+
 				Telemetry.SendException(err);
 			}
+
 			VsCodeUtils.ShowErrorMessage(msg);
 		}
 	}

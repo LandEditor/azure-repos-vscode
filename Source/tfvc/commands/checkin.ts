@@ -22,8 +22,11 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Checkin implements ITfvcCommand<string> {
 	private _serverContext: TeamServerContext;
+
 	private _files: string[];
+
 	private _comment: string;
+
 	private _workItemIds: number[];
 
 	public constructor(
@@ -33,9 +36,13 @@ export class Checkin implements ITfvcCommand<string> {
 		workItemIds?: number[],
 	) {
 		CommandHelper.RequireStringArrayArgument(files, "files");
+
 		this._serverContext = serverContext;
+
 		this._files = files;
+
 		this._comment = comment;
+
 		this._workItemIds = workItemIds;
 	}
 
@@ -48,6 +55,7 @@ export class Checkin implements ITfvcCommand<string> {
 		if (this._comment) {
 			builder.AddSwitchWithValue("comment", this.getComment(), false);
 		}
+
 		if (this._workItemIds && this._workItemIds.length > 0) {
 			builder.AddSwitchWithValue(
 				"associate",
@@ -55,6 +63,7 @@ export class Checkin implements ITfvcCommand<string> {
 				false,
 			);
 		}
+
 		return builder;
 	}
 

@@ -58,7 +58,9 @@ export class GitClient extends BaseClient {
 						this._serverContext.RepoInfo.RepositoryUrl,
 					);
 				}
+
 				Logger.LogInfo("Pull Request Url: " + discUrl);
+
 				Utils.OpenUrl(discUrl);
 			}
 		} catch (err) {
@@ -89,6 +91,7 @@ export class GitClient extends BaseClient {
 					context.RepositoryParentFolder,
 					editor.document.fileName,
 				);
+
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			url = GitVcService.GetFileBlameUrl(
@@ -98,13 +101,16 @@ export class GitClient extends BaseClient {
 			);
 			//Note: if file hasn't been pushed yet, blame link we generate won't point to anything valid (basically a 404)
 			Logger.LogInfo("OpenBlame: " + url);
+
 			Utils.OpenUrl(url);
 		} else {
 			const msg: string = Utils.GetMessageForStatusCode(
 				0,
 				Strings.NoSourceFileForBlame,
 			);
+
 			Logger.LogError(msg);
+
 			VsCodeUtils.ShowErrorMessage(msg);
 		}
 	}
@@ -124,6 +130,7 @@ export class GitClient extends BaseClient {
 				context.RemoteUrl,
 				context.CurrentBranch,
 			);
+
 			Logger.LogInfo("OpenRepoHistory: " + historyUrl);
 		} else {
 			Telemetry.SendEvent(TelemetryEvents.OpenFileHistory);
@@ -135,6 +142,7 @@ export class GitClient extends BaseClient {
 					context.RepositoryParentFolder,
 					editor.document.fileName,
 				);
+
 			relativePath = relativePath.split("\\").join("/"); //Replace all
 
 			historyUrl = GitVcService.GetFileHistoryUrl(
@@ -156,7 +164,9 @@ export class GitClient extends BaseClient {
 			remoteUrl,
 			currentBranch,
 		);
+
 		Logger.LogInfo("CreatePullRequestPage: " + url);
+
 		Utils.OpenUrl(url);
 	}
 
@@ -164,6 +174,7 @@ export class GitClient extends BaseClient {
 		try {
 			const requests: BaseQuickPickItem[] =
 				await this.getMyPullRequests();
+
 			this._statusBarItem.tooltip = Strings.BrowseYourPullRequests;
 			//Remove the default Strings.BrowseYourPullRequests item from the calculation
 			this._statusBarItem.text = GitClient.GetPullRequestStatusText(
@@ -198,6 +209,7 @@ export class GitClient extends BaseClient {
 		const icon: string = "search";
 
 		const label: string = `$(${icon}) `;
+
 		requestItems.push({
 			label: label + Strings.BrowseYourPullRequests,
 			description: undefined,
@@ -207,6 +219,7 @@ export class GitClient extends BaseClient {
 		myPullRequests.forEach((pr) => {
 			const score: PullRequestScore =
 				GitVcService.GetPullRequestScore(pr);
+
 			requestItems.push(
 				this.getPullRequestLabel(
 					pr.createdBy.displayName,
@@ -216,8 +229,10 @@ export class GitClient extends BaseClient {
 					score,
 				),
 			);
+
 			requestIds.push(pr.pullRequestId);
 		});
+
 		Logger.LogInfo(
 			"Retrieved " +
 				myPullRequests.length +
@@ -233,6 +248,7 @@ export class GitClient extends BaseClient {
 				this._serverContext.UserInfo.Id,
 				PullRequestStatus.Active,
 			);
+
 		myReviewPullRequests.forEach((pr) => {
 			const score: PullRequestScore =
 				GitVcService.GetPullRequestScore(pr);
@@ -249,6 +265,7 @@ export class GitClient extends BaseClient {
 				);
 			}
 		});
+
 		Logger.LogInfo(
 			"Retrieved " +
 				myReviewPullRequests.length +
@@ -259,7 +276,9 @@ export class GitClient extends BaseClient {
 		this._statusBarItem.text = GitClient.GetPullRequestStatusText(
 			(requestItems.length - 1).toString(),
 		);
+
 		this._statusBarItem.tooltip = Strings.BrowseYourPullRequests;
+
 		this._statusBarItem.command = CommandNames.GetPullRequests;
 
 		return requestItems;
@@ -283,6 +302,7 @@ export class GitClient extends BaseClient {
 		} else if (score === PullRequestScore.NoResponse) {
 			scoreIcon = "git-pull-request";
 		}
+
 		const scoreLabel: string = `$(${scoreIcon}) `;
 
 		return {
@@ -301,6 +321,7 @@ export class GitClient extends BaseClient {
 		if (!total) {
 			return `$(git-pull-request) $(dash)`;
 		}
+
 		return `$(git-pull-request) ${total.toString()}`;
 	}
 

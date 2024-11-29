@@ -11,8 +11,11 @@ export class TfvcVersion {
 	private static separator: string = ".";
 
 	private _major: number;
+
 	private _minor: number;
+
 	private _revision: number;
+
 	private _build: string;
 
 	public static FromString(version: string): TfvcVersion {
@@ -39,12 +42,15 @@ export class TfvcVersion {
 		if (version1._major !== version2._major) {
 			return version1._major - version2._major;
 		}
+
 		if (version1._minor !== version2._minor) {
 			return version1._minor - version2._minor;
 		}
+
 		if (version1._revision !== version2._revision) {
 			return version1._revision - version2._revision;
 		}
+
 		return 0;
 	}
 
@@ -55,20 +61,26 @@ export class TfvcVersion {
 		build: string,
 	) {
 		this._major = major;
+
 		this._minor = minor;
+
 		this._revision = revision;
+
 		this._build = build;
 	}
 
 	public get Major(): number {
 		return this._major;
 	}
+
 	public get Minor(): number {
 		return this._minor;
 	}
+
 	public get Revision(): number {
 		return this._revision;
 	}
+
 	public get Build(): string {
 		return this._build;
 	}

@@ -18,8 +18,11 @@ http.globalAgent.maxSockets = 100;
 
 export class HttpClient {
 	userAgent: string;
+
 	handlers: ifm.IRequestHandler[];
+
 	socketTimeout: number;
+
 	isSsl: boolean;
 
 	constructor(
@@ -28,6 +31,7 @@ export class HttpClient {
 		socketTimeout?: number,
 	) {
 		this.userAgent = userAgent;
+
 		this.handlers = handlers;
 
 		if (socketTimeout) {
@@ -51,6 +55,7 @@ export class HttpClient {
 		) => void,
 	): void {
 		var options = this._getOptions(verb, requestUrl, headers);
+
 		this.request(options.protocol, options.options, objs, onResult);
 	}
 
@@ -62,6 +67,7 @@ export class HttpClient {
 		var prot: any = usingSsl ? https : http;
 
 		var defaultPort = usingSsl ? 443 : 80;
+
 		this.isSsl = usingSsl;
 
 		var proxyUrl: url.Url;
@@ -81,6 +87,7 @@ export class HttpClient {
 		};
 
 		//options.headers["Accept"] = contentType;
+
 		options.headers["User-Agent"] = this.userAgent;
 
 		var useProxy = proxyUrl && proxyUrl.hostname;
@@ -151,9 +158,11 @@ export class HttpClient {
 
 						return true;
 					}
+
 					return false;
 				});
 			}
+
 			if (authHandler !== undefined) {
 				authHandler.handleAuthentication(
 					this,
@@ -198,6 +207,7 @@ export class HttpClient {
 		) => {
 			if (!callbackCalled) {
 				callbackCalled = true;
+
 				onResult(err, res, contents);
 			}
 		};
@@ -213,6 +223,7 @@ export class HttpClient {
 				res.headers["content-encoding"] === "gzip"
 			) {
 				var gunzip = zlib.createGunzip();
+
 				res.pipe(gunzip);
 
 				gunzip
@@ -230,6 +241,7 @@ export class HttpClient {
 				res.on("data", function (chunk) {
 					output += chunk;
 				});
+
 				res.on("end", function () {
 					// res has statusCode and headers
 					handleResult(null, res, output);
@@ -246,6 +258,7 @@ export class HttpClient {
 			if (socket) {
 				socket.end();
 			}
+
 			handleResult(
 				new Error("Request timeout: " + options.path),
 				null,

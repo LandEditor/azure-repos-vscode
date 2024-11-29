@@ -22,8 +22,11 @@ import { CommandHelper } from "./commandhelper";
  */
 export class GetFileContent implements ITfvcCommand<string> {
 	private _serverContext: TeamServerContext;
+
 	private _localPath: string;
+
 	private _versionSpec: string;
+
 	private _ignoreFileNotFound: boolean;
 
 	public constructor(
@@ -35,8 +38,11 @@ export class GetFileContent implements ITfvcCommand<string> {
 		CommandHelper.RequireStringArgument(localPath, "localPath");
 
 		this._serverContext = serverContext;
+
 		this._localPath = localPath;
+
 		this._versionSpec = versionSpec;
+
 		this._ignoreFileNotFound = ignoreFileNotFound;
 	}
 
@@ -49,6 +55,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
 		}
+
 		return builder;
 	}
 
@@ -95,6 +102,7 @@ export class GetFileContent implements ITfvcCommand<string> {
 		if (this._versionSpec) {
 			builder.AddSwitchWithValue("version", this._versionSpec, false);
 		}
+
 		return builder;
 	}
 

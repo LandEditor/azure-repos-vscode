@@ -30,6 +30,7 @@ import { BaseClient } from "./baseclient";
 
 export class WitClient extends BaseClient {
 	private _pinnedQuery: IPinnedQuery;
+
 	private _myQueriesFolder: string;
 
 	constructor(
@@ -38,12 +39,14 @@ export class WitClient extends BaseClient {
 		statusBarItem: StatusBarItem,
 	) {
 		super(context, statusBarItem);
+
 		this._pinnedQuery = pinnedQuery;
 	}
 
 	//Opens a browser to a new work item given the item type, title and assigned to
 	public CreateNewItem(itemType: string, taskTitle: string): void {
 		this.logTelemetryForWorkItem(itemType);
+
 		Logger.LogInfo("Work item type is " + itemType);
 
 		const newItemUrl: string = WorkItemTrackingService.GetNewWorkItemUrl(
@@ -52,7 +55,9 @@ export class WitClient extends BaseClient {
 			taskTitle,
 			this.getUserName(this._serverContext),
 		);
+
 		Logger.LogInfo("New Work Item Url: " + newItemUrl);
+
 		Utils.OpenUrl(newItemUrl);
 	}
 
@@ -83,7 +88,9 @@ export class WitClient extends BaseClient {
 						taskTitle,
 						this.getUserName(this._serverContext),
 					);
+
 				Logger.LogInfo("New Work Item Url: " + newItemUrl);
+
 				Utils.OpenUrl(newItemUrl);
 			}
 		} catch (err) {
@@ -111,7 +118,9 @@ export class WitClient extends BaseClient {
 
 			if (query) {
 				Telemetry.SendEvent(TelemetryEvents.ViewWorkItems);
+
 				Logger.LogInfo("Selected query is " + query.label);
+
 				Logger.LogInfo("Getting work items for query...");
 
 				const workItem: BaseQuickPickItem = await window.showQuickPick(
@@ -132,6 +141,7 @@ export class WitClient extends BaseClient {
 						Telemetry.SendEvent(
 							TelemetryEvents.OpenAdditionalQueryResults,
 						);
+
 						url = WorkItemTrackingService.GetMyQueryResultsUrl(
 							this._serverContext.RepoInfo.TeamProjectUrl,
 							this._myQueriesFolder,
@@ -139,12 +149,15 @@ export class WitClient extends BaseClient {
 						);
 					} else {
 						Telemetry.SendEvent(TelemetryEvents.ViewWorkItem);
+
 						url = WorkItemTrackingService.GetEditWorkItemUrl(
 							this._serverContext.RepoInfo.TeamProjectUrl,
 							workItem.id,
 						);
 					}
+
 					Logger.LogInfo("Work Item Url: " + url);
+
 					Utils.OpenUrl(url);
 				}
 			}
@@ -163,6 +176,7 @@ export class WitClient extends BaseClient {
 
 		try {
 			const queryText: string = await this.getPinnedQueryText();
+
 			await this.showWorkItems(queryText);
 		} catch (err) {
 			this.handleWitError(
@@ -236,17 +250,21 @@ export class WitClient extends BaseClient {
 
 			if (workItem.id === undefined) {
 				Telemetry.SendEvent(TelemetryEvents.OpenAdditionalQueryResults);
+
 				url = WorkItemTrackingService.GetWorkItemsBaseUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
 				);
 			} else {
 				Telemetry.SendEvent(TelemetryEvents.ViewWorkItem);
+
 				url = WorkItemTrackingService.GetEditWorkItemUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
 					workItem.id,
 				);
 			}
+
 			Logger.LogInfo("Work Item Url: " + url);
+
 			Utils.OpenUrl(url);
 		}
 	}
@@ -297,6 +315,7 @@ export class WitClient extends BaseClient {
 								this._serverContext.RepoInfo.TeamProject +
 								")...",
 						);
+
 						Logger.LogInfo(
 							"QueryPath: " + this._pinnedQuery.queryPath,
 						);
@@ -309,6 +328,7 @@ export class WitClient extends BaseClient {
 								this._serverContext.RepoInfo.TeamProject,
 								this._pinnedQuery.queryPath,
 							);
+
 						resolve(queryItem.wiql);
 					}
 				} catch (err) {
@@ -328,6 +348,7 @@ export class WitClient extends BaseClient {
 		const svc: WorkItemTrackingService = new WorkItemTrackingService(
 			this._serverContext,
 		);
+
 		Logger.LogInfo(
 			"Getting my work item queries (" +
 				this._serverContext.RepoInfo.TeamProject +
@@ -338,9 +359,11 @@ export class WitClient extends BaseClient {
 			await svc.GetWorkItemHierarchyItems(
 				this._serverContext.RepoInfo.TeamProject,
 			);
+
 		Logger.LogInfo(
 			"Retrieved " + hierarchyItems.length + " hierarchyItems",
 		);
+
 		hierarchyItems.forEach((folder) => {
 			if (
 				folder &&
@@ -355,7 +378,9 @@ export class WitClient extends BaseClient {
 					//Gets all of the queries under "My Queries" and gets their name and wiql
 					for (
 						let index: number = 0;
+
 						index < folder.children.length;
+
 						index++
 					) {
 						queries.push({
@@ -381,6 +406,7 @@ export class WitClient extends BaseClient {
 		const svc: WorkItemTrackingService = new WorkItemTrackingService(
 			this._serverContext,
 		);
+
 		Logger.LogInfo(
 			"Getting my work items (" +
 				this._serverContext.RepoInfo.TeamProject +
@@ -391,7 +417,9 @@ export class WitClient extends BaseClient {
 			teamProject,
 			wiql,
 		);
+
 		Logger.LogInfo("Retrieved " + simpleWorkItems.length + " work items");
+
 		simpleWorkItems.forEach((wi) => {
 			workItems.push({
 				label: wi.label,
@@ -407,14 +435,17 @@ export class WitClient extends BaseClient {
 				description: Strings.BrowseAdditionalWorkItemsDescription,
 			});
 		}
+
 		return workItems;
 	}
 
 	private getUserName(context: TeamServerContext): string {
 		let userName: string = undefined;
+
 		Logger.LogDebug(
 			"UserCustomDisplayName: " + context.UserInfo.CustomDisplayName,
 		);
+
 		Logger.LogDebug(
 			"UserProviderDisplayName: " + context.UserInfo.ProviderDisplayName,
 		);
@@ -424,6 +455,7 @@ export class WitClient extends BaseClient {
 		} else {
 			userName = context.UserInfo.ProviderDisplayName;
 		}
+
 		Logger.LogDebug("User is " + userName);
 
 		return userName;
@@ -439,6 +471,7 @@ export class WitClient extends BaseClient {
 		);
 
 		const workItemTypes: BaseQuickPickItem[] = [];
+
 		types.forEach((type) => {
 			workItemTypes.push({
 				label: type.name,
@@ -446,6 +479,7 @@ export class WitClient extends BaseClient {
 				id: undefined,
 			});
 		});
+
 		workItemTypes.sort((t1, t2) => {
 			return t1.label.localeCompare(t2.label);
 		});
@@ -467,13 +501,17 @@ export class WitClient extends BaseClient {
 			Telemetry.SendEvent(TelemetryEvents.UnsupportedWitServerVersion);
 
 			const msg: string = Strings.UnsupportedWitServerVersion;
+
 			Logger.LogError(msg);
 
 			if (this._statusBarItem !== undefined) {
 				this._statusBarItem.text = `$(bug) $(x)`;
+
 				this._statusBarItem.tooltip = msg;
+
 				this._statusBarItem.command = undefined; //Clear the existing command
 			}
+
 			if (!polling) {
 				VsCodeUtils.ShowErrorMessage(msg);
 			}
@@ -503,6 +541,7 @@ export class WitClient extends BaseClient {
 		this.GetPinnedQueryResultCount()
 			.then((numberOfItems) => {
 				this._statusBarItem.tooltip = Strings.ViewYourPinnedQuery;
+
 				this._statusBarItem.text = WitClient.GetPinnedQueryStatusText(
 					numberOfItems.toString(),
 				);
@@ -525,6 +564,7 @@ export class WitClient extends BaseClient {
 		if (!total) {
 			return `$(bug) $(dash)`;
 		}
+
 		return `$(bug) ${total.toString()}`;
 	}
 }

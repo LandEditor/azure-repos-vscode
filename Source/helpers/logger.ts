@@ -11,7 +11,9 @@ import { Constants } from "./constants";
 
 export class Logger {
 	private static initialized: boolean = false;
+
 	private static loggingLevel: LoggingLevel;
+
 	private static logPath: string = "";
 
 	private static initalize() {
@@ -28,8 +30,11 @@ export class Logger {
 				maxFiles: 5,
 				tailable: false,
 			};
+
 			winston.add(winston.transports.File, fileOpt);
+
 			winston.remove(winston.transports.Console);
+
 			Logger.initialized = true;
 		}
 	}
@@ -46,6 +51,7 @@ export class Logger {
 			this.loggingLevel === LoggingLevel.Debug
 		) {
 			winston.log("debug", this.addPid(message));
+
 			console.log(Logger.getNow() + message);
 		}
 	}
@@ -59,6 +65,7 @@ export class Logger {
 			this.loggingLevel >= LoggingLevel.Error
 		) {
 			winston.log("error", this.addPid(message));
+
 			console.log(Logger.getNow() + "ERROR: " + message);
 		}
 		//When displaying messages, don't add timestamp or our severity level prefix
@@ -85,6 +92,7 @@ export class Logger {
 			this.loggingLevel === LoggingLevel.Debug
 		) {
 			winston.log("debug", object);
+
 			console.log(object);
 		}
 	}
@@ -161,6 +169,7 @@ export class Logger {
 	public static get Now(): string {
 		return Logger.getNow();
 	}
+
 	private static getNow(): string {
 		const now: Date = new Date();
 
@@ -183,6 +192,7 @@ export class Logger {
 		if (val === undefined) {
 			val = 10;
 		}
+
 		return num >= 0 && num < val
 			? "0" + num.toString()
 			: num.toString() + "";

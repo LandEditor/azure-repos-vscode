@@ -18,11 +18,13 @@ export class FeedbackClient {
 	public static async SendFeedback(): Promise<void> {
 		try {
 			const choices: BaseQuickPickItem[] = [];
+
 			choices.push({
 				label: Strings.SendASmile,
 				description: undefined,
 				id: TelemetryEvents.SendASmile,
 			});
+
 			choices.push({
 				label: Strings.SendAFrown,
 				description: undefined,
@@ -61,6 +63,7 @@ export class FeedbackClient {
 				if (trimmedValue.length > 1000) {
 					trimmedValue = trimmedValue.substring(0, 1000);
 				}
+
 				Telemetry.SendFeedback(choice.id, {
 					"VSCode.Feedback.Comment": trimmedValue,
 				});
@@ -77,7 +80,9 @@ export class FeedbackClient {
 				err.message,
 				"Failed getting SendFeedback selection",
 			);
+
 			Logger.LogError(message);
+
 			Telemetry.SendException(err);
 		}
 	}

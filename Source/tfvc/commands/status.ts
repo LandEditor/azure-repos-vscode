@@ -24,7 +24,9 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Status implements ITfvcCommand<IPendingChange[]> {
 	private _serverContext: TeamServerContext;
+
 	private _localPaths: string[];
+
 	private _ignoreFolders: boolean;
 
 	public constructor(
@@ -33,7 +35,9 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 		localPaths?: string[],
 	) {
 		this._serverContext = serverContext;
+
 		this._ignoreFolders = ignoreFolders;
+
 		this._localPaths = localPaths;
 	}
 
@@ -110,6 +114,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 				}
 			}
 		}
+
 		return changes;
 	}
 
@@ -194,8 +199,10 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 				//If we have a curChange, we're finished with it
 				if (curChange !== undefined) {
 					changes.push(curChange);
+
 					curChange = undefined;
 				}
+
 				continue;
 			}
 
@@ -246,9 +253,11 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 						if (propertyName.toLowerCase() === "localitem") {
 							//Local item : [JEYOU-DEV00] C:\repos\TfExe.Tfvc.L2VSCodeExtension.RC.TFS\README.md
 							const parts: string[] = propertyValue.split("] ");
+
 							curChange["computer"] = parts[0].substr(1); //pop off the beginning [
 							propertyValue = parts[1];
 						}
+
 						curChange[propertyName] = propertyValue;
 					}
 				}
@@ -280,6 +289,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 			case "workspace":
 				return "workspace";
 		}
+
 		return undefined;
 	}
 
@@ -300,6 +310,7 @@ export class Status implements ITfvcCommand<IPendingChange[]> {
 				return;
 			}
 		}
+
 		changes.push(newChange);
 	}
 

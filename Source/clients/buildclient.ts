@@ -44,6 +44,7 @@ export class BuildClient extends BaseClient {
 	): Promise<void> {
 		try {
 			const svc: BuildService = new BuildService(this._serverContext);
+
 			Logger.LogInfo("Getting current build from badge...");
 
 			let buildBadge: BuildBadge;
@@ -79,6 +80,7 @@ export class BuildClient extends BaseClient {
 					);
 				}
 			}
+
 			if (buildBadge && buildBadge.buildId !== undefined) {
 				Logger.LogInfo(
 					"Found build id " +
@@ -87,10 +89,12 @@ export class BuildClient extends BaseClient {
 				);
 
 				const build: Build = await svc.GetBuildById(buildBadge.buildId);
+
 				this._buildSummaryUrl = BuildService.GetBuildSummaryUrl(
 					this._serverContext.RepoInfo.TeamProjectUrl,
 					build.id.toString(),
 				);
+
 				Logger.LogInfo(
 					"Build summary info: " +
 						build.id.toString() +
@@ -104,9 +108,12 @@ export class BuildClient extends BaseClient {
 
 				if (this._statusBarItem !== undefined) {
 					const icon: string = Utils.GetBuildResultIcon(build.result);
+
 					this._statusBarItem.command =
 						CommandNames.OpenBuildSummaryPage;
+
 					this._statusBarItem.text = `$(package) ` + `$(${icon})`;
+
 					this._statusBarItem.tooltip =
 						"(" +
 						BuildResult[build.result] +
@@ -130,7 +137,9 @@ export class BuildClient extends BaseClient {
 				if (this._statusBarItem !== undefined) {
 					this._statusBarItem.command =
 						CommandNames.OpenBuildSummaryPage;
+
 					this._statusBarItem.text = `$(package) ` + `$(dash)`;
+
 					this._statusBarItem.tooltip =
 						context.Type === RepositoryType.GIT
 							? Strings.NoBuildsFound
@@ -172,6 +181,7 @@ export class BuildClient extends BaseClient {
 			if (b.result === BuildResult.Canceled) {
 				continue;
 			}
+
 			if (
 				b.repository &&
 				b.repository.type.toLowerCase() === "tfsversioncontrol"
@@ -181,10 +191,12 @@ export class BuildClient extends BaseClient {
 				break;
 			}
 		}
+
 		if (matchingBuild) {
 			//We dont' use imageUrl (which is a SVG) since we don't actually render the badge.
 			return { buildId: matchingBuild.id, imageUrl: undefined };
 		}
+
 		return emptyBuild;
 	}
 
@@ -197,11 +209,14 @@ export class BuildClient extends BaseClient {
 			Logger.LogInfo(
 				"No build summary available, using build definitions url.",
 			);
+
 			url = BuildService.GetBuildDefinitionsUrl(
 				this._serverContext.RepoInfo.TeamProjectUrl,
 			);
 		}
+
 		Logger.LogInfo("OpenBuildSummaryPage: " + url);
+
 		Utils.OpenUrl(url);
 	}
 

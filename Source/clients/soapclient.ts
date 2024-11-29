@@ -45,6 +45,7 @@ export function processResponse(url, res, contents, onResult) {
 		var msg = httpCodes[res.statusCode]
 			? "Failed Request: " + httpCodes[res.statusCode]
 			: "Failed Request";
+
 		msg += "(" + res.statusCode + ") - ";
 
 		if (contents && contents.length > 0) {
@@ -77,7 +78,9 @@ export function processResponse(url, res, contents, onResult) {
 
 export class SoapClient {
 	baseUrl: string;
+
 	basePath: string;
+
 	httpClient: HttpClient;
 
 	constructor(userAgent: string, handlers?: ifm.IRequestHandler[]) {
@@ -99,10 +102,14 @@ export class SoapClient {
 		onResult: (err: any, statusCode: number, obj: any) => void,
 	): void {
 		let headers: ifm.IHeaders = {};
+
 		headers["Accept-Encoding"] = "gzip"; //Tell the server we'd like to receive a gzip compressed response
 		headers["Accept-Language"] = env.language; //"en-US";
+
 		headers["Content-Type"] = "application/soap+xml; charset=utf-8";
+
 		headers["Chunked"] = "false";
+
 		headers["Content-Length"] = requestEnvelope.length;
 
 		this.httpClient.send(

@@ -30,14 +30,19 @@ function isSCMInput(uri: Uri) {
 
 interface Diagnostic {
 	range: Range;
+
 	message: string;
 }
 
 export class CommitHoverProvider implements HoverProvider {
 	private decorationType: TextEditorDecorationType;
+
 	private diagnostics: Diagnostic[] = [];
+
 	private disposables: Disposable[] = [];
+
 	private editor: TextEditor;
+
 	private visibleTextEditorsDisposable: Disposable;
 
 	constructor() {
@@ -46,6 +51,7 @@ export class CommitHoverProvider implements HoverProvider {
 				this.onVisibleTextEditors,
 				this,
 			);
+
 		this.onVisibleTextEditors(window.visibleTextEditors);
 
 		this.decorationType = window.createTextEditorDecorationType({
@@ -79,7 +85,9 @@ export class CommitHoverProvider implements HoverProvider {
 		const range = new Range(start, end);
 
 		const edit = new WorkspaceEdit();
+
 		edit.replace(scmInputUri, range, message);
+
 		workspace.applyEdit(edit);
 	}
 
@@ -91,15 +99,18 @@ export class CommitHoverProvider implements HoverProvider {
 		}
 
 		this.visibleTextEditorsDisposable.dispose();
+
 		this.editor = editor;
 
 		const onDidChange = filterEvent(
 			workspace.onDidChangeTextDocument,
 			(e) => e.document && isSCMInput(e.document.uri),
 		);
+
 		onDidChange(this.update, this, this.disposables);
 
 		workspace.onDidChangeConfiguration(this.update, this, this.disposables);
+
 		languages.registerHoverProvider({ scheme: "scm" }, this);
 	}
 

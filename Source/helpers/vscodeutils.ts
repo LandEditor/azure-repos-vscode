@@ -13,7 +13,9 @@ import { IButtonMessageItem } from "./vscodeutils.interfaces";
 
 export class BaseQuickPickItem implements QuickPickItem {
 	label: string;
+
 	description: string;
+
 	id: string;
 }
 
@@ -24,8 +26,11 @@ export class WorkItemQueryQuickPickItem extends BaseQuickPickItem {
 //Any changes to ButtonMessageItem must be reflected in IButtonMessageItem
 export class ButtonMessageItem implements MessageItem, IButtonMessageItem {
 	title: string;
+
 	url?: string;
+
 	command?: string;
+
 	telemetryId?: string;
 }
 
@@ -127,13 +132,16 @@ export class VsCodeUtils {
 			if (chosenItem.url) {
 				Utils.OpenUrl(chosenItem.url);
 			}
+
 			if (chosenItem.telemetryId) {
 				Telemetry.SendEvent(chosenItem.telemetryId);
 			}
+
 			if (chosenItem.command) {
 				commands.executeCommand<void>(chosenItem.command);
 			}
 		}
+
 		return chosenItem;
 	}
 }

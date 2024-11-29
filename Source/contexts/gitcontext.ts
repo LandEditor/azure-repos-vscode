@@ -16,15 +16,25 @@ import { IRepositoryContext, RepositoryType } from "./repositorycontext";
 //Gets as much information as it can regarding the Git repository without calling the server (vsts/info)
 export class GitContext implements IRepositoryContext {
 	private _gitConfig: any;
+
 	private _gitRepoInfo: any;
+
 	private _gitFolder: string;
+
 	private _gitParentFolder: string;
+
 	private _gitOriginalRemoteUrl: string;
+
 	private _gitRemoteUrl: string;
+
 	private _gitCurrentBranch: string;
+
 	private _gitCurrentRef: string;
+
 	private _isSsh: boolean = false;
+
 	private _isTeamServicesUrl: boolean = false;
+
 	private _isTeamFoundationServer: boolean = false;
 
 	//When gitDir is provided, rootPath is the path to the Git repo
@@ -33,6 +43,7 @@ export class GitContext implements IRepositoryContext {
 			//If gitDir, use rootPath as the .git folder
 			if (gitDir) {
 				this._gitFolder = rootPath;
+
 				gri._changeGitDir(gitDir);
 			} else {
 				this._gitFolder = Utils.FindGitFolder(rootPath);
@@ -47,6 +58,7 @@ export class GitContext implements IRepositoryContext {
 				if (gitDir) {
 					syncObj = { path: path.join(this._gitFolder, "config") };
 				}
+
 				this._gitConfig = pgc.sync(syncObj);
 
 				/* tslint:disable:quotemark */
@@ -55,6 +67,7 @@ export class GitContext implements IRepositoryContext {
 				if (remote === undefined) {
 					return;
 				}
+
 				this._gitOriginalRemoteUrl = remote.url;
 
 				if (gitDir) {
@@ -64,6 +77,7 @@ export class GitContext implements IRepositoryContext {
 				}
 
 				this._gitCurrentBranch = this._gitRepoInfo.branch;
+
 				this._gitCurrentRef = "refs/heads/" + this._gitCurrentBranch;
 
 				//Check if any heuristics for TFS/VSTS URLs match
@@ -117,6 +131,7 @@ export class GitContext implements IRepositoryContext {
 										"_ssh",
 										"_git",
 									);
+
 									this._gitRemoteUrl =
 										scheme + hostname + path;
 								}
@@ -129,6 +144,7 @@ export class GitContext implements IRepositoryContext {
 							)
 						) {
 							this._isTeamFoundationServer = true;
+
 							this._gitRemoteUrl = this._gitOriginalRemoteUrl;
 
 							if (purl.protocol.toLowerCase() === "ssh:") {
@@ -156,6 +172,7 @@ export class GitContext implements IRepositoryContext {
 	public get CurrentBranch(): string {
 		return this._gitCurrentBranch;
 	}
+
 	public get CurrentRef(): string {
 		return this._gitCurrentRef;
 	}
@@ -170,21 +187,27 @@ export class GitContext implements IRepositoryContext {
 	public get RepoFolder(): string {
 		return this._gitFolder;
 	}
+
 	public get IsSsh(): boolean {
 		return this._isSsh;
 	}
+
 	public get IsTeamFoundation(): boolean {
 		return this._isTeamServicesUrl || this._isTeamFoundationServer;
 	}
+
 	public get IsTeamServices(): boolean {
 		return this._isTeamServicesUrl;
 	}
+
 	public get RemoteUrl(): string {
 		return this._gitRemoteUrl;
 	}
+
 	public get RepositoryParentFolder(): string {
 		return this._gitParentFolder;
 	}
+
 	public get Type(): RepositoryType {
 		return RepositoryType.GIT;
 	}

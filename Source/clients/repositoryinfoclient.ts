@@ -28,6 +28,7 @@ import VsoBaseInterfaces = require("vso-node-api/interfaces/common/VsoBaseInterf
 
 export class RepositoryInfoClient {
 	private _handler: VsoBaseInterfaces.IRequestHandler;
+
 	private _repoContext: IRepositoryContext;
 
 	constructor(
@@ -35,6 +36,7 @@ export class RepositoryInfoClient {
 		handler: VsoBaseInterfaces.IRequestHandler,
 	) {
 		this._repoContext = context;
+
 		this._handler = handler;
 	}
 
@@ -49,18 +51,25 @@ export class RepositoryInfoClient {
 			Logger.LogDebug(
 				`Getting repository information for a Git repository at ${this._repoContext.RemoteUrl}`,
 			);
+
 			repositoryClient = new TeamServicesApi(
 				this._repoContext.RemoteUrl,
 				[this._handler],
 			);
+
 			repoInfo = await repositoryClient.getVstsInfo();
+
 			Logger.LogDebug(`Repository information blob:`);
+
 			Logger.LogObject(repoInfo);
+
 			this.verifyRepoInfo(
 				repoInfo,
 				`RepoInfo was undefined for a ${RepositoryType[this._repoContext.Type]} repo`,
 			);
+
 			repositoryInfo = new RepositoryInfo(repoInfo);
+
 			Logger.LogDebug(
 				`Finished getting repository information for a Git repository at ${this._repoContext.RemoteUrl}`,
 			);
@@ -75,10 +84,12 @@ export class RepositoryInfoClient {
 			);
 			//For TFVC, the teamProjectName is retrieved by tf.cmd and set on the context
 			const teamProjectName: string = this._repoContext.TeamProjectName;
+
 			this.verifyRepoInfo(
 				this._repoContext.RemoteUrl,
 				`RemoteUrl was undefined for a ${RepositoryType[this._repoContext.Type]} repo`,
 			);
+
 			repositoryInfo = new RepositoryInfo(this._repoContext.RemoteUrl);
 
 			let serverUrl: string;
@@ -107,15 +118,18 @@ export class RepositoryInfoClient {
 				} else {
 					serverUrl = `https://${repositoryInfo.Account}.visualstudio.com/`;
 				}
+
 				const valid: boolean =
 					await this.validateTfvcCollectionUrl(serverUrl);
 
 				if (!valid) {
 					const errorMsg: string = `${Strings.UnableToValidateTeamServicesCollection} Collection name: '${collectionName}', Url: '${serverUrl}'`;
+
 					Logger.LogDebug(errorMsg);
 
 					throw new Error(errorMsg);
 				}
+
 				Logger.LogDebug(
 					`Successfully validated the hosted TFVC repository. Collection name: '${collectionName}', 'Url: ${serverUrl}'`,
 				);
@@ -135,8 +149,11 @@ export class RepositoryInfoClient {
 				if (valid) {
 					const parts: string[] =
 						this.splitTfvcCollectionUrl(serverUrl);
+
 					serverUrl = parts[0];
+
 					collectionName = parts[1];
+
 					Logger.LogDebug(
 						`Validated the collection and splitting Url and Collection name. Collection name: '${collectionName}', Url: '${serverUrl}'`,
 					);
@@ -144,12 +161,14 @@ export class RepositoryInfoClient {
 					Logger.LogDebug(
 						`Unable to validate the collection. Url: '${serverUrl}' Attempting validation assuming 'DefaultCollection'...`,
 					);
+
 					collectionName = "DefaultCollection";
 
 					const remoteUrl: string = url.resolve(
 						serverUrl,
 						collectionName,
 					);
+
 					valid = await this.validateTfvcCollectionUrl(remoteUrl);
 
 					if (!valid) {
@@ -166,8 +185,10 @@ export class RepositoryInfoClient {
 						const tfvcContext: TfvcContext = <TfvcContext>(
 							this._repoContext
 						);
+
 						tfvcContext.RemoteUrl = remoteUrl;
 					}
+
 					Logger.LogDebug(
 						`Validated the collection assuming 'DefaultCollection'.`,
 					);
@@ -177,6 +198,7 @@ export class RepositoryInfoClient {
 			const coreApiClient: CoreApiClient = new CoreApiClient();
 
 			let collection: TeamProjectCollection;
+
 			Logger.LogDebug(
 				`Getting project collection...  url: '${serverUrl}', and collection name: '${collectionName}'`,
 			);
@@ -186,6 +208,7 @@ export class RepositoryInfoClient {
 				Logger.LogDebug(
 					`Using REST to get the project collection information`,
 				);
+
 				collection = await coreApiClient.GetProjectCollection(
 					serverUrl,
 					collectionName,
@@ -197,16 +220,19 @@ export class RepositoryInfoClient {
 				// When called on-prem without admin privileges: Error: Failed Request: Forbidden(403) - Access Denied: Jeff Young (TFS) needs the following permission(s) to perform this action: Edit instance-level information
 				const tfsClient: TfsCatalogSoapClient =
 					new TfsCatalogSoapClient(serverUrl, [this._handler]);
+
 				collection =
 					await tfsClient.GetProjectCollection(collectionName);
 
 				if (!collection) {
 					const error: string = `Using SOAP, could not find a project collection object for ${collectionName} at ${serverUrl}`;
+
 					Logger.LogDebug(error);
 
 					throw new Error(error);
 				}
 			}
+
 			Logger.LogDebug(
 				`Found a project collection for url: '${serverUrl}' and collection name: '${collection.name}'.`,
 			);
@@ -227,11 +253,13 @@ export class RepositoryInfoClient {
 				resolvedRemoteUrl,
 				teamProjectName,
 			);
+
 			Logger.LogDebug(
 				`Found a team project for url: '${serverUrl}', collection name: '${collection.name}', and project id: '${project.id}'`,
 			);
 
 			//Now, create the JSON blob to send to new RepositoryInfo(repoInfo);
+
 			repoInfo = this.getTfvcRepoInfoBlob(
 				serverUrl,
 				collection.id,
@@ -242,19 +270,25 @@ export class RepositoryInfoClient {
 				project.description,
 				project.url,
 			);
+
 			Logger.LogDebug(`Repository information blob:`);
+
 			Logger.LogObject(repoInfo);
+
 			this.verifyRepoInfo(
 				repoInfo,
 				`RepoInfo was undefined for a ${RepositoryType[this._repoContext.Type]} repo`,
 			);
+
 			repositoryInfo = new RepositoryInfo(repoInfo);
+
 			Logger.LogDebug(
 				`Finished getting repository information for the repository at ${this._repoContext.RemoteUrl}`,
 			);
 
 			return repositoryInfo;
 		}
+
 		return repositoryInfo;
 	}
 
@@ -285,6 +319,7 @@ export class RepositoryInfoClient {
 		} else {
 			// We can't determine the collection name so leave it empty
 			result[0] = collectionUrl;
+
 			result[1] = "";
 		}
 
@@ -301,6 +336,7 @@ export class RepositoryInfoClient {
 			) {
 				lastIndex--;
 			}
+
 			if (lastIndex >= 0) {
 				return uri.substring(0, lastIndex);
 			}
@@ -360,6 +396,7 @@ export class RepositoryInfoClient {
 				serverUrl,
 				[this._handler],
 			);
+
 			await repositoryClient.validateTfvcCollectionUrl();
 
 			return true;

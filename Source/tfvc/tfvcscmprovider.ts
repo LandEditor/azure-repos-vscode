@@ -38,12 +38,17 @@ import { anyEvent, filterEvent, mapEvent } from "./util";
  */
 export class TfvcSCMProvider {
 	public static scmScheme: string = "tfvc";
+
 	private static instance: TfvcSCMProvider = undefined;
 
 	private _extensionManager: ExtensionManager;
+
 	private _model: Model;
+
 	private _disposables: Disposable[] = [];
+
 	private _tempDisposables: Disposable[] = [];
+
 	private _sourceControl: SourceControl;
 
 	constructor(extensionManager: ExtensionManager) {
@@ -114,6 +119,7 @@ export class TfvcSCMProvider {
 				"Failed to get all workitems from message: " + message,
 			);
 		}
+
 		return ids;
 	}
 
@@ -141,33 +147,42 @@ export class TfvcSCMProvider {
 	/* Public methods */
 
 	private conflictsGroup: SourceControlResourceGroup;
+
 	private includedGroup: SourceControlResourceGroup;
+
 	private excludedGroup: SourceControlResourceGroup;
+
 	public async Initialize(): Promise<void> {
 		await TfvcOutput.CreateChannel(this._disposables);
+
 		await this.setup();
 
 		// Now that everything is setup, we can register the provider and set up our singleton instance
 		// This registration can only happen once
 		TfvcSCMProvider.instance = this;
+
 		this._sourceControl = scm.createSourceControl(
 			TfvcSCMProvider.scmScheme,
 			"TFVC",
 		);
+
 		this._disposables.push(this._sourceControl);
 
 		this.conflictsGroup = this._sourceControl.createResourceGroup(
 			this._model.ConflictsGroup.id,
 			this._model.ConflictsGroup.label,
 		);
+
 		this.includedGroup = this._sourceControl.createResourceGroup(
 			this._model.IncludedGroup.id,
 			this._model.IncludedGroup.label,
 		);
+
 		this.excludedGroup = this._sourceControl.createResourceGroup(
 			this._model.ExcludedGroup.id,
 			this._model.ExcludedGroup.label,
 		);
+
 		this.conflictsGroup.hideWhenEmpty = true;
 
 		//Set the command to run when user accepts changes via Ctrl+Enter in input box.
@@ -177,7 +192,9 @@ export class TfvcSCMProvider {
 		};
 
 		this._disposables.push(this.conflictsGroup);
+
 		this._disposables.push(this.includedGroup);
+
 		this._disposables.push(this.excludedGroup);
 	}
 
@@ -188,13 +205,17 @@ export class TfvcSCMProvider {
 
 		this.conflictsGroup.resourceStates =
 			this._model.ConflictsGroup.resources;
+
 		this.includedGroup.resourceStates = this._model.IncludedGroup.resources;
+
 		this.excludedGroup.resourceStates = this._model.ExcludedGroup.resources;
+
 		this._sourceControl.count = this.count;
 	}
 
 	public async Reinitialize(): Promise<void> {
 		this.cleanup();
+
 		await this.setup();
 	}
 
@@ -231,6 +252,7 @@ export class TfvcSCMProvider {
 		const onTfvcChange = filterEvent(onWorkspaceChange, (uri) =>
 			/^\$tf\//.test(workspace.asRelativePath(uri)),
 		);
+
 		this._model = new Model(
 			repoContext.RepoFolder,
 			repoContext.TfvcRepository,
@@ -248,6 +270,7 @@ export class TfvcSCMProvider {
 		} catch (err) {
 			this._extensionManager.DisplayWarningMessage(err.message);
 		}
+
 		TfvcOutput.AppendLine(
 			"Using TFVC command line: " +
 				repoContext.TfvcRepository.TfvcLocation +
@@ -287,12 +310,14 @@ export class TfvcSCMProvider {
 		// dispose all the temporary items
 		if (this._tempDisposables) {
 			this._tempDisposables.forEach((d) => d.dispose());
+
 			this._tempDisposables = [];
 		}
 
 		// dispose of the model
 		if (this._model) {
 			this._model.dispose();
+
 			this._model = undefined;
 		}
 	}
@@ -311,10 +336,12 @@ export class TfvcSCMProvider {
 
 	dispose(): void {
 		TfvcSCMProvider.instance = undefined;
+
 		this.cleanup();
 
 		if (this._disposables) {
 			this._disposables.forEach((d) => d.dispose());
+
 			this._disposables = [];
 		}
 	}
@@ -330,6 +357,7 @@ export class TfvcSCMProvider {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -371,6 +399,7 @@ export class TfvcSCMProvider {
 
 			throw TfvcError.CreateInvalidStateError();
 		}
+
 		return tfvcProvider;
 	}
 

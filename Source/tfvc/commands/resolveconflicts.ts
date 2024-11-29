@@ -25,7 +25,9 @@ import { CommandHelper } from "./commandhelper";
  */
 export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
+
 	private _autoResolveType: AutoResolveType;
 
 	public constructor(
@@ -34,9 +36,13 @@ export class ResolveConflicts implements ITfvcCommand<IConflict[]> {
 		autoResolveType: AutoResolveType,
 	) {
 		this._serverContext = serverContext;
+
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		CommandHelper.RequireArgument(autoResolveType, "autoResolveType");
+
 		this._itemPaths = itemPaths;
+
 		this._autoResolveType = autoResolveType;
 	}
 

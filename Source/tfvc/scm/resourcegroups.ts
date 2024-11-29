@@ -11,9 +11,11 @@ export abstract class ResourceGroup {
 	get id(): string {
 		return this._id;
 	}
+
 	get label(): string {
 		return this._label;
 	}
+
 	get resources(): Resource[] {
 		return this._resources;
 	}

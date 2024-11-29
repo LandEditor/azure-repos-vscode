@@ -58,6 +58,7 @@ export class TfCommandLineRunner {
 		const settings: TfvcSettings = new TfvcSettings();
 
 		const proxy: string = settings.Proxy;
+
 		Logger.LogDebug(`Using TFS proxy: ${proxy}`);
 
 		let tfvcPath: string = localPath;
@@ -65,6 +66,7 @@ export class TfCommandLineRunner {
 		if (!tfvcPath) {
 			// get the location from settings
 			tfvcPath = settings.Location;
+
 			Logger.LogDebug(
 				`TFVC Retrieved from settings; localPath='${tfvcPath}'`,
 			);
@@ -137,6 +139,7 @@ export class TfCommandLineRunner {
 
 		// check the version of TFVC command line
 		Logger.LogDebug(`TFVC Minimum required version: ${tfvc.minVersion}`);
+
 		Logger.LogDebug(`TFVC (TF.exe, TF.cmd) version: ${version}`);
 
 		const minVersion: TfvcVersion = TfvcVersion.FromString(tfvc.minVersion);
@@ -160,6 +163,7 @@ export class TfCommandLineRunner {
 					},
 				];
 			}
+
 			throw new TfvcError({
 				message: `${Strings.TfVersionWarning}${minVersion.ToString()}`,
 				messageOptions: options,
@@ -195,6 +199,7 @@ export class TfCommandLineRunner {
 	public static DisposeStatics() {
 		if (TfCommandLineRunner._runningInstance) {
 			TfCommandLineRunner._runningInstance.kill();
+
 			TfCommandLineRunner._runningInstance = undefined;
 		}
 	}
@@ -204,7 +209,9 @@ export class TfCommandLineRunner {
 	 * The static members are that cache.
 	 *********************************************************************************************/
 	private static _location: string;
+
 	private static _options: any;
+
 	private static _runningInstance: cp.ChildProcess;
 
 	/**
@@ -236,6 +243,7 @@ export class TfCommandLineRunner {
 
 		// log the results
 		const end: number = new Date().getTime();
+
 		Logger.LogDebug(
 			`TFVC: ${args.GetCommand()} exit code: ${result.exitCode} (duration: ${end - start}ms)`,
 		);
@@ -277,7 +285,9 @@ export class TfCommandLineRunner {
 	): Promise<cp.ChildProcess> {
 		// Start up a new instance of TF for later use
 		TfCommandLineRunner._options = options;
+
 		TfCommandLineRunner._location = tfvc.path;
+
 		TfCommandLineRunner._runningInstance = await TfCommandLineRunner.spawn(
 			tfvc.path,
 			options,
@@ -297,14 +307,17 @@ export class TfCommandLineRunner {
 		if (!options) {
 			options = {};
 		}
+
 		options.env = _.assign({}, process.env, options.env || {});
 
 		const start: number = new Date().getTime();
+
 		options.stdio = ["pipe", "pipe", "pipe"];
 
 		const child: cp.ChildProcess = await cp.spawn(location, ["@"], options);
 
 		const end: number = new Date().getTime();
+
 		Logger.LogDebug(
 			`TFVC: spawned new process (duration: ${end - start}ms)`,
 		);
@@ -323,24 +336,29 @@ export class TfCommandLineRunner {
 
 		const once = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
 			ee.once(name, fn);
+
 			disposables.push(toDisposable(() => ee.removeListener(name, fn)));
 		};
 
 		const on = (ee: NodeJS.EventEmitter, name: string, fn: Function) => {
 			ee.on(name, fn);
+
 			disposables.push(toDisposable(() => ee.removeListener(name, fn)));
 		};
 
 		const [exitCode, stdout, stderr] = await Promise.all<any>([
 			new Promise<number>((c, e) => {
 				once(child, "error", e);
+
 				once(child, "exit", c);
 			}),
 			new Promise<string>((c) => {
 				const buffers: string[] = [];
+
 				on(child.stdout, "data", (b) => {
 					buffers.push(b);
 				});
+
 				once(child.stdout, "close", () => {
 					let stdout: string = buffers.join("");
 
@@ -351,15 +369,19 @@ export class TfCommandLineRunner {
 
 						if (start >= 0) {
 							const end: number = stdout.indexOf("\n", start);
+
 							stdout = stdout.slice(end + 1);
 						}
 					}
+
 					c(stdout);
 				});
 			}),
 			new Promise<string>((c) => {
 				const buffers: string[] = [];
+
 				on(child.stderr, "data", (b) => buffers.push(b));
+
 				once(child.stderr, "close", () => c(buffers.join("")));
 			}),
 		]);

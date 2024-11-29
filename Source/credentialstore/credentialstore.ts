@@ -20,20 +20,28 @@ import { WindowsCredentialStoreApi } from "./win32/win-credstore-api";
  */
 export class CredentialStore implements ICredentialStore {
 	private _credentialStore: ICredentialStore;
+
 	private _filename: string;
+
 	private _folder: string;
+
 	private _prefix: string;
+
 	private _defaultPrefix: string = "secret:";
+
 	private _defaultFilename: string = "secrets.json";
+
 	private _defaultFolder: string = ".secrets";
 
 	constructor(prefix?: string, folder?: string, filename?: string) {
 		if (prefix !== undefined) {
 			this._prefix = prefix;
 		}
+
 		if (folder !== undefined) {
 			this._folder = folder;
 		}
+
 		if (filename !== undefined) {
 			this._filename = filename;
 		}
@@ -44,6 +52,7 @@ export class CredentialStore implements ICredentialStore {
 				if (prefix === undefined) {
 					this._prefix = this._defaultPrefix;
 				}
+
 				this._credentialStore = new WindowsCredentialStoreApi(
 					this._prefix,
 				);
@@ -54,6 +63,7 @@ export class CredentialStore implements ICredentialStore {
 				if (prefix === undefined) {
 					this._prefix = this._defaultPrefix;
 				}
+
 				this._credentialStore = new OsxKeychainApi(this._prefix);
 
 				break;
@@ -64,9 +74,11 @@ export class CredentialStore implements ICredentialStore {
 				if (folder === undefined) {
 					this._folder = this._defaultFolder;
 				}
+
 				if (filename === undefined) {
 					this._filename = this._defaultFilename;
 				}
+
 				this._credentialStore = new LinuxFileApi(
 					this._folder,
 					this._filename,

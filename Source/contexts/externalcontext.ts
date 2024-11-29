@@ -11,10 +11,15 @@ import { IRepositoryContext, RepositoryType } from "./repositorycontext";
 
 export class ExternalContext implements IRepositoryContext {
 	private _folder: string;
+
 	private _remoteUrl: string;
+
 	private _isSsh: boolean = false;
+
 	private _isTeamServicesUrl: boolean = false;
+
 	private _isTeamFoundationServer: boolean = false;
+
 	private _teamProjectName: string;
 
 	constructor(rootPath: string) {
@@ -35,14 +40,19 @@ export class ExternalContext implements IRepositoryContext {
 
 			return false;
 		}
+
 		this._remoteUrl = settings.RemoteUrl;
+
 		this._isTeamServicesUrl = RepoUtils.IsTeamFoundationServicesRepo(
 			this._remoteUrl,
 		);
+
 		this._isTeamFoundationServer = RepoUtils.IsTeamFoundationServerRepo(
 			this._remoteUrl,
 		);
+
 		this._teamProjectName = settings.TeamProject;
+
 		Logger.LogDebug(`Found an External Context at ${this._folder}`);
 
 		return true;
@@ -57,6 +67,7 @@ export class ExternalContext implements IRepositoryContext {
 	public get CurrentBranch(): string {
 		return undefined;
 	}
+
 	public get CurrentRef(): string {
 		return undefined;
 	}
@@ -65,21 +76,27 @@ export class ExternalContext implements IRepositoryContext {
 	public get RepoFolder(): string {
 		return this._folder;
 	}
+
 	public get IsSsh(): boolean {
 		return this._isSsh;
 	}
+
 	public get IsTeamFoundation(): boolean {
 		return this._isTeamServicesUrl || this._isTeamFoundationServer;
 	}
+
 	public get IsTeamServices(): boolean {
 		return this._isTeamServicesUrl;
 	}
+
 	public get RemoteUrl(): string {
 		return this._remoteUrl;
 	}
+
 	public get RepositoryParentFolder(): string {
 		return undefined;
 	}
+
 	public get Type(): RepositoryType {
 		return RepositoryType.EXTERNAL;
 	}

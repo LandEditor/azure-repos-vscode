@@ -29,6 +29,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					/* tslint:enable:no-null-keyword */
 					if (err) {
 						err.statusCode = statusCode;
+
 						reject(err);
 					} else {
 						resolve(obj);
@@ -54,6 +55,7 @@ export class TeamServicesApi extends basem.ClientApiBase {
 					/* tslint:enable:no-null-keyword */
 					if (err) {
 						err.statusCode = statusCode;
+
 						reject(err);
 					} else {
 						resolve(obj);

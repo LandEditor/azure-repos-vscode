@@ -32,18 +32,25 @@ import { ConflictType, Status } from "./status";
 
 export class Model implements Disposable {
 	private _disposables: Disposable[] = [];
+
 	private _repositoryRoot: string;
+
 	private _repository: TfvcRepository;
+
 	private _statusAlreadyInProgress: boolean;
+
 	private _explicitlyExcluded: string[] = [];
 
 	private _onDidChange = new EventEmitter<void>();
+
 	public get onDidChange(): Event<void> {
 		return this._onDidChange.event;
 	}
 
 	private _conflictsGroup = new ConflictsGroup([]);
+
 	private _includedGroup = new IncludedGroup([]);
+
 	private _excludedGroup = new ExcludedGroup([]);
 
 	public constructor(
@@ -52,6 +59,7 @@ export class Model implements Disposable {
 		onWorkspaceChange: Event<Uri>,
 	) {
 		this._repositoryRoot = repositoryRoot;
+
 		this._repository = repository;
 		//filterEvent should return false if an event is to be filtered
 		const onNonGitChange = filterEvent(onWorkspaceChange, (uri) => {
@@ -72,12 +80,14 @@ export class Model implements Disposable {
 
 			return isSubFolder && isTfFolder && isLogFile;
 		});
+
 		onNonGitChange(this.onFileSystemChange, this, this._disposables);
 	}
 
 	public dispose() {
 		if (this._disposables) {
 			this._disposables.forEach((d) => d.dispose());
+
 			this._disposables = [];
 		}
 	}
@@ -85,9 +95,11 @@ export class Model implements Disposable {
 	public get ConflictsGroup(): ConflictsGroup {
 		return this._conflictsGroup;
 	}
+
 	public get IncludedGroup(): IncludedGroup {
 		return this._includedGroup;
 	}
+
 	public get ExcludedGroup(): ExcludedGroup {
 		return this._excludedGroup;
 	}
@@ -98,7 +110,9 @@ export class Model implements Disposable {
 		if (this._conflictsGroup.resources.length > 0) {
 			result.push(this._conflictsGroup);
 		}
+
 		result.push(this._includedGroup);
+
 		result.push(this._excludedGroup);
 
 		return result;
@@ -108,6 +122,7 @@ export class Model implements Disposable {
 		if (this._statusAlreadyInProgress) {
 			return;
 		}
+
 		this._statusAlreadyInProgress = true;
 
 		try {
@@ -130,6 +145,7 @@ export class Model implements Disposable {
 				} else {
 					Promise.resolve();
 				}
+
 				await this.update();
 			},
 		);
@@ -145,6 +161,7 @@ export class Model implements Disposable {
 					this._explicitlyExcluded.push(normalizedPath);
 				}
 			});
+
 			await this.update();
 		}
 	}
@@ -162,6 +179,7 @@ export class Model implements Disposable {
 					);
 				}
 			});
+
 			await this.update();
 		}
 	}
@@ -180,6 +198,7 @@ export class Model implements Disposable {
 			// Get the list of conflicts
 			//TODO: Optimize out this call unless it is needed. This call takes over 4 times longer than the status call and is unecessary most of the time.
 			foundConflicts = await this._repository.FindConflicts();
+
 			foundConflicts.forEach((conflict) => {
 				if (conflict.message) {
 					TfvcOutput.AppendLine(`[Resolve] ${conflict.message}`);
@@ -244,7 +263,9 @@ export class Model implements Disposable {
 		});
 
 		this._conflictsGroup = new ConflictsGroup(conflicts);
+
 		this._includedGroup = new IncludedGroup(included);
+
 		this._excludedGroup = new ExcludedGroup(excluded);
 
 		this._onDidChange.fire();
@@ -267,6 +288,7 @@ export class Model implements Disposable {
 			// First compare the source item
 			result = change.localItem.toLowerCase() === path2.toLowerCase();
 		}
+
 		return result;
 	}
 }

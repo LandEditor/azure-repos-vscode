@@ -22,9 +22,13 @@ export class GitVcService {
 	private _gitApi: IGitApi;
 
 	private static REVIEWER_VOTE_NO_RESPONSE: number = 0;
+
 	private static REVIEWER_VOTE_APPROVED_WITH_SUGGESTIONS: number = 5;
+
 	private static REVIEWER_VOTE_APPROVED: number = 10;
+
 	private static REVIEWER_VOTE_WAITING_FOR_AUTHOR: number = -5;
+
 	private static REVIEWER_VOTE_REJECTED: number = -10;
 
 	constructor(context: TeamServerContext) {
@@ -141,6 +145,7 @@ export class GitVcService {
 			"pullrequest",
 			requestId,
 		);
+
 		discussionUrl = UrlBuilder.AddQueryParams(
 			discussionUrl,
 			"view=discussion",
@@ -184,6 +189,7 @@ export class GitVcService {
 				if (vote < lowestVote) {
 					lowestVote = vote;
 				}
+
 				if (vote > highestVote) {
 					highestVote = vote;
 				}
@@ -205,9 +211,11 @@ export class GitVcService {
 		) {
 			return PullRequestScore.Succeeded;
 		}
+
 		if (finalVote === GitVcService.REVIEWER_VOTE_WAITING_FOR_AUTHOR) {
 			return PullRequestScore.Waiting;
 		}
+
 		if (finalVote === GitVcService.REVIEWER_VOTE_REJECTED) {
 			return PullRequestScore.Failed;
 		}

@@ -16,10 +16,13 @@ import uuid = require("uuid");
 
 export class Telemetry {
 	private static _appInsightsClient: Client;
+
 	private static _serverContext: TeamServerContext;
+
 	private static _telemetryEnabled: boolean = true;
 	//Default to a new uuid in case the extension fails before being initialized
 	private static _userId: string = "UNKNOWN";
+
 	private static _sessionId: string = uuid.v4(); //The sessionId can be updated later
 	private static _productionKey: string =
 		"44267cbb-b9ba-4bce-a37a-338588aa4da3";
@@ -33,6 +36,7 @@ export class Telemetry {
 		context?: TeamServerContext,
 	): void {
 		Telemetry._serverContext = context;
+
 		Telemetry._telemetryEnabled = settings.AppInsightsEnabled;
 
 		// Always initialize Application Insights
@@ -49,6 +53,7 @@ export class Telemetry {
 			.setAutoCollectRequests(false)
 			.setAutoCollectExceptions(false)
 			.start();
+
 		Telemetry._appInsightsClient = appInsights.getClient(insightsKey);
 		//Need to use HTTPS with v0.15.16 of App Insights
 		Telemetry._appInsightsClient.config.endpointUrl =
@@ -101,11 +106,13 @@ export class Telemetry {
 		if (os.userInfo().username) {
 			username = os.userInfo().username;
 		}
+
 		if (os.hostname()) {
 			hostname = os.hostname();
 		}
 
 		const value: string = `${username}@${hostname}-VSTS`;
+
 		Telemetry._userId = crypto
 			.createHash("sha1")
 			.update(value)
@@ -136,10 +143,12 @@ export class Telemetry {
 		//Set the userid on the AI context so that we can get user counts in the telemetry
 		const aiUserId: string =
 			Telemetry._appInsightsClient.context.keys.userId;
+
 		Telemetry._appInsightsClient.context.tags[aiUserId] = Telemetry._userId;
 
 		const aiSessionId: string =
 			Telemetry._appInsightsClient.context.keys.sessionId;
+
 		Telemetry._appInsightsClient.context.tags[aiSessionId] =
 			Telemetry._sessionId;
 	}

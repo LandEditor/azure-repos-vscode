@@ -22,12 +22,16 @@ import { FileTokenStorage } from "./file-token-storage";
  */
 export class LinuxFileApi implements ICredentialStore {
 	private _folder: string;
+
 	private _filename: string;
+
 	private _fts: FileTokenStorage;
 
 	constructor(folder: string, filename: string) {
 		this._folder = folder;
+
 		this._filename = filename;
+
 		this._fts = new FileTokenStorage(
 			path.join(path.join(os.homedir(), this._folder, this._filename)),
 		);
@@ -47,6 +51,7 @@ export class LinuxFileApi implements ICredentialStore {
 					const credential: Credential = this.createCredential(
 						entryArray[0],
 					);
+
 					deferred.resolve(credential);
 				} else {
 					deferred.resolve(undefined);
@@ -80,6 +85,7 @@ export class LinuxFileApi implements ICredentialStore {
 					password: password,
 					service: service,
 				};
+
 				this._fts
 					.AddEntries([newEntry], existingEntries)
 					.then(() => {
@@ -141,6 +147,7 @@ export class LinuxFileApi implements ICredentialStore {
 					const credential: Credential = this.createCredential(
 						entryArray[0],
 					);
+
 					deferred.resolve(credential);
 				} else {
 					deferred.resolve(undefined);

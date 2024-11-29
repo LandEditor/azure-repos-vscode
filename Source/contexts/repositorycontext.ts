@@ -20,14 +20,20 @@ export interface IRepositoryContext {
 	Initialize(settings?: ISettings): Promise<boolean>;
 
 	IsSsh: boolean;
+
 	IsTeamFoundation: boolean;
+
 	IsTeamServices: boolean;
+
 	RemoteUrl: string;
+
 	RepoFolder: string;
+
 	RepositoryParentFolder: string;
 
 	//Git-specific values
 	CurrentBranch: string;
+
 	CurrentRef: string;
 
 	//TFVC-specific values

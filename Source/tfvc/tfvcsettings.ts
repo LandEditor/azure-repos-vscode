@@ -13,7 +13,9 @@ import { BaseSettings } from "../helpers/settings";
 //class from will no longer run.
 export class TfvcSettings extends BaseSettings {
 	private _location: string;
+
 	private _proxy: string;
+
 	private _restrictWorkspace: boolean;
 
 	constructor() {
@@ -34,10 +36,13 @@ export class TfvcSettings extends BaseSettings {
 				`${os.homedir()}$1`,
 			);
 		}
+
 		if (this._location) {
 			this._location = this._location.trim();
 		}
+
 		this._proxy = this.readSetting<string>(SettingNames.Proxy, undefined);
+
 		this._restrictWorkspace = this.readSetting<boolean>(
 			SettingNames.RestrictWorkspace,
 			false,
@@ -61,9 +66,11 @@ class SettingNames {
 	public static get Location(): string {
 		return "tfvc.location";
 	}
+
 	public static get Proxy(): string {
 		return "tfvc.proxy";
 	}
+
 	public static get RestrictWorkspace(): string {
 		return "tfvc.restrictWorkspace";
 	}

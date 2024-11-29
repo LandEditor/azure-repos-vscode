@@ -38,7 +38,9 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
 				for (
 					let index: number = 0;
+
 					index < credentials.length;
+
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);
@@ -50,6 +52,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 						credential = undefined;
 					}
 				}
+
 				deferred.resolve(credential);
 			})
 			.fail((reason) => {
@@ -116,7 +119,9 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
 				for (
 					let index: number = 0;
+
 					index < credentials.length;
+
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);
@@ -131,6 +136,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 						credential = undefined;
 					}
 				}
+
 				deferred.resolve(credential);
 			})
 			.fail((reason) => {
@@ -191,14 +197,18 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 		const credentials: Array<any> = [];
 
 		const stream = wincredstore.list();
+
 		stream.on("data", (cred) => {
 			credentials.push(cred);
 		});
+
 		stream.on("end", () => {
 			deferred.resolve(credentials);
 		});
+
 		stream.on("error", (error) => {
 			console.log(error);
+
 			deferred.reject(error);
 		});
 

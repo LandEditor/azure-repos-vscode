@@ -132,6 +132,7 @@ export class BuildService {
 			BuildService.GetBuildsUrl(remoteUrl),
 			"index",
 		);
+
 		summaryUrl = UrlBuilder.AddQueryParams(
 			summaryUrl,
 			`buildId=${buildId}`,

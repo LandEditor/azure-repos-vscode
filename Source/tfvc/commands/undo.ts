@@ -20,11 +20,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Undo implements ITfvcCommand<string[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
 
 	public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		this._serverContext = serverContext;
+
 		this._itemPaths = itemPaths;
 	}
 
@@ -35,6 +38,7 @@ export class Undo implements ITfvcCommand<string[]> {
 				.Add(".")
 				.AddSwitch("recursive");
 		}
+
 		return new ArgumentBuilder("undo", this._serverContext).AddAll(
 			this._itemPaths,
 		);
@@ -89,9 +93,11 @@ export class Undo implements ITfvcCommand<string[]> {
 				path = line;
 			} else if (line) {
 				const file: string = this.getFileFromLine(line);
+
 				filesUndone.push(CommandHelper.GetFilePath(path, file));
 			}
 		}
+
 		return filesUndone;
 	}
 

@@ -48,16 +48,27 @@ import { Telemetry } from "./services/telemetry";
 
 export class TeamExtension {
 	private _manager: ExtensionManager;
+
 	private _buildStatusBarItem: StatusBarItem;
+
 	private _pullRequestStatusBarItem: StatusBarItem;
+
 	private _pinnedQueryStatusBarItem: StatusBarItem;
+
 	private _buildClient: BuildClient;
+
 	private _gitClient: GitClient;
+
 	private _witClient: WitClient;
+
 	private _pinnedQuerySettings: PinnedQuerySettings;
+
 	private _pollingTimer: NodeJS.Timer;
+
 	private _initialTimer: NodeJS.Timer;
+
 	private _signedOut: boolean = false;
+
 	private _signingIn: boolean = false;
 
 	constructor(manager: ExtensionManager) {
@@ -99,11 +110,13 @@ export class TeamExtension {
 	//If device-flow (automatic), we provide the new 'device flow' experience
 	private async requestPersonalAccessToken(): Promise<string> {
 		const choices: BaseQuickPickItem[] = [];
+
 		choices.push({
 			label: Strings.DeviceFlowManualPrompt,
 			description: undefined,
 			id: DeviceFlowConstants.ManualOption,
 		});
+
 		choices.push({
 			label: Strings.DeviceFlowPrompt,
 			description: undefined,
@@ -129,6 +142,7 @@ export class TeamExtension {
 				if (token) {
 					Telemetry.SendEvent(TelemetryEvents.ManualPat);
 				}
+
 				return token;
 			} else if (choice.id === DeviceFlowConstants.DeviceFlowOption) {
 				Logger.LogDebug(
@@ -181,7 +195,9 @@ export class TeamExtension {
 						Logger.LogDebug(
 							`Device flow authentication canceled after ${timeout}ms.`,
 						);
+
 						Telemetry.SendEvent(TelemetryEvents.DeviceFlowCanceled);
+
 						dfa.Cancel(true); //throw on canceling
 					}, timeout);
 					/* tslint:enable:align */
@@ -200,10 +216,12 @@ export class TeamExtension {
 							//Since we will cancel automatically after timeout, if we _do_ get an accessToken then we need to call clearTimeout
 							if (accessToken) {
 								clearTimeout(timer);
+
 								Telemetry.SendEvent(
 									TelemetryEvents.DeviceFlowPat,
 								);
 							}
+
 							return accessToken;
 						},
 					);
@@ -216,6 +234,7 @@ export class TeamExtension {
 				}
 			}
 		}
+
 		return undefined;
 	}
 
@@ -227,6 +246,7 @@ export class TeamExtension {
 			this._manager.ServerContext.RepoInfo.IsTeamFoundation === true
 		) {
 			this._signedOut = false;
+
 			Logger.LogDebug(`Starting sign in process`);
 
 			if (
@@ -258,6 +278,7 @@ export class TeamExtension {
 						Logger.LogInfo(
 							"Signin: Username and Password provided as authentication.",
 						);
+
 						this._manager.CredentialManager.StoreCredentials(
 							this._manager.ServerContext,
 							username,
@@ -268,6 +289,7 @@ export class TeamExtension {
 								Logger.LogDebug(
 									`Reinitializing after successfully storing credentials for Team Foundation Server.`,
 								);
+
 								this._manager.Reinitialize();
 							})
 							.catch((err) => {
@@ -275,6 +297,7 @@ export class TeamExtension {
 								const msg: string =
 									Strings.UnableToStoreCredentials +
 									this._manager.ServerContext.RepoInfo.Host;
+
 								this._manager.ReportError(err, msg, true);
 							});
 					}
@@ -293,6 +316,7 @@ export class TeamExtension {
 						Logger.LogInfo(
 							`Signin: Personal Access Token provided as authentication.`,
 						);
+
 						this._manager.CredentialManager.StoreCredentials(
 							this._manager.ServerContext,
 							Constants.OAuth,
@@ -302,11 +326,13 @@ export class TeamExtension {
 								Logger.LogDebug(
 									`Reinitializing after successfully storing credentials for Azure DevOps Services.`,
 								);
+
 								this._manager.Reinitialize();
 							})
 							.catch((err) => {
 								// TODO: Should the message direct the user to open an issue?  send feedback?
 								const msg: string = `${Strings.UnableToStoreCredentials} ${this._manager.ServerContext.RepoInfo.Host}`;
+
 								this._manager.ReportError(err, msg, true);
 							});
 					}
@@ -331,6 +357,7 @@ export class TeamExtension {
 					//FUTURE: Add a ButtonMessageItem to provide additional help? Log a bug?
 					this._manager.ReportError(err, msg, true);
 				}
+
 				this._signingIn = false;
 			}
 		} else {
@@ -349,6 +376,7 @@ export class TeamExtension {
 					url: Constants.TfvcLearnMoreUrl,
 					telemetryId: TfvcTelemetryEvents.LearnMoreClick,
 				};
+
 				VsCodeUtils.ShowErrorMessage(
 					Strings.NoRepoInformation,
 					messageItem,
@@ -366,6 +394,7 @@ export class TeamExtension {
 			this._manager.ServerContext.RepoInfo.IsTeamFoundation === true
 		) {
 			Logger.LogDebug(`Starting sign out process`);
+
 			this._manager.CredentialManager.RemoveCredentials(
 				this._manager.ServerContext,
 			)
@@ -378,6 +407,7 @@ export class TeamExtension {
 					const msg: string =
 						Strings.UnableToRemoveCredentials +
 						this._manager.ServerContext.RepoInfo.Host;
+
 					this._manager.ReportError(err, msg, true);
 				})
 				.finally(() => {
@@ -433,6 +463,7 @@ export class TeamExtension {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			//Bug is in all three templates
 			const taskTitle = VsCodeUtils.GetActiveSelection();
+
 			this._witClient.CreateNewItem(WitTypes.Bug, taskTitle);
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -459,6 +490,7 @@ export class TeamExtension {
 			//Issue is only in Agile and CMMI templates (not Scrum)
 			//Task is in all three templates (Agile, CMMI, Scrum)
 			const taskTitle = VsCodeUtils.GetActiveSelection();
+
 			this._witClient.CreateNewItem(WitTypes.Task, taskTitle);
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -469,6 +501,7 @@ export class TeamExtension {
 	public OpenNewWorkItem(): void {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			const taskTitle = VsCodeUtils.GetActiveSelection();
+
 			this._witClient.CreateNewWorkItem(taskTitle);
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -479,10 +512,12 @@ export class TeamExtension {
 	public OpenTeamProjectWebSite(): void {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Telemetry.SendEvent(TelemetryEvents.OpenTeamSite);
+
 			Logger.LogInfo(
 				"OpenTeamProjectWebSite: " +
 					this._manager.ServerContext.RepoInfo.TeamProjectUrl,
 			);
+
 			Utils.OpenUrl(this._manager.ServerContext.RepoInfo.TeamProjectUrl);
 		} else {
 			this._manager.DisplayErrorMessage();
@@ -567,13 +602,16 @@ export class TeamExtension {
 			if (domain !== undefined) {
 				defaultUsername = domain;
 			}
+
 			if (username !== undefined) {
 				if (defaultUsername === undefined) {
 					return username;
 				}
+
 				return defaultUsername + "\\" + username;
 			}
 		}
+
 		return undefined;
 	}
 
@@ -586,12 +624,16 @@ export class TeamExtension {
 					StatusBarAlignment.Left,
 					99,
 				);
+
 				this._pullRequestStatusBarItem.command =
 					CommandNames.GetPullRequests;
+
 				this._pullRequestStatusBarItem.text =
 					GitClient.GetPullRequestStatusText();
+
 				this._pullRequestStatusBarItem.tooltip =
 					Strings.BrowseYourPullRequests;
+
 				this._pullRequestStatusBarItem.show();
 			}
 		}
@@ -601,10 +643,14 @@ export class TeamExtension {
 				StatusBarAlignment.Left,
 				98,
 			);
+
 			this._buildStatusBarItem.command =
 				CommandNames.OpenBuildSummaryPage;
+
 			this._buildStatusBarItem.text = `$(package) $(dash)`;
+
 			this._buildStatusBarItem.tooltip = Strings.NoBuildsFound;
+
 			this._buildStatusBarItem.show();
 		}
 
@@ -613,12 +659,16 @@ export class TeamExtension {
 				StatusBarAlignment.Left,
 				97,
 			);
+
 			this._pinnedQueryStatusBarItem.command =
 				CommandNames.ViewPinnedQueryWorkItems;
+
 			this._pinnedQueryStatusBarItem.text =
 				WitClient.GetPinnedQueryStatusText();
+
 			this._pinnedQueryStatusBarItem.tooltip =
 				Strings.ViewYourPinnedQuery;
+
 			this._pinnedQueryStatusBarItem.show();
 		}
 	}
@@ -631,6 +681,7 @@ export class TeamExtension {
 			this._pinnedQuerySettings = new PinnedQuerySettings(
 				this._manager.ServerContext.RepoInfo.Account,
 			);
+
 			this._buildClient = new BuildClient(
 				this._manager.ServerContext,
 				this._buildStatusBarItem,
@@ -642,11 +693,13 @@ export class TeamExtension {
 					this._pullRequestStatusBarItem,
 				);
 			}
+
 			this._witClient = new WitClient(
 				this._manager.ServerContext,
 				this._pinnedQuerySettings.PinnedQuery,
 				this._pinnedQueryStatusBarItem,
 			);
+
 			this.startPolling();
 		}
 	}
@@ -660,6 +713,7 @@ export class TeamExtension {
 	private pollBuildStatus(): void {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Logger.LogInfo("Polling for latest current build status...");
+
 			this._buildClient.DisplayCurrentBuildStatus(
 				this._manager.RepoContext,
 				true,
@@ -676,6 +730,7 @@ export class TeamExtension {
 			//Only poll for pull requests when repository is Git
 			if (this._manager.RepoContext.Type === RepositoryType.GIT) {
 				Logger.LogInfo("Polling for pull requests...");
+
 				this._gitClient.PollMyPullRequests();
 			}
 		}
@@ -684,6 +739,7 @@ export class TeamExtension {
 	private pollPinnedQuery(): void {
 		if (this._manager.EnsureInitialized(RepositoryType.ANY)) {
 			Logger.LogInfo("Polling for the pinned work itemquery");
+
 			this._witClient.PollPinnedQuery();
 		}
 	}
@@ -691,7 +747,9 @@ export class TeamExtension {
 	//Polls for latest pull requests and current branch build status information
 	private refreshPollingItems(): void {
 		this.pollMyPullRequests();
+
 		this.pollBuildStatus();
+
 		this.pollPinnedQuery();
 	}
 
@@ -702,6 +760,7 @@ export class TeamExtension {
 				() => this.refreshPollingItems(),
 				1000 * 4,
 			);
+
 			this._pollingTimer = setInterval(
 				() => this.refreshPollingItems(),
 				1000 * 60 * this._manager.Settings.PollingInterval,
@@ -743,21 +802,30 @@ export class TeamExtension {
 		if (this._pollingTimer) {
 			if (this._initialTimer) {
 				clearTimeout(this._initialTimer);
+
 				this._initialTimer = undefined;
 			}
+
 			clearInterval(this._pollingTimer);
+
 			this._pollingTimer = undefined;
 		}
+
 		if (this._pullRequestStatusBarItem !== undefined) {
 			this._pullRequestStatusBarItem.dispose();
+
 			this._pullRequestStatusBarItem = undefined;
 		}
+
 		if (this._buildStatusBarItem !== undefined) {
 			this._buildStatusBarItem.dispose();
+
 			this._buildStatusBarItem = undefined;
 		}
+
 		if (this._pinnedQueryStatusBarItem !== undefined) {
 			this._pinnedQueryStatusBarItem.dispose();
+
 			this._pinnedQueryStatusBarItem = undefined;
 		}
 	}

@@ -26,11 +26,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	private _localPath: string;
+
 	private _restrictWorkspace: boolean;
 
 	public constructor(localPath: string, restrictWorkspace: boolean = false) {
 		CommandHelper.RequireStringArgument(localPath, "localPath");
+
 		this._localPath = localPath;
+
 		this._restrictWorkspace = restrictWorkspace;
 	}
 
@@ -45,6 +48,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			//TF.exe is fine without the fake login when a localPath is provided
 			return builder.Add(this._localPath);
 		}
+
 		return builder.AddSwitchWithValue("login", "fake,fake", true);
 	}
 
@@ -124,6 +128,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 				}
 			}
 		}
+
 		if (mappings.length === 0) {
 			throw new TfvcError({
 				message: Strings.NoWorkspaceMappings,
@@ -212,6 +217,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 					.trim();
 			}
 		}
+
 		return workspace;
 	}
 
@@ -249,6 +255,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			if (cloaked && end === -1) {
 				end = line.length;
 			}
+
 			const start: number = cloaked ? line.indexOf(")") + 1 : 0;
 
 			const serverPath: string = line.slice(start, end).trim();
@@ -258,6 +265,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 			if (end >= 0 && end + 1 < line.length) {
 				localPath = line.slice(end + 1).trim();
 			}
+
 			return {
 				serverPath: serverPath,
 				localPath: localPath,
@@ -297,15 +305,18 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 	private pathIsWithin(openedPath: string, workspacePath: string): boolean {
 		//Replace all backslashes with forward slashes on both paths
 		openedPath = openedPath.replace(/\\/g, "/");
+
 		workspacePath = workspacePath.replace(/\\/g, "/");
 
 		//Add trailing separators to ensure they're included in the lastIndexOf
 		//(e.g., to ensure we match "/path2" with "/path2" and not "/path2" with "/path" first)
 		openedPath = this.addTrailingSeparator(openedPath, "/");
+
 		workspacePath = this.addTrailingSeparator(workspacePath, "/");
 
 		//Lowercase both paths (TFVC should be case-insensitive)
 		openedPath = openedPath.toLowerCase();
+
 		workspacePath = workspacePath.toLowerCase();
 
 		return openedPath.startsWith(workspacePath);
@@ -316,6 +327,7 @@ export class FindWorkspace implements ITfvcCommand<IWorkspace> {
 		if (path[path.length - 1] !== separator) {
 			return (path += separator);
 		}
+
 		return path;
 	}
 }

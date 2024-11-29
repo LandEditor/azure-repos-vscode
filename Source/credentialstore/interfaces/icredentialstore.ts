@@ -12,16 +12,19 @@ import Q = require("q");
 
 export interface ICredentialStore {
 	GetCredential(service: string): Q.Promise<Credential>;
+
 	SetCredential(
 		service: string,
 		username: string,
 		password: any,
 	): Q.Promise<void>;
+
 	RemoveCredential(service: string): Q.Promise<void>;
 
 	getCredentialByName(
 		service: string,
 		username: string,
 	): Q.Promise<Credential>;
+
 	removeCredentialByName(service: string, username: string): Q.Promise<void>;
 }

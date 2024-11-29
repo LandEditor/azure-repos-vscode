@@ -23,11 +23,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
 
 	public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		this._serverContext = serverContext;
+
 		this._itemPaths = itemPaths;
 	}
 
@@ -97,6 +100,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 				if (curItem !== undefined) {
 					itemInfos.push(curItem);
 				}
+
 				curItem = { serverItem: undefined, localItem: undefined };
 			} else if (line.toLowerCase().startsWith("server information:")) {
 				// We finished with the local properties and are starting the server properties
@@ -115,11 +119,13 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 							colonPos + 1 < line.length
 								? line.slice(colonPos + 1).trim()
 								: "";
+
 						curItem[propertyName] = propertyValue;
 					}
 				}
 			}
 		}
+
 		if (curItem !== undefined) {
 			itemInfos.push(curItem);
 		}
@@ -192,6 +198,7 @@ export class GetInfo implements ITfvcCommand<IItemInfo[]> {
 			case "server size":
 				return "fileSize";
 		}
+
 		return undefined;
 	}
 }

@@ -47,6 +47,7 @@ export class CommandHelper {
 		if (result && result.stderr && errorPattern) {
 			return new RegExp(errorPattern, "i").test(result.stderr);
 		}
+
 		return false;
 	}
 
@@ -71,6 +72,7 @@ export class CommandHelper {
 			) {
 				// EXE error
 				tfvcErrorCode = TfvcErrorCodes.NotATfvcRepository;
+
 				message = Strings.NoWorkspaceMappings;
 			} else if (/Repository not found/i.test(result.stderr)) {
 				tfvcErrorCode = TfvcErrorCodes.RepositoryNotFound;
@@ -80,6 +82,7 @@ export class CommandHelper {
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.NotATfvcRepository;
+
 				message = Strings.NotATfvcRepository;
 			} else if (
 				/Access denied connecting.*authenticating as OAuth/i.test(
@@ -87,6 +90,7 @@ export class CommandHelper {
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.AuthenticationFailed;
+
 				message = Strings.TokenNotAllScopes;
 			} else if (
 				/'java' is not recognized as an internal or external command/i.test(
@@ -94,6 +98,7 @@ export class CommandHelper {
 				)
 			) {
 				tfvcErrorCode = TfvcErrorCodes.NotFound;
+
 				message = Strings.TfInitializeFailureError;
 			} else if (
 				/Error occurred during initialization of VM/i.test(
@@ -103,6 +108,7 @@ export class CommandHelper {
 				//Example: "Error occurred during initialization of VM\nCould not reserve enough space for 2097152KB object heap\n"
 				//This one occurs with the error message in stdout!
 				tfvcErrorCode = TfvcErrorCodes.NotFound;
+
 				message = `${Strings.TfInitializeFailureError} (${Utils.FormatMessage(result.stdout)})`;
 			} else if (
 				/There is no working folder mapping/i.test(result.stderr)
@@ -119,7 +125,9 @@ export class CommandHelper {
 			) {
 				//For now, we're assuming this is an indication of a Server workspace
 				tfvcErrorCode = TfvcErrorCodes.NotAuthorizedToAccess;
+
 				message = Strings.TfServerWorkspace;
+
 				messageOptions = [
 					{
 						title: Strings.LearnMore,
@@ -133,7 +141,9 @@ export class CommandHelper {
 			) {
 				//For now, we're assuming this is an indication of a workspace the CLC doesn't know about (but exists locally)
 				tfvcErrorCode = TfvcErrorCodes.WorkspaceNotKnownToClc;
+
 				message = Strings.ClcCannotAccessWorkspace;
+
 				messageOptions = [
 					{
 						title: Strings.MoreDetails,
@@ -148,6 +158,7 @@ export class CommandHelper {
 			if (result.stderr) {
 				Logger.LogDebug(`TFVC errors (via stderr): ${result.stderr}`);
 			}
+
 			if (result.stdout) {
 				Logger.LogDebug(`TFVC errors (via stdout): ${result.stdout}`);
 			}
@@ -179,6 +190,7 @@ export class CommandHelper {
 				}
 			}
 		}
+
 		return "";
 	}
 
@@ -186,6 +198,7 @@ export class CommandHelper {
 		if (stdout && /\r\n/.test(stdout)) {
 			return "\r\n";
 		}
+
 		return "\n";
 	}
 
@@ -197,7 +210,9 @@ export class CommandHelper {
 		if (!stdout) {
 			return [];
 		}
+
 		let lines: string[] = stdout.replace(/\r\n/g, "\n").split("\n");
+
 		skipWarnings = skipWarnings === undefined ? true : skipWarnings;
 
 		// Ignore WARNings that may be above the desired lines
@@ -207,11 +222,14 @@ export class CommandHelper {
 			while (index < lines.length && lines[index].startsWith("WARN")) {
 				index++;
 			}
+
 			lines = lines.splice(index);
 		}
+
 		if (filterEmptyLines) {
 			lines = lines.filter((e) => e.trim() !== "");
 		}
+
 		return lines;
 	}
 
@@ -248,6 +266,7 @@ export class CommandHelper {
 				return xml.slice(start, end + 1);
 			}
 		}
+
 		return xml;
 	}
 
@@ -255,6 +274,7 @@ export class CommandHelper {
 		if (name) {
 			return name.replace(/\-/g, "").toLowerCase();
 		}
+
 		return name;
 	}
 
@@ -266,6 +286,7 @@ export class CommandHelper {
 		if (line && line.length > 0 && line.endsWith(":", line.length)) {
 			return true;
 		}
+
 		return false;
 	}
 

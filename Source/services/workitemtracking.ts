@@ -103,6 +103,7 @@ export class WorkItemTrackingService {
 		const workItemTypes: WorkItemType[] = [];
 
 		const hiddenTypes: WorkItemTypeReference[] = [];
+
 		types.forEach((type) => {
 			workItemTypes.push(type);
 		});
@@ -112,6 +113,7 @@ export class WorkItemTrackingService {
 				teamProject,
 				"Microsoft.HiddenCategory",
 			);
+
 		category.workItemTypes.forEach((hiddenType) => {
 			hiddenTypes.push(hiddenType);
 		});
@@ -120,13 +122,16 @@ export class WorkItemTrackingService {
 			function (el) {
 				for (
 					let index: number = 0;
+
 					index < hiddenTypes.length;
+
 					index++
 				) {
 					if (el.name === hiddenTypes[index].name) {
 						return false;
 					}
 				}
+
 				return true;
 			},
 		);
@@ -142,7 +147,9 @@ export class WorkItemTrackingService {
 		);
 
 		const result: SimpleWorkItem = new SimpleWorkItem();
+
 		result.id = workItem.id.toString();
+
 		result.label = workItem.fields[WorkItemFields.Title];
 
 		return result;
@@ -182,6 +189,7 @@ export class WorkItemTrackingService {
 				return w.target.id;
 			});
 		}
+
 		if (workItemIds.length === 0) {
 			return results;
 		}
@@ -213,6 +221,7 @@ export class WorkItemTrackingService {
 			);
 
 			const id: string = item.id.toString();
+
 			results.push({
 				id: id,
 				label: `${id} [${item.fields[WorkItemFields.WorkItemType]}]`,
@@ -276,13 +285,17 @@ export class WorkItemTrackingService {
 		if (title !== undefined) {
 			//title may need to be encoded (issues if first character is '#', for instance)
 			url += separator + "[" + WorkItemFields.Title + "]=" + title;
+
 			separator = "&";
 		}
+
 		if (assignedTo !== undefined) {
 			url +=
 				separator + "[" + WorkItemFields.AssignedTo + "]=" + assignedTo;
+
 			separator = "&";
 		}
+
 		return url;
 	}
 
@@ -311,15 +324,20 @@ export class WorkItemTrackingService {
 
 export class SimpleWorkItem {
 	label: string;
+
 	description: string;
+
 	id: string;
 }
 
 /* tslint:disable:variable-name */
 export class WorkItemFields {
 	static AssignedTo: string = "System.AssignedTo";
+
 	static Id: string = "System.Id";
+
 	static Title: string = "System.Title";
+
 	static WorkItemType: string = "System.WorkItemType";
 }
 /* tslint:enable:variable-name */

@@ -17,38 +17,50 @@ import Q = require("q");
 // async/await pattern) and the SoapClient which (has to) implement the callback pattern
 export class TfsCatalogSoapClient {
 	private soapClient: SoapClient;
+
 	private serverUrl: string;
+
 	private endpointUrl: string;
 
 	/* tslint:disable:variable-name */
 	private static readonly SingleRecurseStar: string = "*";
+
 	private static readonly QueryOptionsNone: string = "0";
+
 	private static readonly QueryOptionsExpandDependencies: string = "1";
 	// These guids brought over from our friends at vso-intellij...
 	// https://github.com/Microsoft/vso-intellij/blob/master/plugin/src/com/microsoft/alm/plugin/context/soap/CatalogServiceImpl.java#L56-L58
 	// Ensure that they rename lower-case
 	private static readonly OrganizationalRoot: string =
 		"69a51c5e-c093-447e-a177-a09e47a60974";
+
 	private static readonly TeamFoundationServerInstance: string =
 		"b36f1bda-df2d-482b-993a-f194a31a1fa2";
+
 	private static readonly ProjectCollection: string =
 		"26338d9e-d437-44aa-91f2-55880a328b54";
 	// Xml nodes in SOAP envelopes are case-sensitive (so don't change the values below)
 	private static readonly XmlSoapBody: string = "soap:Body";
+
 	private static readonly XmlQueryNodesResponse: string =
 		"QueryNodesResponse";
+
 	private static readonly XmlQueryNodesResult: string = "QueryNodesResult";
+
 	private static readonly XmlCatalogResources: string = "CatalogResources";
+
 	private static readonly XmlNodeReferencesPaths: string =
 		"NodeReferencePaths";
 	/* tslint:enable:variable-name */
 
 	constructor(serverUrl: string, handlers: IRequestHandler[]) {
 		this.serverUrl = serverUrl;
+
 		this.endpointUrl = url.resolve(
 			serverUrl,
 			"TeamFoundation/Administration/v3.0/CatalogService.asmx",
 		);
+
 		this.soapClient = new SoapClient(UserAgentProvider.UserAgent, handlers);
 	}
 
@@ -109,6 +121,7 @@ export class TfsCatalogSoapClient {
 				`No SOAP envelope was received for OrganizationRoot from ${this.endpointUrl}`,
 			);
 		}
+
 		const organizationDocument: xmldoc.XmlDocument = new xmldoc.XmlDocument(
 			envelopeXml,
 		);
@@ -139,7 +152,9 @@ export class TfsCatalogSoapClient {
 
 		for (
 			let idx: number = 0;
+
 			idx < catalogResources.children.length;
+
 			idx++
 		) {
 			if (
@@ -153,11 +168,13 @@ export class TfsCatalogSoapClient {
 				break;
 			}
 		}
+
 		if (!orgRoot) {
 			throw new Error(
 				`No organizationRoot was found in SOAP envelope from ${this.endpointUrl}`,
 			);
 		}
+
 		const nodeRefPaths: any = orgRoot.childNamed(
 			TfsCatalogSoapClient.XmlNodeReferencesPaths,
 		);
@@ -235,6 +252,7 @@ export class TfsCatalogSoapClient {
 				`No SOAP envelope was received for FoundationServer from ${this.endpointUrl}`,
 			);
 		}
+
 		const foundationServerDocument: xmldoc.XmlDocument =
 			new xmldoc.XmlDocument(envelopeXml);
 
@@ -259,11 +277,14 @@ export class TfsCatalogSoapClient {
 				`No CatalogResources were received for FoundationServer from ${this.endpointUrl}`,
 			);
 		}
+
 		let serverInstance: xmldoc.XmlElement;
 		//Spin through children doing insensitive check
 		for (
 			let idx: number = 0;
+
 			idx < catalogResources.children.length;
+
 			idx++
 		) {
 			if (
@@ -277,11 +298,13 @@ export class TfsCatalogSoapClient {
 				break;
 			}
 		}
+
 		if (!serverInstance) {
 			throw new Error(
 				`No serverInstance was found in SOAP envelope from ${this.endpointUrl}`,
 			);
 		}
+
 		const nodeRefPaths: any = serverInstance.childNamed(
 			TfsCatalogSoapClient.XmlNodeReferencesPaths,
 		);
@@ -570,6 +593,7 @@ export class TfsCatalogSoapClient {
 				`No SOAP envelope was received for ProjectCollections from ${this.endpointUrl}`,
 			);
 		}
+
 		const projectCollectionsDocument: xmldoc.XmlDocument =
 			new xmldoc.XmlDocument(envelopeXml);
 
@@ -595,7 +619,9 @@ export class TfsCatalogSoapClient {
 				`No CatalogResources were received for ProjectCollections from ${this.endpointUrl}`,
 			);
 		}
+
 		const collectionNodes: any[] = [];
+
 		catalogResources.eachChild(function (catalogResource) {
 			if (
 				catalogResource.attr.ResourceTypeIdentifier.toLowerCase() ===
@@ -646,7 +672,9 @@ export class TfsCatalogSoapClient {
 
 						for (
 							let idx: number = 0;
+
 							idx < collectionNodes.length;
+
 							idx++
 						) {
 							if (
@@ -660,6 +688,7 @@ export class TfsCatalogSoapClient {
 								break;
 							}
 						}
+
 						if (foundTeamProject) {
 							const props: any =
 								foundTeamProject.childNamed("Properties");
@@ -705,6 +734,7 @@ export class TfsCatalogSoapClient {
 		) => {
 			if (err) {
 				err.statusCode = statusCode;
+
 				deferred.reject(err);
 			} else {
 				deferred.resolve(responseEnvelope);

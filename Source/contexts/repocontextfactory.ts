@@ -24,12 +24,14 @@ export class RepositoryContextFactory {
 
 		//Check for remoteUrl and teamProject in settings first
 		repoContext = new ExternalContext(path);
+
 		initialized = await repoContext.Initialize(settings);
 
 		if (!initialized) {
 			//Check for Git next since it should be faster to determine and this code will
 			//be called on Reinitialize (when config changes, for example)
 			repoContext = new GitContext(path);
+
 			initialized = await repoContext.Initialize();
 
 			if (
@@ -39,17 +41,20 @@ export class RepositoryContextFactory {
 			) {
 				//Check if we have a TFVC repository
 				repoContext = new TfvcContext(path);
+
 				initialized = await repoContext.Initialize();
 
 				if (!initialized) {
 					return undefined;
 				}
+
 				if (repoContext.IsTeamFoundation === false) {
 					//We don't have any Team Services repository
 					return undefined;
 				}
 			}
 		}
+
 		return repoContext;
 	}
 
@@ -64,11 +69,13 @@ export class RepositoryContextFactory {
 	): IRepositoryContext {
 		if (currentRepo && currentRepo instanceof TfvcContext) {
 			const context: TfvcContext = <TfvcContext>currentRepo;
+
 			context.TfvcRepository = TfCommandLineRunner.CreateRepository(
 				serverContext,
 				context.RepoFolder,
 			);
 		}
+
 		return currentRepo;
 	}
 }

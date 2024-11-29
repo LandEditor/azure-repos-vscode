@@ -46,11 +46,14 @@ export class FileTokenStorage {
 				encoding: "utf8",
 				flag: "r",
 			});
+
 			entries = JSON.parse(content);
+
 			deferred.resolve(entries);
 		} catch (ex) {
 			if (ex.code !== "ENOENT") {
 				err = ex;
+
 				deferred.reject(err);
 			} else {
 				// If it is ENOENT (the file doesn't exist or can't be found)
@@ -58,6 +61,7 @@ export class FileTokenStorage {
 				deferred.resolve([]);
 			}
 		}
+
 		return deferred.promise;
 	}
 
@@ -82,6 +86,7 @@ export class FileTokenStorage {
 		if (!fs.existsSync(folder)) {
 			fs.mkdirSync(folder);
 		}
+
 		fs.writeFile(
 			this._filename,
 			JSON.stringify(entries),

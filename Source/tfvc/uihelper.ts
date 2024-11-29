@@ -48,13 +48,16 @@ export class UIHelper {
 			}
 		} else if (changes && changes.length === 0) {
 			const items: QuickPickItem[] = [];
+
 			items.push({
 				label: Strings.TfNoPendingChanges,
 				description: undefined,
 				detail: undefined,
 			});
+
 			await window.showQuickPick(items);
 		}
+
 		return undefined;
 	}
 
@@ -70,6 +73,7 @@ export class UIHelper {
 
 		if (syncResults.itemResults.length === 0) {
 			TfvcOutput.AppendLine(Strings.AllFilesUpToDate);
+
 			items.push({
 				label: Strings.AllFilesUpToDate,
 				description: undefined,
@@ -82,12 +86,15 @@ export class UIHelper {
 				if (onlyShowErrors && !UIHelper.isSyncError(item.syncType)) {
 					continue;
 				}
+
 				const type: string = this.GetDisplayTextForSyncType(
 					item.syncType,
 				);
+
 				TfvcOutput.AppendLine(
 					type + ": " + item.itemPath + " : " + item.message,
 				);
+
 				items.push({
 					label: type,
 					description: item.itemPath,
@@ -95,6 +102,7 @@ export class UIHelper {
 				});
 			}
 		}
+
 		if (showPopup) {
 			await window.showQuickPick(items);
 		}

@@ -12,8 +12,11 @@ import { UserInfo } from "../info/userinfo";
 
 export class TeamServerContext {
 	private _userInfo: UserInfo;
+
 	private _repositoryInfo: RepositoryInfo;
+
 	private _credentialHandler: IRequestHandler;
+
 	private _credentialInfo: CredentialInfo;
 
 	//The constructor simply parses the remoteUrl to determine if we're Team Services or Team Foundation Server.
@@ -30,24 +33,31 @@ export class TeamServerContext {
 	public get CredentialHandler(): IRequestHandler {
 		return this._credentialHandler;
 	}
+
 	public set CredentialHandler(handler: IRequestHandler) {
 		this._credentialHandler = handler;
 	}
+
 	public get RepoInfo(): RepositoryInfo {
 		return this._repositoryInfo;
 	}
+
 	public set RepoInfo(info: RepositoryInfo) {
 		this._repositoryInfo = info;
 	}
+
 	public get UserInfo(): UserInfo {
 		return this._userInfo;
 	}
+
 	public set UserInfo(info: UserInfo) {
 		this._userInfo = info;
 	}
+
 	public get CredentialInfo(): CredentialInfo {
 		return this._credentialInfo;
 	}
+
 	public set CredentialInfo(info: CredentialInfo) {
 		this._credentialInfo = info;
 	}

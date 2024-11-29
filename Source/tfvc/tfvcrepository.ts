@@ -42,11 +42,17 @@ import { TfvcSettings } from "./tfvcsettings";
  */
 export class TfvcRepository {
 	private _serverContext: TeamServerContext;
+
 	private _tfCommandLine: ITfCommandLine;
+
 	private _repositoryRootFolder: string;
+
 	private _env: any;
+
 	private _versionAlreadyChecked: boolean = false;
+
 	private _settings: TfvcSettings;
+
 	private _isExe: boolean = false;
 
 	public constructor(
@@ -59,16 +65,23 @@ export class TfvcRepository {
 		Logger.LogDebug(
 			`TFVC Repository created with repositoryRootFolder='${repositoryRootFolder}'`,
 		);
+
 		this._serverContext = serverContext;
+
 		this._tfCommandLine = tfCommandLine;
+
 		this._repositoryRootFolder = repositoryRootFolder;
+
 		this._env = env;
+
 		this._isExe = isExe;
+
 		this._settings = new TfvcSettings();
 
 		// Add the environment variables that we need to make sure the CLC runs as fast as possible and
 		// provides English strings back to us to parse.
 		this._env.TF_NOTELEMETRY = "TRUE";
+
 		this._env.TF_ADDITIONAL_JAVA_ARGS =
 			"-Duser.country=US -Duser.language=en";
 	}
@@ -185,6 +198,7 @@ export class TfvcRepository {
 				[this._repositoryRootFolder],
 			);
 		}
+
 		return this.RunCommand<IPendingChange[]>(statusCommand);
 	}
 
@@ -242,6 +256,7 @@ export class TfvcRepository {
 			const version: string = await this.RunCommand<string>(
 				new GetVersion(),
 			);
+
 			TfCommandLineRunner.CheckVersion(this._tfCommandLine, version);
 
 			return version;
@@ -279,6 +294,7 @@ export class TfvcRepository {
 		options: any = {},
 	): Promise<IExecutionResult> {
 		options.env = _.assign({}, options.env || {});
+
 		options.env = _.assign(options.env, this._env);
 
 		return await TfCommandLineRunner.Exec(

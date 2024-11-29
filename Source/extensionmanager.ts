@@ -52,19 +52,30 @@ import { TfvcSCMProvider } from "./tfvc/tfvcscmprovider";
 
 export class ExtensionManager implements Disposable {
 	private _teamServicesStatusBarItem: StatusBarItem;
+
 	private _feedbackStatusBarItem: StatusBarItem;
+
 	private _errorMessage: string;
+
 	private _feedbackClient: FeedbackClient;
+
 	private _serverContext: TeamServerContext;
+
 	private _repoContext: IRepositoryContext;
+
 	private _settings: Settings;
+
 	private _credentialManager: CredentialManager;
+
 	private _teamExtension: TeamExtension;
+
 	private _tfvcExtension: TfvcExtension;
+
 	private _scmProvider: TfvcSCMProvider;
 
 	public async Initialize(): Promise<void> {
 		await this.setupFileSystemWatcherOnConfig();
+
 		await this.initializeExtension(false /*reinitializing*/);
 
 		// Add the event listener for settings changes, then re-initialized the extension
@@ -110,6 +121,7 @@ export class ExtensionManager implements Disposable {
 	//Meant to reinitialize the extension when coming back online
 	public Reinitialize(): void {
 		this.cleanup(true);
+
 		this.initializeExtension(true /*reinitializing*/);
 	}
 
@@ -134,8 +146,10 @@ export class ExtensionManager implements Disposable {
 			} else {
 				this.setErrorStatus(Strings.NoRepoInformation);
 			}
+
 			return false;
 		}
+
 		return true;
 	}
 
@@ -167,6 +181,7 @@ export class ExtensionManager implements Disposable {
 
 				return false;
 			}
+
 			if (expectedType === RepositoryType.TFVC) {
 				VsCodeUtils.ShowErrorMessage(Strings.NotATfvcRepository);
 
@@ -188,6 +203,7 @@ export class ExtensionManager implements Disposable {
 		if (this._errorMessage !== undefined) {
 			return false;
 		}
+
 		return true;
 	}
 
@@ -200,6 +216,7 @@ export class ExtensionManager implements Disposable {
 
 			return true;
 		}
+
 		return false;
 	}
 
@@ -238,6 +255,7 @@ export class ExtensionManager implements Disposable {
 			//Don't log exceptions for Unauthorized, Offline or Proxy scenarios
 			return;
 		}
+
 		Telemetry.SendException(err);
 	}
 
@@ -249,6 +267,7 @@ export class ExtensionManager implements Disposable {
 
 			return;
 		}
+
 		funcToTry(args);
 	}
 
@@ -265,6 +284,7 @@ export class ExtensionManager implements Disposable {
 				url: Constants.TokenLearnMoreUrl,
 				telemetryId: TelemetryEvents.TokenLearnMoreClick,
 			});
+
 			messageItems.push({
 				title: Strings.ShowMe,
 				url: Constants.TokenShowMeUrl,
@@ -276,13 +296,17 @@ export class ExtensionManager implements Disposable {
 				Strings.NoAccessTokenRunSignin,
 				this._serverContext.RepoInfo.Account,
 			);
+
 			displayError = util.format(
 				Strings.NoAccessTokenLearnMoreRunSignin,
 				this._serverContext.RepoInfo.Account,
 			);
 		}
+
 		Logger.LogError(error);
+
 		this.setErrorStatus(error, CommandNames.Signin);
+
 		VsCodeUtils.ShowErrorMessage(displayError, ...messageItems);
 	}
 
@@ -293,6 +317,7 @@ export class ExtensionManager implements Disposable {
 			//Add stderr to logged message if we have it
 			logMsg = Utils.FormatMessage(`${logMsg} ${err.stderr}`);
 		}
+
 		return logMsg;
 	}
 
@@ -305,6 +330,7 @@ export class ExtensionManager implements Disposable {
 		Telemetry.Initialize(this._settings); //Need to initialize telemetry for showing welcome message
 		if (!reinitializing) {
 			await this.showFarewellMessage();
+
 			await this.showWelcomeMessage(); //Ensure we show the message before hooking workspace.onDidChangeConfiguration
 		}
 
@@ -315,16 +341,19 @@ export class ExtensionManager implements Disposable {
 
 		// Create the extensions
 		this._teamExtension = new TeamExtension(this);
+
 		this._tfvcExtension = new TfvcExtension(this);
 
 		//If Logging is enabled, the user must have used the extension before so we can enable
 		//it here.  This will allow us to log errors when we begin processing TFVC commands.
 		Telemetry.SendEvent(TelemetryEvents.Installed); //Send event that the extension is installed (even if not used)
 		this.logStart(this._settings.LoggingLevel, workspace.rootPath);
+
 		this._teamServicesStatusBarItem = window.createStatusBarItem(
 			StatusBarAlignment.Left,
 			100,
 		);
+
 		this._feedbackStatusBarItem = window.createStatusBarItem(
 			StatusBarAlignment.Left,
 			96,
@@ -340,7 +369,9 @@ export class ExtensionManager implements Disposable {
 
 			if (this._repoContext) {
 				this.showFeedbackItem();
+
 				this.setupFileSystemWatcherOnHead();
+
 				this._serverContext = new TeamServerContext(
 					this._repoContext.RemoteUrl,
 				);
@@ -351,6 +382,7 @@ export class ExtensionManager implements Disposable {
 				);
 
 				this._feedbackClient = new FeedbackClient();
+
 				this._credentialManager = new CredentialManager();
 
 				this._credentialManager
@@ -362,6 +394,7 @@ export class ExtensionManager implements Disposable {
 							return;
 						} else {
 							this._serverContext.CredentialInfo = creds;
+
 							Telemetry.Initialize(
 								this._settings,
 								this._serverContext,
@@ -380,6 +413,7 @@ export class ExtensionManager implements Disposable {
 							Logger.LogInfo(
 								"Getting repository information with repositoryInfoClient",
 							);
+
 							Logger.LogDebug(
 								"RemoteUrl = " + this._repoContext.RemoteUrl,
 							);
@@ -404,9 +438,11 @@ export class ExtensionManager implements Disposable {
 									new TeamServicesApi(connectionUrl, [
 										CredentialManager.GetCredentialHandler(),
 									]);
+
 								Logger.LogInfo(
 									"Getting connectionData with accountClient",
 								);
+
 								Logger.LogDebug(
 									"connectionUrl = " + connectionUrl,
 								);
@@ -414,9 +450,11 @@ export class ExtensionManager implements Disposable {
 								try {
 									const settings: any =
 										await accountClient.connect();
+
 									Logger.LogInfo(
 										"Retrieved connectionData with accountClient",
 									);
+
 									this.resetErrorStatus();
 
 									this._serverContext.UserInfo = new UserInfo(
@@ -426,16 +464,19 @@ export class ExtensionManager implements Disposable {
 									);
 
 									this.initializeStatusBars();
+
 									await this.initializeClients(
 										this._repoContext.Type,
 									);
 
 									this.sendStartupTelemetry();
+
 									Logger.LogInfo(
 										`Sent extension start up telemetry`,
 									);
 
 									Logger.LogObject(settings);
+
 									this.logDebugInformation();
 								} catch (err) {
 									this.setErrorStatus(
@@ -472,9 +513,11 @@ export class ExtensionManager implements Disposable {
 									this.setErrorStatus(
 										Strings.UnsupportedServerVersion,
 									);
+
 									Logger.LogError(
 										Strings.UnsupportedServerVersion,
 									);
+
 									Telemetry.SendEvent(
 										TelemetryEvents.UnsupportedServerVersion,
 									);
@@ -509,19 +552,24 @@ export class ExtensionManager implements Disposable {
 								const tfvcContext: TfvcContext = <TfvcContext>(
 									this._repoContext
 								);
+
 								this.sendTfvcConfiguredTelemetry(
 									tfvcContext.TfvcRepository,
 								);
+
 								Logger.LogInfo(`Sent TFVC tooling telemetry`);
 
 								if (!this._scmProvider) {
 									Logger.LogDebug(
 										`Initializing the TfvcSCMProvider`,
 									);
+
 									this._scmProvider = new TfvcSCMProvider(
 										this,
 									);
+
 									await this._scmProvider.Initialize();
+
 									Logger.LogDebug(
 										`Initialized the TfvcSCMProvider`,
 									);
@@ -529,11 +577,14 @@ export class ExtensionManager implements Disposable {
 									Logger.LogDebug(
 										`Re-initializing the TfvcSCMProvider`,
 									);
+
 									await this._scmProvider.Reinitialize();
+
 									Logger.LogDebug(
 										`Re-initialized the TfvcSCMProvider`,
 									);
 								}
+
 								this.sendTfvcConnectedTelemetry(
 									tfvcContext.TfvcRepository,
 								);
@@ -545,6 +596,7 @@ export class ExtensionManager implements Disposable {
 
 							const logMsg: string =
 								this.formatErrorLogMessage(err);
+
 							Logger.LogError(logMsg);
 
 							if (err.tfvcErrorCode) {
@@ -578,12 +630,15 @@ export class ExtensionManager implements Disposable {
 							err.message,
 							"Failed to get a credential handler",
 						);
+
 						Logger.LogError(message);
+
 						Telemetry.SendException(err);
 					});
 			}
 		} catch (err) {
 			const logMsg: string = this.formatErrorLogMessage(err);
+
 			Logger.LogError(logMsg);
 			//For now, don't report these errors via the FeedbackClient (TFVC errors could result from TfvcContext creation failing)
 			if (
@@ -591,6 +646,7 @@ export class ExtensionManager implements Disposable {
 				this.shouldDisplayTfvcError(err.tfvcErrorCode)
 			) {
 				this.setErrorStatus(err.message);
+
 				VsCodeUtils.ShowErrorMessage(
 					err.message,
 					...err.messageOptions,
@@ -619,6 +675,7 @@ export class ExtensionManager implements Disposable {
 		if (!repository.IsExe) {
 			event = TfvcTelemetryEvents.ClcConfigured;
 		}
+
 		Telemetry.SendEvent(event);
 
 		//For now, this is simply an indication that users have configured that feature
@@ -634,6 +691,7 @@ export class ExtensionManager implements Disposable {
 		if (!repository.IsExe) {
 			event = TfvcTelemetryEvents.ClcConnected;
 		}
+
 		Telemetry.SendEvent(event);
 	}
 
@@ -648,6 +706,7 @@ export class ExtensionManager implements Disposable {
 		) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -657,16 +716,19 @@ export class ExtensionManager implements Disposable {
 			const welcomeMessage: string = `This is version ${Constants.ExtensionVersion} of the Azure Repos extension.`;
 
 			const messageItems: IButtonMessageItem[] = [];
+
 			messageItems.push({
 				title: Strings.LearnMore,
 				url: Constants.ReadmeLearnMoreUrl,
 				telemetryId: TelemetryEvents.WelcomeLearnMoreClick,
 			});
+
 			messageItems.push({
 				title: Strings.SetupTfvcSupport,
 				url: Constants.TfvcLearnMoreUrl,
 				telemetryId: TfvcTelemetryEvents.SetupTfvcSupportClick,
 			});
+
 			messageItems.push({ title: Strings.DontShowAgain });
 
 			const chosenItem: IButtonMessageItem =
@@ -686,11 +748,13 @@ export class ExtensionManager implements Disposable {
 			const farewellMessage: string = `The Azure Repos extension has been sunsetted.`;
 
 			const messageItems: IButtonMessageItem[] = [];
+
 			messageItems.push({
 				title: Strings.LearnMore,
 				url: Constants.FarewellLearnMoreUrl,
 				telemetryId: TelemetryEvents.FarewellLearnMoreClick,
 			});
+
 			messageItems.push({ title: Strings.DontShowAgain });
 
 			const chosenItem: IButtonMessageItem =
@@ -709,12 +773,15 @@ export class ExtensionManager implements Disposable {
 	private initializeStatusBars(): void {
 		if (this.ensureMinimalInitialization()) {
 			this._teamServicesStatusBarItem.command = CommandNames.OpenTeamSite;
+
 			this._teamServicesStatusBarItem.text = this._serverContext.RepoInfo
 				.TeamProject
 				? this._serverContext.RepoInfo.TeamProject
 				: "<none>";
+
 			this._teamServicesStatusBarItem.tooltip =
 				Strings.NavigateToTeamServicesWebSite;
+
 			this._teamServicesStatusBarItem.show();
 
 			if (this.EnsureInitialized(RepositoryType.ANY)) {
@@ -728,6 +795,7 @@ export class ExtensionManager implements Disposable {
 	//Set up the initial status bars
 	private async initializeClients(repoType: RepositoryType): Promise<void> {
 		await this._teamExtension.InitializeClients(repoType);
+
 		await this._tfvcExtension.InitializeClients(repoType);
 	}
 
@@ -755,7 +823,9 @@ export class ExtensionManager implements Disposable {
 				this._serverContext.UserInfo.Id +
 				" ",
 		);
+
 		Logger.LogDebug("repositoryFolder: " + this._repoContext.RepoFolder);
+
 		Logger.LogDebug("repositoryRemoteUrl: " + this._repoContext.RemoteUrl);
 
 		if (this._repoContext.Type === RepositoryType.GIT) {
@@ -763,12 +833,16 @@ export class ExtensionManager implements Disposable {
 				"gitRepositoryParentFolder: " +
 					this._repoContext.RepositoryParentFolder,
 			);
+
 			Logger.LogDebug(
 				"gitCurrentBranch: " + this._repoContext.CurrentBranch,
 			);
+
 			Logger.LogDebug("gitCurrentRef: " + this._repoContext.CurrentRef);
 		}
+
 		Logger.LogDebug("IsSsh: " + this._repoContext.IsSsh);
+
 		Logger.LogDebug(
 			"proxy: " +
 				(Utils.IsProxyEnabled() ? "enabled" : "not enabled") +
@@ -781,11 +855,14 @@ export class ExtensionManager implements Disposable {
 		if (loggingLevel === undefined) {
 			return;
 		}
+
 		Logger.SetLoggingLevel(loggingLevel);
 
 		if (rootPath !== undefined) {
 			Logger.LogPath = rootPath;
+
 			Logger.LogInfo(`*** FOLDER: ${rootPath} ***`);
+
 			Logger.LogInfo(`${UserAgentProvider.UserAgent}`);
 		} else {
 			Logger.LogInfo(`*** Folder not opened ***`);
@@ -803,7 +880,9 @@ export class ExtensionManager implements Disposable {
 			//TODO: Should the default command be to display the message?
 			this._teamServicesStatusBarItem.command = commandOnClick; // undefined clears the command
 			this._teamServicesStatusBarItem.text = `Team $(stop)`;
+
 			this._teamServicesStatusBarItem.tooltip = message;
+
 			this._teamServicesStatusBarItem.show();
 		}
 	}
@@ -822,18 +901,22 @@ export class ExtensionManager implements Disposable {
 				false,
 				true,
 			);
+
 			fsw.onDidChange(async (/*uri*/) => {
 				Logger.LogInfo(
 					"HEAD has changed, re-parsing RepoContext object",
 				);
+
 				this._repoContext =
 					await RepositoryContextFactory.CreateRepositoryContext(
 						workspace.rootPath,
 						this._settings,
 					);
+
 				Logger.LogInfo(
 					"CurrentBranch is: " + this._repoContext.CurrentBranch,
 				);
+
 				this.notifyBranchChanged(/*this._repoContext.CurrentBranch*/);
 			});
 		}
@@ -867,13 +950,16 @@ export class ExtensionManager implements Disposable {
 				false,
 				false,
 			);
+
 			fsw.onDidCreate((/*uri*/) => {
 				//When a new local repo is initialized (e.g., git init), re-initialize the extension
 				Logger.LogInfo(
 					"config has been created, re-initializing the extension",
 				);
+
 				this.Reinitialize();
 			});
+
 			fsw.onDidChange(async (uri) => {
 				Logger.LogInfo(
 					"config has changed, checking if 'remote origin' changed",
@@ -894,6 +980,7 @@ export class ExtensionManager implements Disposable {
 						Logger.LogInfo(
 							"remote was removed, previously had an Azure Repos remote, re-initializing the extension",
 						);
+
 						this.Reinitialize();
 
 						return;
@@ -914,6 +1001,7 @@ export class ExtensionManager implements Disposable {
 							Logger.LogInfo(
 								"remote changed to a different Azure Repos remote, re-initializing the extension",
 							);
+
 							this.Reinitialize();
 						}
 					} else {
@@ -921,14 +1009,17 @@ export class ExtensionManager implements Disposable {
 						Logger.LogInfo(
 							"remote initialized to an Azure Repos remote, re-initializing the extension",
 						);
+
 						this.Reinitialize();
 					}
 				}
 			});
+
 			fsw.onDidDelete((/*uri*/) => {
 				Logger.LogInfo(
 					"config has been deleted, re-initializing the extension",
 				);
+
 				this.Reinitialize();
 			});
 		}
@@ -936,18 +1027,24 @@ export class ExtensionManager implements Disposable {
 
 	private showFeedbackItem(): void {
 		this._feedbackStatusBarItem.command = CommandNames.SendFeedback;
+
 		this._feedbackStatusBarItem.text = `$(megaphone)`;
+
 		this._feedbackStatusBarItem.tooltip = Strings.SendFeedback;
+
 		this._feedbackStatusBarItem.show();
 	}
 
 	private cleanup(preserveTeamExtension: boolean = false): void {
 		if (this._teamServicesStatusBarItem) {
 			this._teamServicesStatusBarItem.dispose();
+
 			this._teamServicesStatusBarItem = undefined;
 		}
+
 		if (this._feedbackStatusBarItem !== undefined) {
 			this._feedbackStatusBarItem.dispose();
+
 			this._feedbackStatusBarItem = undefined;
 		}
 		//No matter if we're signing out or re-initializing, we need the team extension's
@@ -957,16 +1054,22 @@ export class ExtensionManager implements Disposable {
 		//If we are signing out, we need to keep some of the objects around
 		if (!preserveTeamExtension && this._teamExtension) {
 			this._teamExtension.dispose();
+
 			this._teamExtension = undefined;
+
 			this._serverContext = undefined;
+
 			this._credentialManager = undefined;
 
 			if (this._tfvcExtension) {
 				this._tfvcExtension.dispose();
+
 				this._tfvcExtension = undefined;
 			}
+
 			if (this._scmProvider) {
 				this._scmProvider.dispose();
+
 				this._scmProvider = undefined;
 			}
 			//Make sure we clean up any running instances of TF
@@ -975,7 +1078,9 @@ export class ExtensionManager implements Disposable {
 
 		//The following will be reset during a re-initialization
 		this._repoContext = undefined;
+
 		this._settings = undefined;
+
 		this._errorMessage = undefined;
 	}
 

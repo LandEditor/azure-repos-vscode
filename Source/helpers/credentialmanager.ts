@@ -14,6 +14,7 @@ import { RepoUtils } from "./repoutils";
 
 export class CredentialManager {
 	private static _credentialHandler: IRequestHandler;
+
 	private _credentialStore: CredentialStore;
 
 	constructor() {
@@ -40,6 +41,7 @@ export class CredentialManager {
 				if (credInfo !== undefined) {
 					CredentialManager._credentialHandler =
 						credInfo.CredentialHandler;
+
 					deferred.resolve(credInfo);
 				} else {
 					deferred.resolve(undefined);
@@ -110,8 +112,10 @@ export class CredentialManager {
 
 						if (pair.length > 1) {
 							domain = pair[0];
+
 							user = pair[pair.length - 1];
 						}
+
 						deferred.resolve(
 							new CredentialInfo(
 								user,
@@ -140,6 +144,7 @@ export class CredentialManager {
 		) {
 			return context.RepoInfo.Host + "/" + context.RepoInfo.Account;
 		}
+
 		return context.RepoInfo.Host;
 	}
 }

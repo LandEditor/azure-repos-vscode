@@ -33,6 +33,7 @@ import { UIHelper } from "./uihelper";
 
 export class TfvcExtension {
 	private _repo: TfvcRepository;
+
 	private _manager: ExtensionManager;
 
 	constructor(manager: ExtensionManager) {
@@ -61,8 +62,11 @@ export class TfvcExtension {
 				checkinInfo.comment,
 				checkinInfo.workItemIds,
 			);
+
 			TfvcOutput.AppendLine(`Changeset ${changeset} checked in.`);
+
 			TfvcSCMProvider.ClearCheckinMessage();
+
 			TfvcSCMProvider.Refresh();
 		}, "Checkin");
 	}
@@ -89,6 +93,7 @@ export class TfvcExtension {
 								? TfvcTelemetryEvents.DeleteExe
 								: TfvcTelemetryEvents.DeleteClc,
 						);
+
 						await this._repo.Delete([uri.fsPath]);
 					}
 				} catch (err) {
@@ -117,9 +122,11 @@ export class TfvcExtension {
 			if (resources && resources.length > 0) {
 				//Keep an in-memory list of items that were explicitly excluded. The list is not persisted at this time.
 				const paths: string[] = [];
+
 				resources.forEach((resource) => {
 					paths.push(resource.resourceUri.fsPath);
 				});
+
 				await TfvcSCMProvider.Exclude(paths);
 			}
 		}, "Exclude");
@@ -133,6 +140,7 @@ export class TfvcExtension {
 				const pathsToAdd: string[] = [];
 
 				const pathsToDelete: string[] = [];
+
 				resources.forEach((resource) => {
 					const path: string = resource.resourceUri.fsPath;
 					//Unexclude each file passed in
@@ -159,6 +167,7 @@ export class TfvcExtension {
 							? TfvcTelemetryEvents.AddExe
 							: TfvcTelemetryEvents.AddClc,
 					);
+
 					await this._repo.Add(pathsToAdd);
 				}
 				//If we need to delete files, run a single Delete with those files
@@ -168,6 +177,7 @@ export class TfvcExtension {
 							? TfvcTelemetryEvents.DeleteExe
 							: TfvcTelemetryEvents.DeleteClc,
 					);
+
 					await this._repo.Delete(pathsToDelete);
 				}
 
@@ -268,6 +278,7 @@ export class TfvcExtension {
 								? TfvcTelemetryEvents.RenameExe
 								: TfvcTelemetryEvents.RenameClc,
 						);
+
 						await this._repo.Rename(uri.fsPath, destination);
 					} catch (err) {
 						//Provide a better error message if the file to be renamed isn't in the workspace (e.g., it's a new file)
@@ -318,10 +329,12 @@ export class TfvcExtension {
 							? TfvcTelemetryEvents.ResolveConflictsExe
 							: TfvcTelemetryEvents.ResolveConflictsClc,
 					);
+
 					await this._repo.ResolveConflicts(
 						[localPath],
 						autoResolveType,
 					);
+
 					TfvcSCMProvider.Refresh();
 				}
 			} else {
@@ -352,6 +365,7 @@ export class TfvcExtension {
 				[this._repo.Path],
 				true,
 			);
+
 			await UIHelper.ShowSyncResults(
 				results,
 				results.hasConflicts || results.hasErrors,
@@ -369,6 +383,7 @@ export class TfvcExtension {
 		this.displayErrors(async () => {
 			if (resources) {
 				const pathsToUndo: string[] = [];
+
 				resources.forEach((resource) => {
 					pathsToUndo.push(resource.resourceUri.fsPath);
 				});
@@ -381,6 +396,7 @@ export class TfvcExtension {
 					if (pathsToUndo.length > 1) {
 						message = `Are you sure you want to undo changes to ${pathsToUndo.length.toString()} files?`;
 					}
+
 					if (
 						await UIHelper.PromptForConfirmation(
 							message,
@@ -392,6 +408,7 @@ export class TfvcExtension {
 								? TfvcTelemetryEvents.UndoExe
 								: TfvcTelemetryEvents.UndoClc,
 						);
+
 						await this._repo.Undo(pathsToUndo);
 					}
 				}
@@ -420,6 +437,7 @@ export class TfvcExtension {
 							? TfvcTelemetryEvents.UndoAllExe
 							: TfvcTelemetryEvents.UndoAllClc,
 					);
+
 					await this._repo.Undo(["*"]);
 				}
 			} else {
@@ -451,6 +469,7 @@ export class TfvcExtension {
 			if (editor) {
 				itemPath = editor.document.fileName;
 			}
+
 			if (!itemPath) {
 				//If no file open in editor, just display the history url of the entire repo
 				this.showRepositoryHistory();
@@ -471,11 +490,13 @@ export class TfvcExtension {
 					this._manager.RepoContext.RemoteUrl,
 					"_versionControl",
 				);
+
 				historyUrl = UrlBuilder.AddQueryParams(
 					historyUrl,
 					`path=${file}`,
 					`_a=history`,
 				);
+
 				Utils.OpenUrl(historyUrl);
 
 				return;
@@ -517,6 +538,7 @@ export class TfvcExtension {
 			await funcToTry(prefix);
 		} catch (err) {
 			let messageOptions: IButtonMessageItem[] = [];
+
 			TfvcOutput.AppendLine(
 				Utils.FormatMessage(`[${prefix}] ${err.message}`),
 			);
@@ -536,6 +558,7 @@ export class TfvcExtension {
 					command: TfvcCommandNames.ShowOutput,
 				});
 			}
+
 			VsCodeUtils.ShowErrorMessage(err.message, ...messageOptions);
 		}
 	}
@@ -547,6 +570,7 @@ export class TfvcExtension {
 		}
 
 		const tfvcContext: TfvcContext = <TfvcContext>this._manager.RepoContext;
+
 		this._repo = tfvcContext.TfvcRepository;
 	}
 
@@ -557,7 +581,9 @@ export class TfvcExtension {
 			this._manager.RepoContext.RemoteUrl,
 			"_versionControl",
 		);
+
 		historyUrl = UrlBuilder.AddQueryParams(historyUrl, `_a=history`);
+
 		Utils.OpenUrl(historyUrl);
 	}
 

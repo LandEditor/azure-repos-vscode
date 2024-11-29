@@ -20,11 +20,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Add implements ITfvcCommand<string[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
 
 	public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		this._serverContext = serverContext;
+
 		this._itemPaths = itemPaths;
 	}
 
@@ -76,9 +79,11 @@ export class Add implements ITfvcCommand<string[]> {
 				path = line;
 			} else {
 				const file: string = this.getFileFromLine(line);
+
 				filesAdded.push(CommandHelper.GetFilePath(path, file));
 			}
 		}
+
 		return filesAdded;
 	}
 

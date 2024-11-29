@@ -21,11 +21,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Delete implements ITfvcCommand<string[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
 
 	public constructor(serverContext: TeamServerContext, itemPaths: string[]) {
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		this._serverContext = serverContext;
+
 		this._itemPaths = itemPaths;
 	}
 
@@ -87,9 +90,11 @@ export class Delete implements ITfvcCommand<string[]> {
 				path = line;
 			} else if (line) {
 				const file: string = this.getFileFromLine(line);
+
 				filesUndone.push(CommandHelper.GetFilePath(path, file));
 			}
 		}
+
 		return filesUndone;
 	}
 

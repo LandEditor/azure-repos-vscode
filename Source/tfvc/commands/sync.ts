@@ -26,7 +26,9 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Sync implements ITfvcCommand<ISyncResults> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPaths: string[];
+
 	private _recursive: boolean;
 
 	public constructor(
@@ -35,8 +37,11 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 		recursive: boolean,
 	) {
 		this._serverContext = serverContext;
+
 		CommandHelper.RequireStringArrayArgument(itemPaths, "itemPaths");
+
 		this._itemPaths = itemPaths;
+
 		this._recursive = recursive;
 	}
 
@@ -172,6 +177,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 				}
 			}
 		}
+
 		return itemResults;
 	}
 
@@ -211,6 +217,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 			};
 		} else if (line.startsWith("Conflict ")) {
 			const dashIndex = line.lastIndexOf("-");
+
 			newResult = {
 				syncType: SyncType.Conflict,
 				itemPath: CommandHelper.GetFilePath(
@@ -221,6 +228,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 			};
 		} else if (line.startsWith("Warning ")) {
 			const dashIndex = line.lastIndexOf("-");
+
 			newResult = {
 				syncType: SyncType.Warning,
 				itemPath: CommandHelper.GetFilePath(
@@ -282,6 +290,7 @@ export class Sync implements ITfvcCommand<ISyncResults> {
 			// stderr doesn't get any file path lines, so the files will all be just the filenames
 			errorMessages.push(this.getSyncResultFromLine("", lines[i]));
 		}
+
 		return errorMessages;
 	}
 }

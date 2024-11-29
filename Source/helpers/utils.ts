@@ -19,6 +19,7 @@ export class Utils {
 			//Replace newlines with spaces
 			return message.replace(/\r\n/g, " ").replace(/\n/g, " ").trim();
 		}
+
 		return message;
 	}
 
@@ -42,6 +43,7 @@ export class Utils {
 			}
 
 			lastPath = currentPath;
+
 			currentPath = path.resolve(currentPath, "..");
 		} while (lastPath !== currentPath);
 
@@ -113,6 +115,7 @@ export class Utils {
 
 					break;
 				}
+
 				return message;
 
 			default:
@@ -127,6 +130,7 @@ export class Utils {
 		if (process.env.HTTPS_PROXY || process.env.HTTP_PROXY) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -144,6 +148,7 @@ export class Utils {
 			) {
 				return true;
 			}
+
 			if (
 				reason.statusCode === "ECONNRESET" ||
 				reason.statusCode === "ECONNREFUSED"
@@ -165,6 +170,7 @@ export class Utils {
 			) {
 				return true;
 			}
+
 			if (
 				reason.statusCode === "ENOENT" ||
 				reason.statusCode === "ENOTFOUND" ||
@@ -173,6 +179,7 @@ export class Utils {
 				return true;
 			}
 		}
+
 		return false;
 	}
 
@@ -183,6 +190,7 @@ export class Utils {
 				return true;
 			}
 		}
+
 		return false;
 	}
 

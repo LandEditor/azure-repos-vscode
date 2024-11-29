@@ -17,14 +17,17 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
+
 		for (let idx: number = 0; idx < args.length; idx++) {
 			let arg: string = args[idx];
 			//Ensure each arg doesn't start with a '/', we'll be adding those
 			if (arg.startsWith("/")) {
 				arg = arg.substring(1, arg.length);
 			}
+
 			finalUrl = `${finalUrl}/${arg}`;
 		}
+
 		return finalUrl;
 	}
 
@@ -39,6 +42,7 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
+
 		for (let idx: number = 0; idx < args.length; idx++) {
 			const prefix: string = idx === 0 ? "?" : "&";
 
@@ -47,6 +51,7 @@ export class UrlBuilder {
 			if (arg.startsWith("?") || arg.startsWith("&")) {
 				arg = arg.substring(1, arg.length);
 			}
+
 			finalUrl = `${finalUrl}${prefix}${arg}`;
 		}
 
@@ -64,6 +69,7 @@ export class UrlBuilder {
 		if (args && args.length > 0 && finalUrl.endsWith("/")) {
 			finalUrl = finalUrl.substring(0, finalUrl.length - 1);
 		}
+
 		for (let idx: number = 0; idx < args.length; idx++) {
 			const prefix: string = idx === 0 ? "#" : "&";
 
@@ -72,6 +78,7 @@ export class UrlBuilder {
 			if (arg.startsWith("#") || arg.startsWith("&")) {
 				arg = arg.substring(1, arg.length);
 			}
+
 			finalUrl = `${finalUrl}${prefix}${arg}`;
 		}
 

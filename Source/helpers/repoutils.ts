@@ -71,6 +71,7 @@ export class RepoUtils {
 		) {
 			return true;
 		}
+
 		return false;
 	}
 
@@ -83,6 +84,7 @@ export class RepoUtils {
 			if (RepoUtils.IsTeamFoundationServicesV3SshRepo(respositoryUrl)) {
 				return true;
 			}
+
 			const purl: url.Url = url.parse(respositoryUrl);
 
 			if (purl.hostname.toLowerCase().indexOf("azure.com") >= 0) {
@@ -93,6 +95,7 @@ export class RepoUtils {
 				"Could not parse repository url: " + respositoryUrl,
 			);
 		}
+
 		return false;
 	}
 
@@ -120,6 +123,7 @@ export class RepoUtils {
 					match[4]
 				);
 			}
+
 			return (
 				scheme +
 				match[1] +
@@ -131,6 +135,7 @@ export class RepoUtils {
 				match[4]
 			);
 		}
+
 		Logger.LogDebug(
 			"Could not parse as v3 repository url: " + respositoryUrl,
 		);
@@ -143,6 +148,7 @@ export class RepoUtils {
 		if (!RepoUtils.IsTeamFoundationServicesRepo(url)) {
 			return true;
 		}
+
 		return false;
 	}
 }

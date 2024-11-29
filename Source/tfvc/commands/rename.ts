@@ -20,7 +20,9 @@ import { CommandHelper } from "./commandhelper";
  */
 export class Rename implements ITfvcCommand<string> {
 	private _serverContext: TeamServerContext;
+
 	private _sourcePath: string;
+
 	private _destinationPath: string;
 
 	public constructor(
@@ -29,9 +31,13 @@ export class Rename implements ITfvcCommand<string> {
 		destinationPath: string,
 	) {
 		CommandHelper.RequireStringArgument(sourcePath, "sourcePath");
+
 		CommandHelper.RequireStringArgument(destinationPath, "destinationPath");
+
 		this._serverContext = serverContext;
+
 		this._sourcePath = sourcePath;
+
 		this._destinationPath = destinationPath;
 	}
 
@@ -89,6 +95,7 @@ export class Rename implements ITfvcCommand<string> {
 				return CommandHelper.GetFilePath(path, file);
 			}
 		}
+
 		return "";
 	}
 

@@ -21,19 +21,27 @@ import { ConflictType, GetStatuses, Status } from "./status";
 
 export class Resource implements SourceControlResourceState {
 	private _uri: Uri;
+
 	private _statuses: Status[];
+
 	private _change: IPendingChange;
+
 	private _version: string;
+
 	private _conflictType: ConflictType;
 
 	constructor(change: IPendingChange, conflict: IConflict) {
 		this._change = change;
+
 		this._uri = Uri.file(change.localItem);
+
 		this._statuses = GetStatuses(change.changeType);
+
 		this._version = change.version;
 
 		if (conflict) {
 			this._statuses.push(Status.CONFLICT);
+
 			this._conflictType = conflict.type;
 		}
 	}
@@ -41,9 +49,11 @@ export class Resource implements SourceControlResourceState {
 	public get PendingChange(): IPendingChange {
 		return this._change;
 	}
+
 	public get Statuses(): Status[] {
 		return this._statuses;
 	}
+
 	public get ConflictType(): ConflictType {
 		return this._conflictType;
 	}
@@ -116,6 +126,7 @@ export class Resource implements SourceControlResourceState {
 	get resourceUri(): Uri {
 		return this._uri;
 	}
+
 	get decorations(): SourceControlResourceDecorations {
 		// TODO Add conflict type to the resource constructor and pass it here
 		return DecorationProvider.getDecorations(this._statuses);

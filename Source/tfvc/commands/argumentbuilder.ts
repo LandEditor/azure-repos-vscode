@@ -13,6 +13,7 @@ import { TfvcError } from "../tfvcerror";
  */
 export class ArgumentBuilder implements IArgumentProvider {
 	private _arguments: string[] = [];
+
 	private _secretArgumentIndexes: number[] = [];
 
 	public constructor(
@@ -23,7 +24,9 @@ export class ArgumentBuilder implements IArgumentProvider {
 		if (!command) {
 			throw TfvcError.CreateArgumentMissingError("command");
 		}
+
 		this.Add(command);
+
 		this.AddSwitch("noprompt");
 
 		if (
@@ -39,6 +42,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 					false,
 				);
 			}
+
 			if (serverContext.CredentialInfo) {
 				this.AddSwitchWithValue(
 					"login",
@@ -66,11 +70,13 @@ export class ArgumentBuilder implements IArgumentProvider {
 				this.Add(args[i]);
 			}
 		}
+
 		return this;
 	}
 
 	public AddSecret(arg: string): ArgumentBuilder {
 		this.Add(arg);
+
 		this._secretArgumentIndexes.push(this._arguments.length - 1);
 
 		return this;
@@ -112,10 +118,13 @@ export class ArgumentBuilder implements IArgumentProvider {
 	 */
 	public BuildCommandLine(): string {
 		let result: string = "";
+
 		this._arguments.forEach((arg) => {
 			const escapedArg = this.escapeArgument(arg);
+
 			result += escapedArg + " ";
 		});
+
 		result += "\n";
 
 		return result;
@@ -135,6 +144,7 @@ export class ArgumentBuilder implements IArgumentProvider {
 		if (/\s/.test(escaped)) {
 			escaped = '"' + escaped + '"';
 		}
+
 		return escaped;
 	}
 
@@ -148,8 +158,10 @@ export class ArgumentBuilder implements IArgumentProvider {
 				// This arg is a secret so hide the value
 				arg = "********";
 			}
+
 			output += arg + " ";
 		}
+
 		return output.trim();
 	}
 

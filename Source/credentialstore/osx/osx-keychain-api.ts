@@ -24,6 +24,7 @@ export class OsxKeychainApi implements ICredentialStore {
 	constructor(credentialPrefix: string) {
 		if (credentialPrefix !== undefined) {
 			this._prefix = credentialPrefix;
+
 			osxkeychain.setPrefix(credentialPrefix);
 		}
 	}
@@ -41,7 +42,9 @@ export class OsxKeychainApi implements ICredentialStore {
 				// based on passed in 'service'
 				for (
 					let index: number = 0;
+
 					index < credentials.length;
+
 					index++
 				) {
 					if (credentials[index].Service === service) {
@@ -50,6 +53,7 @@ export class OsxKeychainApi implements ICredentialStore {
 						break;
 					}
 				}
+
 				if (credential !== undefined) {
 					//Go get the password
 					osxkeychain.get(
@@ -59,12 +63,14 @@ export class OsxKeychainApi implements ICredentialStore {
 							if (err) {
 								deferred.reject(err);
 							}
+
 							if (cred !== undefined) {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
 									cred,
 								);
+
 								deferred.resolve(credential);
 							}
 						},
@@ -135,7 +141,9 @@ export class OsxKeychainApi implements ICredentialStore {
 				// based on passed in 'service'
 				for (
 					let index: number = 0;
+
 					index < credentials.length;
+
 					index++
 				) {
 					if (
@@ -147,6 +155,7 @@ export class OsxKeychainApi implements ICredentialStore {
 						break;
 					}
 				}
+
 				if (credential !== undefined) {
 					//Go get the password
 					osxkeychain.get(
@@ -156,12 +165,14 @@ export class OsxKeychainApi implements ICredentialStore {
 							if (err) {
 								deferred.reject(err);
 							}
+
 							if (cred !== undefined) {
 								credential = new Credential(
 									credential.Service,
 									credential.Username,
 									cred,
 								);
+
 								deferred.resolve(credential);
 							}
 						},
@@ -211,6 +222,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				},
 			);
 		}
+
 		return deferred.promise;
 	}
 
@@ -222,6 +234,7 @@ export class OsxKeychainApi implements ICredentialStore {
 			if (creds !== undefined && creds.length > 0) {
 				// Remove all of these credentials
 				const promises: Q.Promise<void>[] = [];
+
 				creds.forEach((cred) => {
 					promises.push(
 						this.removeCredentialByName(
@@ -230,6 +243,7 @@ export class OsxKeychainApi implements ICredentialStore {
 						),
 					);
 				});
+
 				Q.all(promises).then(() => {
 					deferred.resolve(undefined);
 				});
@@ -248,6 +262,7 @@ export class OsxKeychainApi implements ICredentialStore {
 		const credentials: Array<Credential> = [];
 
 		const stream = osxkeychain.list();
+
 		stream.on("data", (cred) => {
 			// Don't return all credentials, just ones that start
 			// with our prefix and optional service
@@ -272,11 +287,14 @@ export class OsxKeychainApi implements ICredentialStore {
 				}
 			}
 		});
+
 		stream.on("end", () => {
 			deferred.resolve(credentials);
 		});
+
 		stream.on("error", (error) => {
 			console.log(error);
+
 			deferred.reject(error);
 		});
 

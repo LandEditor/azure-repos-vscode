@@ -24,11 +24,14 @@ import { CommandHelper } from "./commandhelper";
  */
 export class FindConflicts implements ITfvcCommand<IConflict[]> {
 	private _serverContext: TeamServerContext;
+
 	private _itemPath: string;
 
 	public constructor(serverContext: TeamServerContext, itemPath: string) {
 		this._serverContext = serverContext;
+
 		CommandHelper.RequireStringArgument(itemPath, "itemPath");
+
 		this._itemPath = itemPath;
 	}
 
@@ -74,6 +77,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 				outputToProcess = executionResult.stdout;
 			}
 		}
+
 		const lines: string[] = CommandHelper.SplitIntoLines(
 			outputToProcess,
 			false,
@@ -86,6 +90,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 			if (line.includes("_JAVA_OPTIONS")) {
 				continue; //This is not a conflict
 			}
+
 			const colonIndex: number = line.lastIndexOf(":");
 
 			if (colonIndex >= 0) {
@@ -123,6 +128,7 @@ export class FindConflicts implements ITfvcCommand<IConflict[]> {
 				) {
 					type = ConflictType.DELETE_TARGET;
 				}
+
 				conflicts.push({
 					localPath: localPath,
 					type: type,

@@ -14,7 +14,9 @@ import { TfvcSCMProvider } from "../tfvcscmprovider";
 
 export class TfvcContentProvider {
 	private _tfvcRepository: TfvcRepository;
+
 	private _rootPath: string;
+
 	private _disposables: Disposable[] = [];
 
 	private _onDidChangeEmitter = new EventEmitter<Uri>();
@@ -29,7 +31,9 @@ export class TfvcContentProvider {
 		onTfvcChange: Event<Uri>,
 	) {
 		this._tfvcRepository = repository;
+
 		this._rootPath = rootPath;
+
 		this._disposables.push(
 			onTfvcChange(this.fireChangeEvents, this),
 			workspace.registerTextDocumentContentProvider(
@@ -61,6 +65,7 @@ export class TfvcContentProvider {
 		// First option is Windows, second is Mac
 		if (path && (path.startsWith("\\$\\") || path.startsWith("/$/"))) {
 			// convert "/$/proj/folder/file" to "$/proj/folder/file";
+
 			path = uri.path.slice(1);
 		}
 
@@ -85,6 +90,7 @@ export class TfvcContentProvider {
 	dispose(): void {
 		if (this._disposables) {
 			this._disposables.forEach((d) => d.dispose());
+
 			this._disposables = [];
 		}
 	}
