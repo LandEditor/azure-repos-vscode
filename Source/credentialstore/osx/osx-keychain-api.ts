@@ -42,9 +42,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				// based on passed in 'service'
 				for (
 					let index: number = 0;
-
 					index < credentials.length;
-
 					index++
 				) {
 					if (credentials[index].Service === service) {
@@ -141,9 +139,7 @@ export class OsxKeychainApi implements ICredentialStore {
 				// based on passed in 'service'
 				for (
 					let index: number = 0;
-
 					index < credentials.length;
-
 					index++
 				) {
 					if (

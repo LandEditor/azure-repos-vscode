@@ -38,9 +38,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
 				for (
 					let index: number = 0;
-
 					index < credentials.length;
-
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);
@@ -119,9 +117,7 @@ export class WindowsCredentialStoreApi implements ICredentialStore {
 				//Spin through the returned credentials to ensure I got the one I want based on passed in 'service'
 				for (
 					let index: number = 0;
-
 					index < credentials.length;
-
 					index++
 				) {
 					credential = this.createCredential(credentials[index]);

@@ -152,9 +152,7 @@ export class TfsCatalogSoapClient {
 
 		for (
 			let idx: number = 0;
-
 			idx < catalogResources.children.length;
-
 			idx++
 		) {
 			if (
@@ -282,9 +280,7 @@ export class TfsCatalogSoapClient {
 		//Spin through children doing insensitive check
 		for (
 			let idx: number = 0;
-
 			idx < catalogResources.children.length;
-
 			idx++
 		) {
 			if (
@@ -672,9 +668,7 @@ export class TfsCatalogSoapClient {
 
 						for (
 							let idx: number = 0;
-
 							idx < collectionNodes.length;
-
 							idx++
 						) {
 							if (

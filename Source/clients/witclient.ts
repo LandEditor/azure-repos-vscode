@@ -378,9 +378,7 @@ export class WitClient extends BaseClient {
 					//Gets all of the queries under "My Queries" and gets their name and wiql
 					for (
 						let index: number = 0;
-
 						index < folder.children.length;
-
 						index++
 					) {
 						queries.push({

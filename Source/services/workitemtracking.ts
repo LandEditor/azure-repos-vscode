@@ -122,9 +122,7 @@ export class WorkItemTrackingService {
 			function (el) {
 				for (
 					let index: number = 0;
-
 					index < hiddenTypes.length;
-
 					index++
 				) {
 					if (el.name === hiddenTypes[index].name) {
