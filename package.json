@@ -461,7 +461,7 @@
 		"opener": "1.5.2",
 		"parse-git-config": "3.0.0",
 		"path": "0.12.7",
-		"readable-stream": "4.6.0",
+		"readable-stream": "4.7.0",
 		"request-promise-native": "1.0.9",
 		"underscore": "1.13.7",
 		"url": "0.11.4",
