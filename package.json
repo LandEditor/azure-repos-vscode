@@ -475,7 +475,7 @@
 	"devDependencies": {
 		"@types/applicationinsights": "0.20.0",
 		"@types/chai": "5.0.1",
-		"@types/node": "22.10.7",
+		"@types/node": "22.10.9",
 		"@types/q": "1.5.8",
 		"@types/uuid": "10.0.0",
 		"@types/winston": "2.4.4",
